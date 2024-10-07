@@ -1,0 +1,32 @@
+/* Background color offset */
+/* Can be removed after man on v 16.2.1 has been included and released in RO theme */
+.background-color-offset {
+    margin-top: var(--background-color-offset-margin-top);
+    margin-bottom: var(--background-color-offset-margin-bottom);
+    padding-top: var(--background-color-offset-padding-top);
+    padding-bottom: var(--background-color-offset-padding-bottom);
+
+    > div {
+        margin-top: var(--background-color-offset-content-wrapper-margin-top);
+        margin-bottom: var(
+            --background-color-offset-content-wrapper-margin-bottom
+        );
+        padding-top: var(--background-color-offset-content-wrapper-padding-top);
+        padding-bottom: var(
+            --background-color-offset-content-wrapper-padding-bottom
+        );
+    }
+}
+
+:root {
+    --main-padding-top: 2.5rem;
+    --main-padding-bottom: 2.5rem;
+
+    --section-padding-top: 2.5rem;
+    --section-padding-bottom: 2.5rem;
+
+    --background-color-offset-margin-top: 2.5rem;
+    --background-color-offset-margin-bottom: 2.5rem;
+    --background-color-offset-padding-top: 5rem;
+    --background-color-offset-padding-bottom: 5rem;
+}
