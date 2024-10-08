@@ -28,5 +28,3 @@ Route::middleware(['auth'])
         Route::get('home', [HomeController::class, 'home'])->name('home');
         Route::get('logout', [HomeController::class, 'logout'])->name('logout');
     });
-
-

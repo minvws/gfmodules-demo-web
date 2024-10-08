@@ -12,5 +12,8 @@
         "laravel-vite-plugin": "^1.0.4",
         "sass": "^1.77.6",
         "vite": "^5.4.8"
+    },
+    "dependencies": {
+        "eslint": "^9.12.0"
     }
 }
