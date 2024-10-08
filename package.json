@@ -10,7 +10,7 @@
     "devDependencies": {
         "@minvws/nl-rdo-rijksoverheid-ui-theme": "^0.0.18",
         "laravel-vite-plugin": "^1.0.4",
-        "sass": "^1.77.6",
+        "sass": "^1.79.4",
         "vite": "^5.4.8"
     },
     "dependencies": {
