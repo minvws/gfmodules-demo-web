@@ -5,13 +5,13 @@
 
             <nav aria-label="@lang('Footer navigation')">
                 <ul>
-                    <li><a href="{{ route('privacy-statement') }}">@lang('Privacy statement')</a></li>
+                    <li><a href="#">Privacy Statement</a></li>
                 </ul>
             </nav>
         </div>
         <div class="meta">
             <p>
-                Versie v1.3.0
+                Versie v0.0.0
             </p>
         </div>
     </div>
