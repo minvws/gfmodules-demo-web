@@ -1,1 +1,1 @@
-Auto-generated README for gfmodules-viewer-web-private
+Auto-generated README for gfmodules-viewer-web

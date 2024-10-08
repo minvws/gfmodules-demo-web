@@ -1,0 +1,9 @@
+/* Accordion */
+
+:root {
+    --accordion-content-background-color: #fff;
+
+    // TODO: Add this in the theme package
+    --accordion-button-icon-after-open-content: var(--icon-chevron-down);
+    --accordion-button-icon-after-close-content: var(--icon-chevron-up);
+}
