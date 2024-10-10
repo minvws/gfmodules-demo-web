@@ -34,8 +34,6 @@ class TimelineController extends Controller
         $dataDomain = strval($request->request->get('data_domain'));
         $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain);
 
-//        dd($timelineBundle);
-
         $patient = null;
 
         // Convert timeline bundle to a list of series
