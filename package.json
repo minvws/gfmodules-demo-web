@@ -11,7 +11,7 @@
         "@minvws/nl-rdo-rijksoverheid-ui-theme": "^0.0.18",
         "laravel-vite-plugin": "^1.0.5",
         "sass": "^1.79.4",
-        "vite": "^5.4.8"
+        "vite": "^6.0.2"
     },
     "dependencies": {
         "eslint": "^9.12.0"
