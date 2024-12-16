@@ -33,7 +33,6 @@ class OidcLoginResponseHandler implements LoginResponseHandlerInterface
                 ->route('index')
                 ->with('error', __('Something went wrong with logging in, please try again.'));
         }
-
         if (!$user->hasUziId()) {
             throw new UziNoUziNumberException();
         }

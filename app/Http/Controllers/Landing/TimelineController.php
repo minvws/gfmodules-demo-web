@@ -40,8 +40,10 @@ class TimelineController extends Controller
         $imagingStudiesSeries = [];
         $errors = [];
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
-            if ($searchSet['resource']['resourceType'] === "OperationOutcome") {
-                foreach ($searchSet['resource']['issue'] ?? [] as $issue) {
+            $meta = $searchSet['resource']['entry'][1];
+            $addressingInformation = $this->getAddressingInformation($searchSet);
+            if ($meta['resource']['resourceType'] === "OperationOutcome") {
+                foreach ($meta['resource']['issue'] ?? [] as $issue) {
                     array_push($errors, [
                         'severity' => $issue['severity'],
                         'details' => $issue['details']['text']
@@ -49,23 +51,28 @@ class TimelineController extends Controller
                 }
             }
 
-            foreach ($searchSet['resource']['entry'] ?? [] as $entry) {
+            foreach ($meta['resource']['entry'] ?? [] as $entry) {
                 if ($entry['resource']['resourceType'] !== "ImagingStudy") {
                     continue;
                 }
 
                 // Set patient if not set yet
                 if (!$patient) {
-                    $patient = $this->getPatient($searchSet, $entry);
+                    $patient = $this->getPatient($meta, $entry);
                 }
 
                 foreach ($entry['resource']['series'] as $resource) {
                     $imagingStudiesSeries[] = [
                         'resource' => $resource,
                         'references' => [
-                            'organization' => $this->getOrganisation($searchSet, $resource),
-                            'practitioner' => $this->getPractitioner($searchSet, $resource),
-                            'patient' => $this->getPatient($searchSet, $entry),
+                            'organization' => $this->getOrganisation($meta, $resource),
+                            'practitioner' => $this->getPractitioner($meta, $resource),
+                            'patient' => $this->getPatient($meta, $entry),
+                            'addressingInformation' => [
+                                'ura' => $this->getUra($addressingInformation),
+                                'name' => $this->getAddressingName($addressingInformation),
+                                'endpoint' => $this->getAddressingEndpoint($addressingInformation)
+                            ],
                         ]
                     ];
                 }
@@ -85,6 +92,30 @@ class TimelineController extends Controller
             ->with('series', $imagingStudiesSeries)
             ->with('errors', $errors)
         ;
+    }
+
+    protected function getAddressingInformation(array $searchSet){
+        // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
+        // we're bound to fixed indexes to tind the resource.
+        return $searchSet['resource']['entry'][0]['resource'];
+    }
+
+    protected function getUra(array $addressingInformation){
+        // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
+        // we're bound to fixed indexes to tind the resource.
+      return $addressingInformation['entry'][0]['resource']['identifier'][1]['value'];
+    }
+
+    protected function getAddressingName(array $addressingInformation){
+        // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
+        // we're bound to fixed indexes to tind the resource.
+        return $addressingInformation['entry'][0]['resource']['name'];
+    }
+
+    protected function getAddressingEndpoint(array $addressingInformation){
+        // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
+        // we're bound to fixed indexes to tind the resource.
+        return $addressingInformation['entry'][1]['resource']['address'];
     }
 
     public function getPatient(array $bundle, array $resource): array

@@ -29,6 +29,9 @@
                     <th>BodyPart</th>
                     <th>Instelling</th>
                     <th>Actie</th>
+                    <th>Ura</th>
+                    <th>Adresserings naam</th>
+                    <th>Addreserings endpoint</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,6 +45,9 @@
                         <td>{{ $entry['resource']['bodySite']['concept']['coding'][0]['display'] ?? '-' }}</td>
                         <td>{{ $entry['references']['organization']['name'] ?? '-' }}</td>
                         <td>&nbsp;</td>
+                        <td>{{ $entry['references']['addressingInformation']['ura'] }}</td>
+                        <td>{{ $entry['references']['addressingInformation']['name'] }}</td>
+                        <td>{{ $entry['references']['addressingInformation']['endpoint'] }}</td>
                     </tr>
                 @endforeach
                 </tbody>

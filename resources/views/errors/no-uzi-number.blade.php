@@ -11,10 +11,8 @@
                 </h1>
                 <p>U zit momenteel niet in de Dezi-pilot.</p>
 
-                <form method="post" action="{{ route('ziekenboeg.users.logout') }}" class="inline">
-                    @csrf
-                    <input type="submit" value="{{ __('Logout') }}" />
-                </form>
+                @csrf
+                <input type="submit" value="{{ __('Logout') }}" />
             </div>
         </div>
     </section>
