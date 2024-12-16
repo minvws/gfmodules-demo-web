@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\TimelineController;
-
 use App\Http\Controllers\Auth\DigidMockController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +37,3 @@ Route::middleware(['auth'])
         Route::get('home', [TimelineController::class, 'home'])->name('home');
         Route::post('fetch', [TimelineController::class, 'fetch'])->name('fetch');
     });
-

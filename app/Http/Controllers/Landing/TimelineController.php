@@ -94,25 +94,29 @@ class TimelineController extends Controller
         ;
     }
 
-    protected function getAddressingInformation(array $searchSet){
+    protected function getAddressingInformation(array $searchSet): array
+    {
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
         return $searchSet['resource']['entry'][0]['resource'];
     }
 
-    protected function getUra(array $addressingInformation){
+    protected function getUra(array $addressingInformation): string
+    {
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
-      return $addressingInformation['entry'][0]['resource']['identifier'][1]['value'];
+        return $addressingInformation['entry'][0]['resource']['identifier'][1]['value'];
     }
 
-    protected function getAddressingName(array $addressingInformation){
+    protected function getAddressingName(array $addressingInformation): string
+    {
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
         return $addressingInformation['entry'][0]['resource']['name'];
     }
 
-    protected function getAddressingEndpoint(array $addressingInformation){
+    protected function getAddressingEndpoint(array $addressingInformation): string
+    {
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
         return $addressingInformation['entry'][1]['resource']['address'];
