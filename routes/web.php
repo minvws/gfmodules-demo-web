@@ -20,7 +20,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', IndexController::class)->name('index');
-Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
+
+if (config('auth.digid_mock_enabled')) {
+    Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
+}
 
 Route::middleware(['auth'])
     ->prefix('landing')
