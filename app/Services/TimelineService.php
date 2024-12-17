@@ -28,13 +28,11 @@ class TimelineService
         $data = json_decode($result->getBody()->getContents(), true);
         $pseudonym = $data['pseudonym'] ?? '';
 
-        $result = $client->request('POST', config('timeline.timeline.endpoint') . '/timeline', [
-            'json' => [
-                'pseudonym' => $pseudonym,
-                'data_domain' => $dataDomain,
+        $result = $client->request('POST', config('timeline.timeline.endpoint') . '/fhir/ImagingStudy/_search', [
+            'query' => [
+                'pseudonym' => $pseudonym
             ],
         ]);
-
         return json_decode($result->getBody()->getContents(), true);
     }
 }

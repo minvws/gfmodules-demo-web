@@ -10,7 +10,7 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-8000}:80'
+            - '8499:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'
@@ -21,7 +21,12 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
+            - zmodules
 
 networks:
     sail:
         driver: bridge
+    zmodules:
+        driver: bridge
+        name: zmodules
+
