@@ -106,7 +106,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: phpstan
       - name: Copy .env
         run: cp -n .env.example .env
       - name: Generate key
@@ -120,7 +119,7 @@ jobs:
           DB_USERNAME: postgres
           DB_PASSWORD: postgres
           DB_SSLMODE: prefer
-        run: phpstan analyse
+        run: vendor/bin/phpstan analyse
     strategy:
       max-parallel: 3
       matrix:
