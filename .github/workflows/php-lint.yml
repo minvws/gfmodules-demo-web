@@ -106,7 +106,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: phpstan
       - name: Copy .env
         run: cp -n .env.example .env
       - name: Generate key
