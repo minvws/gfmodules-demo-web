@@ -39,4 +39,5 @@ Route::middleware(['auth'])
     ->group(function () {
         Route::get('home', [TimelineController::class, 'home'])->name('home');
         Route::post('fetch', [TimelineController::class, 'fetch'])->name('fetch');
+        Route::get('org/{ref}', [TimelineController::class, 'orgInfo'])->name('org_info');
     });

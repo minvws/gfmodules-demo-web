@@ -16,7 +16,9 @@
                 </div>
             @endif
 
+            @if ($patient)
             <h2>Tijdslijn van {{ $patient['display'] }} <small>({{$bsn}})</small></h2>
+            @endif
 
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -46,7 +48,7 @@
                         <td>{{ $entry['references']['organization']['name'] ?? '-' }}</td>
                         <td>&nbsp;</td>
                         <td>{{ $entry['references']['addressingInformation']['ura'] }}</td>
-                        <td>{{ $entry['references']['addressingInformation']['name'] }}</td>
+                        <td><a href="{{route('timeline.org_info', ['ref' => explode("/",  $entry['references']['organization']['reference'])[1] ])}}">{{ $entry['references']['addressingInformation']['name'] }}</a></td>
                         <td>{{ $entry['references']['addressingInformation']['endpoint'] }}</td>
                     </tr>
                 @endforeach
