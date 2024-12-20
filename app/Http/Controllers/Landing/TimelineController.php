@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Services\AddressingService;
 use App\Services\BsnService;
 use App\Services\TimelineService;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,15 @@ class TimelineController extends Controller
     public function home(Request $request): View
     {
         return view('timeline.home')->with('user', $request->user());
+    }
+
+    public function orgInfo(Request $request, string $ref, AddressingService $addressingService): View
+    {
+        $org = $addressingService->findOrganization($ref, includeEndpoints: true);
+        return view('timeline.org_info')
+            ->with('organization', $org['organization'])
+            ->with('endpoints', $org['endpoints'] ?? [])
+        ;
     }
 
     public function fetch(
@@ -149,6 +159,7 @@ class TimelineController extends Controller
             if ($performer['actor']['type'] === $type) {
                 if (array_key_exists("display", $performer['actor'])) {
                     return [
+                        'reference' => $performer['actor']['reference'],
                         'name' => $performer['actor']['display'],
                     ];
                 }
