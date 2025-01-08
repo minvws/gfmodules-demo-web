@@ -81,7 +81,8 @@ class TimelineController extends Controller
                             'addressingInformation' => [
                                 'ura' => $this->getUra($addressingInformation),
                                 'name' => $this->getAddressingName($addressingInformation),
-                                'endpoint' => $this->getAddressingEndpoint($addressingInformation)
+                                'endpoint' => $this->getAddressingEndpoint($addressingInformation),
+                                'organizationId' => $this->getAddressingOrganizationid($addressingInformation)
                             ],
                         ]
                     ];
@@ -130,6 +131,13 @@ class TimelineController extends Controller
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
         return $addressingInformation['entry'][1]['resource']['address'];
+    }
+
+    protected function getAddressingOrganizationId(array $addressingInformation): string
+    {
+        // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
+        // we're bound to fixed indexes to tind the resource.
+        return $addressingInformation['entry'][0]['resource']['id'];
     }
 
     public function getPatient(array $bundle, array $resource): array
