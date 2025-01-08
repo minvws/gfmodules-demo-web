@@ -48,6 +48,7 @@ class TimelineController extends Controller
 
         // Convert timeline bundle to a list of series
         $imagingStudiesSeries = [];
+        $medicationStatements = [];
         $errors = [];
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
             $meta = $searchSet['resource']['entry'][1];
@@ -62,28 +63,33 @@ class TimelineController extends Controller
             }
 
             foreach ($meta['resource']['entry'] ?? [] as $entry) {
-                if ($entry['resource']['resourceType'] !== "ImagingStudy") {
-                    continue;
-                }
+                if ($entry['resource']['resourceType'] === "ImagingStudy") {
+                    // Set patient if not set yet
+                    if (!$patient) {
+                        $patient = $this->getPatient($meta, $entry);
+                    }
 
-                // Set patient if not set yet
-                if (!$patient) {
-                    $patient = $this->getPatient($meta, $entry);
+                    foreach ($entry['resource']['series'] as $resource) {
+                        $imagingStudiesSeries[] = [
+                            'resource' => $resource,
+                            'references' => [
+                                'organization' => $this->getOrganisation($meta, $resource),
+                                'practitioner' => $this->getPractitioner($meta, $resource),
+                                'patient' => $this->getPatient($meta, $entry),
+                                'addressingInformation' => $this->parseAddressingInformation($addressingInformation),
+                            ]
+                        ];
+                    }
                 }
+                if ($entry['resource']['resourceType'] === "MedicationStatement") {
+                    if (!$patient) {
+                        $patient = $this->getPatient($meta, $entry);
+                    }
 
-                foreach ($entry['resource']['series'] as $resource) {
-                    $imagingStudiesSeries[] = [
-                        'resource' => $resource,
+                    $medicationStatements[] = [
+                        'resource' => $entry['resource'],
                         'references' => [
-                            'organization' => $this->getOrganisation($meta, $resource),
-                            'practitioner' => $this->getPractitioner($meta, $resource),
-                            'patient' => $this->getPatient($meta, $entry),
-                            'addressingInformation' => [
-                                'ura' => $this->getUra($addressingInformation),
-                                'name' => $this->getAddressingName($addressingInformation),
-                                'endpoint' => $this->getAddressingEndpoint($addressingInformation),
-                                'organizationId' => $this->getAddressingOrganizationid($addressingInformation)
-                            ],
+                            'addressingInformation' => $this->parseAddressingInformation($addressingInformation),
                         ]
                     ];
                 }
@@ -97,12 +103,48 @@ class TimelineController extends Controller
             return $db <=> $da;
         });
 
-        return view('timeline.result')
+        // sort medicationstatement ['resource']['effectivePeriod']['start'] by earliest started first
+        usort($medicationStatements, function ($a, $b) {
+            $da = new \DateTime($a['resource']['effectivePeriod']['start']);
+            $db = new \DateTime($b['resource']['effectivePeriod']['start']);
+            return $da <=> $db;
+        });
+        // sort medication statements where the end date is in the past, most recent end first
+        $pastMedicationStatements = array_filter($medicationStatements, function ($statement) {
+            $endDate = new \DateTime($statement['resource']['effectivePeriod']['end']);
+            return $endDate < new \DateTime();
+        });
+
+        usort($pastMedicationStatements, function ($a, $b) {
+            $da = new \DateTime($a['resource']['effectivePeriod']['end']);
+            $db = new \DateTime($b['resource']['effectivePeriod']['end']);
+            return $db <=> $da;
+        });
+
+        if ($dataDomain === 'ImagingStudy') {
+            return view('timeline.imagingstudy_result')
+                ->with('bsn', $bsn)
+                ->with('patient', $patient)
+                ->with('series', $imagingStudiesSeries)
+                ->with('errors', $errors)
+            ;
+        }
+        return view('timeline.medicationstatement_result')
             ->with('bsn', $bsn)
             ->with('patient', $patient)
-            ->with('series', $imagingStudiesSeries)
+            ->with('medicationStatements', $medicationStatements)
             ->with('errors', $errors)
         ;
+    }
+
+    protected function parseAddressingInformation(array $addressingInformation): array
+    {
+        return [
+            'ura' => $this->getUra($addressingInformation),
+            'name' => $this->getAddressingName($addressingInformation),
+            'endpoint' => $this->getAddressingEndpoint($addressingInformation),
+            'organizationId' => $this->getAddressingOrganizationId($addressingInformation),
+        ];
     }
 
     protected function getAddressingInformation(array $searchSet): array

@@ -18,7 +18,8 @@
                 <input type="text" maxlength=9 minlength=8 id="bsn" name="bsn" required>
 
                 <select name="data_domain">
-                    <option value="beeldbank">BeeldBank</option>
+                    <option value="ImagingStudy">BeeldBank</option>
+                    <option value="MedicationStatement">Medicatie recept</option>
                 </select>
                 <button type="submit">Ophalen timeline gegevens</button>
             </form>

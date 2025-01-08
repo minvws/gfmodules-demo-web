@@ -28,7 +28,7 @@ class TimelineService
         $data = json_decode($result->getBody()->getContents(), true);
         $pseudonym = $data['pseudonym'] ?? '';
 
-        $result = $client->request('POST', config('timeline.timeline.endpoint') . '/fhir/ImagingStudy/_search', [
+        $result = $client->request('POST', config('timeline.timeline.endpoint') . '/fhir/' . $dataDomain . '/_search', [
             'query' => [
                 'pseudonym' => $pseudonym
             ],
