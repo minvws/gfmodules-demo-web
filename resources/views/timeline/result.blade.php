@@ -32,8 +32,6 @@
                     <th>Instelling</th>
                     <th>Actie</th>
                     <th>Ura</th>
-                    <th>Adresserings naam</th>
-                    <th>Addreserings endpoint</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,9 +45,7 @@
                         <td>{{ $entry['resource']['bodySite']['concept']['coding'][0]['display'] ?? '-' }}</td>
                         <td>{{ $entry['references']['organization']['name'] ?? '-' }}</td>
                         <td>&nbsp;</td>
-                        <td>{{ $entry['references']['addressingInformation']['ura'] }}</td>
-                        <td><a href="{{route('timeline.org_info', ['ref' => explode("/",  $entry['references']['organization']['reference'])[1] ])}}">{{ $entry['references']['addressingInformation']['name'] }}</a></td>
-                        <td>{{ $entry['references']['addressingInformation']['endpoint'] }}</td>
+                        <td><a href="{{route('timeline.org_info', ['ref' => $entry['references']['addressingInformation']['organizationId'] ])}}">{{ $entry['references']['addressingInformation']['ura'] }}</a></td>
                     </tr>
                 @endforeach
                 </tbody>
