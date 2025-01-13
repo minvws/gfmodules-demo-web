@@ -109,17 +109,6 @@ class TimelineController extends Controller
             $db = new \DateTime($b['resource']['effectivePeriod']['start']);
             return $da <=> $db;
         });
-        // sort medication statements where the end date is in the past, most recent end first
-        $pastMedicationStatements = array_filter($medicationStatements, function ($statement) {
-            $endDate = new \DateTime($statement['resource']['effectivePeriod']['end']);
-            return $endDate < new \DateTime();
-        });
-
-        usort($pastMedicationStatements, function ($a, $b) {
-            $da = new \DateTime($a['resource']['effectivePeriod']['end']);
-            $db = new \DateTime($b['resource']['effectivePeriod']['end']);
-            return $db <=> $da;
-        });
 
         if ($dataDomain === 'ImagingStudy') {
             return view('timeline.imagingstudy_result')
