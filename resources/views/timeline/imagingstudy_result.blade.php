@@ -46,6 +46,7 @@
                         <td>{{ $entry['references']['organization']['name'] ?? '-' }}</td>
                         <td>&nbsp;</td>
                         <td><a href="{{route('timeline.org_info', ['ref' => $entry['references']['addressingInformation']['organizationId'] ])}}">{{ $entry['references']['addressingInformation']['ura'] }}</a></td>
+
                     </tr>
                 @endforeach
                 </tbody>
