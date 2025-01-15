@@ -12,7 +12,7 @@ class AddressingService
     {
         $query = [];
         if ($includeEndpoints) {
-            $query['_include'] = 'Organization.endpoint';
+            $query['_include'] = 'Organization:endpoint';
         }
 
         $client = new Client();
