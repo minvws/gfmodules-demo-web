@@ -8,12 +8,13 @@
         "lint": "eslint ."
     },
     "devDependencies": {
-        "@minvws/nl-rdo-rijksoverheid-ui-theme": "^0.0.18",
+        "@minvws/nl-rdo-rijksoverheid-ui-theme": "^0.1.0-beta.2",
         "laravel-vite-plugin": "^1.0.5",
         "sass": "^1.83.1",
         "vite": "^6.0.7"
     },
     "dependencies": {
+        "@minvws/manon": "^17.0.0-beta.1",
         "eslint": "^9.18.0"
     }
 }

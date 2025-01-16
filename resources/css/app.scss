@@ -1,29 +1,10 @@
-$ro-font-path: "@minvws/nl-rdo-rijksoverheid-ui-theme/fonts";
-$ro-img-path: "@minvws/nl-rdo-rijksoverheid-ui-theme/img";
+@use "manon";
 
-@import "@minvws/nl-rdo-rijksoverheid-ui-theme/scss/main";
+@use "@minvws/nl-rdo-rijksoverheid-ui-theme" with (
+    $font-path: "@minvws/nl-rdo-rijksoverheid-ui-theme/fonts",
+    $img-path: "@minvws/nl-rdo-rijksoverheid-ui-theme/img"
+);
+@use "@minvws/nl-rdo-rijksoverheid-ui-theme/components";
+@use "@minvws/nl-rdo-rijksoverheid-ui-theme/icons-extended";
 
-/* Manon */
-@import "manon/overrides/bg-color-offset";
-@import "manon/overrides/accordion";
-@import "manon/overrides/breadcrumb-bar";
-
-footer .two-thirds-one-third {
-    justify-content: space-between;
-
-    nav {
-        width: auto;
-    }
-}
-
-.version-history {
-    .version-history-version-number {
-        min-width: 10%;
-    }
-    .version-history-date {
-        min-width: 10%;
-    }
-    .version-history-changes {
-        width: 65%;
-    }
-}
+@use "styling/breadcrumb-bar";
