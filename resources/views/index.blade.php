@@ -16,10 +16,7 @@
 
             <p>Here be llamas...</p>
 
-            <ul class="external-login">
-                <li><a href="{{ route('oidc.login') }}"><img src="{{ asset('img/login-methods/signin-method-logo.png') }}" alt="">@lang('Login with')
-                        Dezi-Online <i class="icon icon-chevron-right icon-small"></i></a></li>
-            </ul>
+            <a href="{{ route('flow') }}">To the flow</a>
         </div>
     </section>
 @endsection
