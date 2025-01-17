@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', IndexController::class)->name('index');
 Route::get('/flow', [FlowController::class, 'index'])->name('flow');
+Route::post('/flow/consent', [FlowController::class, 'consent'])->name('flow-consent');
 
 if (config('auth.digid_mock_enabled')) {
     Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');

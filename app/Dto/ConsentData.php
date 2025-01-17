@@ -15,6 +15,9 @@ class ConsentData
         ?string $birthYear = null,
         bool $consent = false
     ) {
+        $this->bsn = $bsn;
+        $this->birthYear = $birthYear;
+        $this->consent = $consent;
     }
 
     public function getBsn(): ?string
