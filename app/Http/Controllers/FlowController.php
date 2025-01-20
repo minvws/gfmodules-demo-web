@@ -16,13 +16,15 @@ class FlowController extends Controller
 
     public function index()
     {
-        $state = $this->stateService->getFlowStateFromSession();
-
-        return view('flow.index')
-            ->with('state', $state);
+        return $this->returnFlowView();
     }
 
-    public function consent(FlowConsentRequest $request)
+    public function editConsent()
+    {
+        return $this->returnFlowView(editConsent: true);
+    }
+
+    public function saveConsent(FlowConsentRequest $request)
     {
         $data = new ConsentData(
             bsn: $request->validated('bsn'),
@@ -32,5 +34,14 @@ class FlowController extends Controller
         $this->stateService->setConsentDataInSession($data);
 
         return redirect()->route('flow');
+    }
+
+    protected function returnFlowView($editConsent = false)
+    {
+        $state = $this->stateService->getFlowStateFromSession();
+
+        return view('flow.index')
+            ->with('state', $state)
+            ->with('editConsent', $editConsent);
     }
 }

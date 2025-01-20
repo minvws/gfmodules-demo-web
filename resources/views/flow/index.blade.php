@@ -35,7 +35,7 @@
                 <li>
                     <button aria-expanded="{{ $state->getUser() ? "true" : "false" }}" id="flow-consent">2. Toestemming</button>
                     <div aria-labelledby="flow-consent">
-                        @if(!$state->getConsentData())
+                        @if(!$state->getConsentData() || $editConsent)
                         <form action="{{ route('flow-consent') }}" method="POST">
                             @csrf
                             <fieldset {{ $state->getUser() === null ? "disabled" : "" }}>
@@ -105,7 +105,7 @@
                         </form>
                         @else
                             <p>U gaat gegevens opvragen van bsn: {{ \Illuminate\Support\Str::mask($state->getConsentData()?->getBsn(), '*', 6) }}</p>
-
+                            <a href="{{ route('flow-consent') }}" class="button ghost">Gegevens wijzigen</a>
                         @endif
                     </div>
                 </li>
