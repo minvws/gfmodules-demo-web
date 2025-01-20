@@ -36,7 +36,7 @@
                     <button aria-expanded="{{ $state->getUser() ? "true" : "false" }}" id="flow-consent">2. Toestemming</button>
                     <div aria-labelledby="flow-consent">
                         @if(!$state->getConsentData() || $editConsent)
-                        <form action="{{ route('flow-consent') }}" method="POST">
+                        <form action="{{ route('flow-consent.store') }}" method="POST">
                             @csrf
                             <fieldset {{ $state->getUser() === null ? "disabled" : "" }}>
                                 <p>Controleer of u toestemming heeft om de gegevens van de patient/client of burger op te vragen.</p>
@@ -110,17 +110,66 @@
                     </div>
                 </li>
                 <li>
-                    <button aria-expanded="{{ $state->getConsentData() ? "true" : "false" }}" id="flow-authorization">3. Autorisatie</button>
+                    <button aria-expanded="{{ $state->getConsentData() && !$editConsent  ? "true" : "false" }}" id="flow-authorization">3. Autorisatie</button>
                     <div aria-labelledby="flow-authorization">
+                        @if(!$state->getAuthorizationData() || $editAuthorization)
+                            <form action="{{ route('flow-authorization.store') }}" method="POST">
+                                @csrf
+                                <fieldset {{ $state->getUser() === null ? "disabled" : "" }}>
+                                    <p>Controleer of u geautoriseerd bent voor het opvragen van het informatietype voor deze patient.</p>
+                                    <div>
+                                        <label for="flow-authorization-information-types">Type informatie</label>
+                                        <span class="nota-bene">Welke informatietypen wilt u opvragen</span>
+                                        <div>
+                                            @error('information_types')
+                                            <p class="error" id="flow-authorization-information-types-error-message">
+                                                <span>Foutmelding:</span> {{ $message }}
+                                            </p>
+                                            @enderror
+                                            @foreach($informationTypes as $informationTypeKey => $informationType)
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="flow-authorization-information-types-{{ $informationTypeKey }}" name="information_types[]" value="{{ $informationTypeKey }}" aria-describedby="flow-authorization-information-types-error-message" {{ in_array($informationTypeKey, old('information_types', $state->getAuthorizationData()?->getInformationTypes() ?? [])) ? 'checked' : '' }}>
+                                                    <label for="flow-authorization-information-types-{{ $informationTypeKey }}">{{ $informationType }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="flow-authorization-access-code">Accordering</label>
+                                        <span class="nota-bene">Lorem ipsum token</span>
+                                        <div>
+                                            @error('access_code')
+                                            <p class="error" id="flow-authorization-access-code-error-message">
+                                                <span>Foutmelding:</span> {{ $message }}
+                                            </p>
+                                            @enderror
+                                            <input
+                                                id="flow-authorization-access-code"
+                                                name="access_code"
+                                                type="number"
+                                                required
+                                                aria-describedby="flow-authorization-access-code-error-message"
+                                                value="{{ old('access_code', $state->getAuthorizationData()?->getAccessCode()) }}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <button type="submit">Controleer autorisatie</button>
+                                </fieldset>
+                            </form>
+                        @else
+                            @php
+                            $selectedInformationTypes = collect($informationTypes)->only($state->getAuthorizationData()->getInformationTypes())->toArray();
+                            @endphp
 
-                        <!-- Voeg hier de content toe -->
-
+                            <p>Selectie: {{ implode(', ', $selectedInformationTypes) }}</p>
+                            <a href="{{ route('flow-authorization') }}" class="button ghost">Selectie wijzigen</a>
+                        @endif
                     </div>
                 </li>
             </ul>
 {{--            TODO: Add CSRF and POST to flow --}}
             <form class="inline">
-                <button type="submit" disabled>Informatie opvragen</button>
+                <button type="submit" {{ $state->getConsentData() && $state->getAuthorizationData() ? "" : "disabled" }}>Informatie opvragen</button>
             </form>
 
         </div>

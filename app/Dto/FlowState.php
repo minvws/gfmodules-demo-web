@@ -11,6 +11,7 @@ class FlowState
     public function __construct(
         protected ?UziUser $user = null,
         protected ?ConsentData $consentData = null,
+        protected ?AuthorizationData $authorizationData = null,
     ) {
     }
 
@@ -22,5 +23,10 @@ class FlowState
     public function getConsentData(): ?ConsentData
     {
         return $this->consentData;
+    }
+
+    public function getAuthorizationData(): ?AuthorizationData
+    {
+        return $this->authorizationData;
     }
 }
