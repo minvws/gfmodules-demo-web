@@ -48,6 +48,16 @@ class TimelineController extends Controller
         $imagingStudiesSeries = [];
         $medicationStatements = [];
         $errors = [];
+
+        if ($timelineBundle['detail'] && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
+            foreach ($timelineBundle['detail']['issue'] ?? [] as $issue) {
+                array_push($errors, [
+                    'severity' => $issue['severity'],
+                    'details' => $issue['details']['text']
+                ]);
+            }
+        }
+
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
             $meta = $searchSet['resource']['entry'][1];
             $addressingInformation = $this->getAddressingInformation($searchSet);
