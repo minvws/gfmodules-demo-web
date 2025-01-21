@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\DataDomain;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FlowAuthorizationRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class FlowAuthorizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'information_types' => ['required', 'array'],
+            'information_types' => ['required', 'array', Rule::in(DataDomain::cases())],
             'access_code' => ['required', 'string'],
         ];
     }

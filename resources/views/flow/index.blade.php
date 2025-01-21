@@ -16,51 +16,57 @@
 
             <ul class="accordion">
                 <li>
-                    <button aria-expanded="{{ !$state->getConsentData() ? "true" : "false" }}" id="flow-identification-authentication">1. Identificatie en Authenticatie</button>
+                    <button aria-expanded="{{ !$state->getConsentData() ? "true" : "false" }}"
+                            id="flow-identification-authentication">1. Identificatie en Authenticatie
+                    </button>
                     <div aria-labelledby="flow-identification-authentication">
                         @if(!$state->getUser())
-                        <ul class="external-login">
-                            <li>
-                                <a href="{{ route('oidc.login') }}">
-                                    <img src="{{ asset('img/signin-method-logo.png') }}" alt="" rel="external">
-                                    @lang('Login with') Dezi-online
-                                </a>
-                            </li>
-                        </ul>
+                            <ul class="external-login">
+                                <li>
+                                    <a href="{{ route('oidc.login') }}">
+                                        <img src="{{ asset('img/signin-method-logo.png') }}" alt="" rel="external">
+                                        @lang('Login with') Dezi-online
+                                    </a>
+                                </li>
+                            </ul>
                         @else
                             <p>Je bent ingelogd als: {{ $state->getUser()->getName() }}</p>
                         @endif
                     </div>
                 </li>
                 <li>
-                    <button aria-expanded="{{ $state->getUser() ? "true" : "false" }}" id="flow-consent">2. Toestemming</button>
+                    <button aria-expanded="{{ $state->getUser() ? "true" : "false" }}" id="flow-consent">2.
+                        Toestemming
+                    </button>
                     <div aria-labelledby="flow-consent">
                         @if(!$state->getConsentData() || $editConsent)
-                        <form action="{{ route('flow-consent.store') }}" method="POST">
-                            @csrf
-                            <fieldset {{ !$state->getUser() ? "disabled" : "" }}>
-                                <p>Controleer of u toestemming heeft om de gegevens van de patient/client of burger op te vragen.</p>
-                                <div>
-                                    <label for="flow-consent-bsn">Burgerservicenummer</label>
-                                    <span class="nota-bene">BSN van de persoon waarvan u de gegevens op wilt vragen</span>
+                            <form action="{{ route('flow-consent.store') }}" method="POST">
+                                @csrf
+                                <fieldset {{ !$state->getUser() ? "disabled" : "" }}>
+                                    <p>Controleer of u toestemming heeft om de gegevens van de patient/client of burger
+                                        op te vragen.</p>
                                     <div>
-                                        @error('bsn')
-                                        <p class="error" id="flow-consent-bsn-error-message">
-                                            <span>Foutmelding:</span> {{ $message }}
-                                        </p>
-                                        @enderror
-                                        <input
-                                            id="flow-consent-bsn"
-                                            name="bsn"
-                                            type="text"
-                                            minlength="8"
-                                            maxlength="9"
-                                            required
-                                            aria-describedby="flow-consent-bsn-error-message"
-                                            value="{{ old('bsn', $state->getConsentData()?->getBsn()) }}"
-                                        />
+                                        <label for="flow-consent-bsn">Burgerservicenummer</label>
+                                        <span
+                                            class="nota-bene">BSN van de persoon waarvan u de gegevens op wilt vragen</span>
+                                        <div>
+                                            @error('bsn')
+                                            <p class="error" id="flow-consent-bsn-error-message">
+                                                <span>Foutmelding:</span> {{ $message }}
+                                            </p>
+                                            @enderror
+                                            <input
+                                                id="flow-consent-bsn"
+                                                name="bsn"
+                                                type="text"
+                                                minlength="8"
+                                                maxlength="9"
+                                                required
+                                                aria-describedby="flow-consent-bsn-error-message"
+                                                value="{{ old('bsn', $state->getConsentData()?->getBsn()) }}"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 {{--                                <div>--}}
 {{--                                    <label for="flow-consent-birthyear">Geboortejaar</label>--}}
 {{--                                    <span class="nota-bene">JJJJ</span>--}}
@@ -80,29 +86,34 @@
 {{--                                        />--}}
 {{--                                    </div>--}}
 {{--                                </div>--}}
-                                <div>
-                                    <label for="flow-consent-consent">Behandelrelatie</label>
                                     <div>
-                                        <p class="warning" id="flow-consent-consent-warning-message">
-                                            <span>Waarschuwing:</span> De behandelrelatie wordt steeksproefsgewijs gecontroleerd. Indien er geen sprake blijkt te zijn van een geldige relatie kan dit tot royement leiden.
-                                        </p>
+                                        <label for="flow-consent-consent">Behandelrelatie</label>
                                         <div>
-                                            @error('consent')
-                                            <p class="error" id="flow-consent-consent-error-message">
-                                                <span>Foutmelding:</span> {{ $message }}
+                                            <p class="warning" id="flow-consent-consent-warning-message">
+                                                <span>Waarschuwing:</span> De behandelrelatie wordt steeksproefsgewijs
+                                                gecontroleerd. Indien er geen sprake blijkt te zijn van een geldige
+                                                relatie kan dit tot royement leiden.
                                             </p>
-                                            @enderror
-                                            <div class="checkbox">
-                                                <input type="checkbox" id="flow-consent-consent" name="consent" class="warning" required aria-describedby="flow-consent-consent-warning-message flow-consent-consent-error-message">
-                                                <label for="flow-consent-consent">Ik heb een behandelrelatie met deze patient</label>
+                                            <div>
+                                                @error('consent')
+                                                <p class="error" id="flow-consent-consent-error-message">
+                                                    <span>Foutmelding:</span> {{ $message }}
+                                                </p>
+                                                @enderror
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="flow-consent-consent" name="consent"
+                                                           class="warning" required
+                                                           aria-describedby="flow-consent-consent-warning-message flow-consent-consent-error-message">
+                                                    <label for="flow-consent-consent">Ik heb een behandelrelatie met
+                                                        deze patient</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <button type="submit">Controleer toestemming</button>
-                            </fieldset>
-                        </form>
+                                    <button type="submit">Controleer toestemming</button>
+                                </fieldset>
+                            </form>
                         @else
                             <p>U gaat gegevens opvragen van bsn: {{ $state->getConsentData()?->getBsn() }}</p>
                             <a href="{{ route('flow-consent') }}" class="button ghost">Gegevens wijzigen</a>
@@ -110,13 +121,16 @@
                     </div>
                 </li>
                 <li>
-                    <button aria-expanded="{{ $state->getConsentData() && !$editConsent  ? "true" : "false" }}" id="flow-authorization">3. Autorisatie</button>
+                    <button aria-expanded="{{ $state->getConsentData() && !$editConsent  ? "true" : "false" }}"
+                            id="flow-authorization">3. Autorisatie
+                    </button>
                     <div aria-labelledby="flow-authorization">
                         @if(!$state->getAuthorizationData() || $editAuthorization)
                             <form action="{{ route('flow-authorization.store') }}" method="POST">
                                 @csrf
                                 <fieldset {{ !$state->getUser() || !$state->getConsentData() ? "disabled" : "" }}>
-                                    <p>Controleer of u geautoriseerd bent voor het opvragen van het informatietype voor deze patient.</p>
+                                    <p>Controleer of u geautoriseerd bent voor het opvragen van het informatietype voor
+                                        deze patient.</p>
                                     <div>
                                         <label for="flow-authorization-information-types">Type informatie</label>
                                         <span class="nota-bene">Welke informatietypen wilt u opvragen</span>
@@ -128,8 +142,12 @@
                                             @enderror
                                             @foreach($informationTypes as $informationTypeKey => $informationType)
                                                 <div class="checkbox">
-                                                    <input type="checkbox" id="flow-authorization-information-types-{{ $informationTypeKey }}" name="information_types[]" value="{{ $informationTypeKey }}" aria-describedby="flow-authorization-information-types-error-message" {{ in_array($informationTypeKey, old('information_types', $state->getAuthorizationData()?->getInformationTypes() ?? [])) ? 'checked' : '' }}>
-                                                    <label for="flow-authorization-information-types-{{ $informationTypeKey }}">{{ $informationType }}</label>
+                                                    <input type="checkbox"
+                                                           id="flow-authorization-information-types-{{ $informationTypeKey }}"
+                                                           name="information_types[]" value="{{ $informationTypeKey }}"
+                                                           aria-describedby="flow-authorization-information-types-error-message" {{ in_array($informationTypeKey, old('information_types', \App\Enums\DataDomain::toStringArray($state->getAuthorizationData()?->getInformationTypes() ?? []))) ? 'checked' : '' }}>
+                                                    <label
+                                                        for="flow-authorization-information-types-{{ $informationTypeKey }}">{{ $informationType }}</label>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -158,7 +176,7 @@
                             </form>
                         @else
                             @php
-                            $selectedInformationTypes = collect($informationTypes)->only($state->getAuthorizationData()->getInformationTypes())->toArray();
+                                $selectedInformationTypes = collect($informationTypes)->only(\App\Enums\DataDomain::toStringArray($state->getAuthorizationData()->getInformationTypes()))->toArray();
                             @endphp
 
                             <p>Selectie: {{ implode(', ', $selectedInformationTypes) }}</p>
@@ -167,11 +185,13 @@
                     </div>
                 </li>
             </ul>
-{{--            TODO: Add CSRF and POST to flow --}}
-            <form class="inline">
-                <button type="submit" {{ $state->getConsentData() && $state->getAuthorizationData() ? "" : "disabled" }}>Informatie opvragen</button>
+            <form class="inline" action="{{ route('flow.retrieve-timeline') }}" method="POST">
+                @csrf
+                <button
+                    type="submit" {{ $state->getConsentData() && $state->getAuthorizationData() ? "" : "disabled" }}>
+                    Informatie opvragen
+                </button>
             </form>
-
         </div>
     </section>
 @endsection

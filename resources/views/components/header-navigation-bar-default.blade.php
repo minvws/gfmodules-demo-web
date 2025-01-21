@@ -8,7 +8,6 @@
         <ul>
             <li>
                 <a href="{{ route('landing.home') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'landing.home') aria-current="page" @endif><span class="icon icon-home">Home-icoon</span>@lang('Landing')</a>
-                <a href="{{ route('timeline.home') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'timeline.home') aria-current="page" @endif><span class="icon icon-home">Home-icoon</span>@lang('Timeline')</a>
             </li>
         </ul>
     </div>

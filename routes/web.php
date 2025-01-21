@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', IndexController::class)->name('index');
 Route::get('/flow', [FlowController::class, 'index'])->name('flow');
+Route::post('/flow', [FlowController::class, 'retrieveTimeline'])->name('flow.retrieve-timeline');
 Route::get('/flow/consent', [FlowController::class, 'editConsent'])->name('flow-consent');
 Route::post('/flow/consent', [FlowController::class, 'storeConsent'])->name('flow-consent.store');
 Route::get('/flow/authorization', [FlowController::class, 'editAuthorization'])->name('flow-authorization');
@@ -43,7 +44,6 @@ Route::middleware(['auth'])
     ->prefix('timeline')
     ->name('timeline.')
     ->group(function () {
-        Route::get('home', [TimelineController::class, 'home'])->name('home');
-        Route::post('fetch', [TimelineController::class, 'fetch'])->name('fetch');
+        Route::get('fetch', [TimelineController::class, 'fetch'])->name('fetch');
         Route::get('org/{ref}', [TimelineController::class, 'orgInfo'])->name('org_info');
     });

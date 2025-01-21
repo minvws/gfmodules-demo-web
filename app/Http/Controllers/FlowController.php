@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Dto\AuthorizationData;
 use App\Dto\ConsentData;
+use App\Enums\DataDomain;
 use App\Http\Requests\FlowAuthorizationRequest;
 use App\Http\Requests\FlowConsentRequest;
 use App\Services\FlowStateService;
@@ -21,6 +22,16 @@ class FlowController extends Controller
         return $this->returnFlowView();
     }
 
+    public function retrieveTimeline()
+    {
+        $flowState = $this->stateService->getFlowStateFromSession();
+        if (!$flowState->isFlowComplete()) {
+            return redirect()->route('flow');
+        }
+
+        return redirect()->route('timeline.fetch');
+    }
+
     public function editConsent()
     {
         return $this->returnFlowView(editConsent: true);
@@ -30,7 +41,7 @@ class FlowController extends Controller
     {
         $data = new ConsentData(
             bsn: $request->validated('bsn'),
-//            birthYear: $request->validated('birthyear'),
+            //            birthYear: $request->validated('birthyear'),
             consent: $request->validated('consent') ? true : false,
         );
         $this->stateService->setConsentDataInSession($data);
@@ -49,7 +60,7 @@ class FlowController extends Controller
     public function storeAuthorization(FlowAuthorizationRequest $request)
     {
         $data = new AuthorizationData(
-            informationTypes: $request->validated('information_types'),
+            informationTypes: DataDomain::fromStringArray($request->validated('information_types')),
             accessCode: $request->validated('access_code'),
         );
         $this->stateService->setAuthorizationDataInSession($data);
@@ -71,11 +82,11 @@ class FlowController extends Controller
     protected function getAvailableInformationTypes(): array
     {
         return [
-            'imaging' => 'Beeld',
-            'medication' => 'Medicatie',
-            'acute_care' => 'Acute zorg',
-            'e_transfer' => 'eOverdracht',
-            'bgz' => 'Basisgegevensset zorg (BGZ)',
+            DataDomain::ImagingStudy->value => 'Beeld',
+            DataDomain::MedicationStatement->value => 'Medicatie',
+            DataDomain::AcuteCare->value => 'Acute zorg',
+            DataDomain::ETransfer->value => 'eOverdracht',
+            DataDomain::BGZ->value => 'Basisgegevensset zorg (BGZ)',
         ];
     }
 }

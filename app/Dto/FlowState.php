@@ -29,4 +29,9 @@ class FlowState
     {
         return $this->authorizationData;
     }
+
+    public function isFlowComplete(): bool
+    {
+        return $this->user && $this->consentData && $this->authorizationData;
+    }
 }
