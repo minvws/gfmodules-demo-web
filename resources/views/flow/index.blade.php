@@ -38,7 +38,7 @@
                         @if(!$state->getConsentData() || $editConsent)
                         <form action="{{ route('flow-consent.store') }}" method="POST">
                             @csrf
-                            <fieldset {{ $state->getUser() === null ? "disabled" : "" }}>
+                            <fieldset {{ !$state->getUser() ? "disabled" : "" }}>
                                 <p>Controleer of u toestemming heeft om de gegevens van de patient/client of burger op te vragen.</p>
                                 <div>
                                     <label for="flow-consent-bsn">Burgerservicenummer</label>
@@ -115,7 +115,7 @@
                         @if(!$state->getAuthorizationData() || $editAuthorization)
                             <form action="{{ route('flow-authorization.store') }}" method="POST">
                                 @csrf
-                                <fieldset {{ $state->getUser() === null ? "disabled" : "" }}>
+                                <fieldset {{ !$state->getUser() || !$state->getConsentData() ? "disabled" : "" }}>
                                     <p>Controleer of u geautoriseerd bent voor het opvragen van het informatietype voor deze patient.</p>
                                     <div>
                                         <label for="flow-authorization-information-types">Type informatie</label>
