@@ -30,7 +30,7 @@ class FlowController extends Controller
     {
         $data = new ConsentData(
             bsn: $request->validated('bsn'),
-            birthYear: $request->validated('birthyear'),
+//            birthYear: $request->validated('birthyear'),
             consent: $request->validated('consent') ? true : false,
         );
         $this->stateService->setConsentDataInSession($data);

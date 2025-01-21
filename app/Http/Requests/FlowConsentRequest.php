@@ -25,7 +25,7 @@ class FlowConsentRequest extends FormRequest
     {
         return [
             'bsn' => ['required', 'min:8', 'max:9'],
-            'birthyear' => ['required'],
+//            'birthyear' => ['required'],
             'consent' => ['required', 'accepted'],
         ];
     }

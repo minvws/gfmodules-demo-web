@@ -61,25 +61,25 @@
                                         />
                                     </div>
                                 </div>
-                                <div>
-                                    <label for="flow-consent-birthyear">Geboortejaar</label>
-                                    <span class="nota-bene">JJJJ</span>
-                                    <div>
-                                        @error('birthyear')
-                                        <p class="error" id="flow-consent-birthyear-error-message">
-                                            <span>Foutmelding:</span> {{ $message }}
-                                        </p>
-                                        @enderror
-                                        <input
-                                            id="flow-consent-birthyear"
-                                            name="birthyear"
-                                            type="number"
-                                            required
-                                            aria-describedby="flow-consent-birthyear-error-message"
-                                            value="{{ old('birthyear', $state->getConsentData()?->getBirthYear()) }}"
-                                        />
-                                    </div>
-                                </div>
+{{--                                <div>--}}
+{{--                                    <label for="flow-consent-birthyear">Geboortejaar</label>--}}
+{{--                                    <span class="nota-bene">JJJJ</span>--}}
+{{--                                    <div>--}}
+{{--                                        @error('birthyear')--}}
+{{--                                        <p class="error" id="flow-consent-birthyear-error-message">--}}
+{{--                                            <span>Foutmelding:</span> {{ $message }}--}}
+{{--                                        </p>--}}
+{{--                                        @enderror--}}
+{{--                                        <input--}}
+{{--                                            id="flow-consent-birthyear"--}}
+{{--                                            name="birthyear"--}}
+{{--                                            type="number"--}}
+{{--                                            required--}}
+{{--                                            aria-describedby="flow-consent-birthyear-error-message"--}}
+{{--                                            value="{{ old('birthyear', $state->getConsentData()?->getBirthYear()) }}"--}}
+{{--                                        />--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <div>
                                     <label for="flow-consent-consent">Behandelrelatie</label>
                                     <div>
@@ -104,7 +104,7 @@
                             </fieldset>
                         </form>
                         @else
-                            <p>U gaat gegevens opvragen van bsn: {{ \Illuminate\Support\Str::mask($state->getConsentData()?->getBsn(), '*', 6) }}</p>
+                            <p>U gaat gegevens opvragen van bsn: {{ $state->getConsentData()?->getBsn() }}</p>
                             <a href="{{ route('flow-consent') }}" class="button ghost">Gegevens wijzigen</a>
                         @endif
                     </div>
