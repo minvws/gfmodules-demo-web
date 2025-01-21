@@ -39,6 +39,12 @@ class FlowStateService
         $this->session->put('flow_authorization_data', $state);
     }
 
+    public function clearFlowState(): void
+    {
+        $this->session->forget('flow_consent_data');
+        $this->session->forget('flow_authorization_data');
+    }
+
     protected function getConsentFromSession(): ?ConsentData
     {
         return $this->session->get('flow_consent_data');

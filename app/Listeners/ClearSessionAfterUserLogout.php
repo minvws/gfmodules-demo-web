@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use App\Services\FlowStateService;
 use Illuminate\Auth\Events\Logout;
-use Illuminate\Support\Facades\Session;
 
 class ClearSessionAfterUserLogout
 {
     /**
      * Create the event listener.
      */
-    public function __construct()
+    public function __construct(protected FlowStateService $stateService)
     {
         //
     }
@@ -22,6 +22,6 @@ class ClearSessionAfterUserLogout
      */
     public function handle(Logout $event): void
     {
-        Session::flush();
+        $this->stateService->clearFlowState();
     }
 }
