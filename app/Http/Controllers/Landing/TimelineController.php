@@ -49,7 +49,7 @@ class TimelineController extends Controller
         $medicationStatements = [];
         $errors = [];
 
-        if ($timelineBundle['detail'] && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
+        if (isset($timelineBundle['detail']) && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
             foreach ($timelineBundle['detail']['issue'] ?? [] as $issue) {
                 $errors[] = [
                     'severity' => $issue['severity'],
