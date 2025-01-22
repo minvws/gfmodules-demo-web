@@ -51,10 +51,10 @@ class TimelineController extends Controller
 
         if ($timelineBundle['detail'] && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
             foreach ($timelineBundle['detail']['issue'] ?? [] as $issue) {
-                array_push($errors, [
+                $errors[] = [
                     'severity' => $issue['severity'],
                     'details' => $issue['details']['text']
-                ]);
+                ];
             }
         }
 
@@ -63,10 +63,10 @@ class TimelineController extends Controller
             $addressingInformation = $this->getAddressingInformation($searchSet);
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
-                    array_push($errors, [
+                    $errors[] = [
                         'severity' => $issue['severity'],
                         'details' => $issue['details']['text']
-                    ]);
+                    ];
                 }
             }
 
