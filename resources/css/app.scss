@@ -4,7 +4,7 @@
 // START Rijksoverheid Theme
 @use "@minvws/nl-rdo-rijksoverheid-ui-theme" with (
     // You can choose colors from: https://minvws.github.io/nl-rdo-rijksoverheid-ui-theme/html_examples/colors.html
-    //$brand-color: "ruby-red",
+    $brand-color: "light-blue",
     $font-path: "@minvws/nl-rdo-rijksoverheid-ui-theme/fonts",
     $img-path: "@minvws/nl-rdo-rijksoverheid-ui-theme/img"
 );
