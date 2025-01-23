@@ -39,7 +39,7 @@
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($entry['resource']['started'])->format('d M Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($entry['resource']['started'])->format('H:i') }}</td>
-                        <td>{{ $entry['resource']['modality']['coding'][0]['code'] ?? '-' }}</td>
+                        <td>{{ $entry['resource']['modality']['display'] ?? '-' }}</td>
                         <td>{{ $entry['resource']['description'] ?? '-' }}</td>
                         <td>{{ count($entry['resource']['instance']) }}</td>
                         <td>{{ $entry['resource']['bodySite']['concept']['coding'][0]['display'] ?? '-' }}</td>
