@@ -10,6 +10,8 @@ use App\Enums\DataDomain;
 use App\Http\Requests\FlowAuthorizationRequest;
 use App\Http\Requests\FlowConsentRequest;
 use App\Services\FlowStateService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class FlowController extends Controller
 {
@@ -17,12 +19,12 @@ class FlowController extends Controller
     {
     }
 
-    public function index()
+    public function index(): View
     {
         return $this->returnFlowView();
     }
 
-    public function retrieveTimeline()
+    public function retrieveTimeline(): RedirectResponse
     {
         $flowState = $this->stateService->getFlowStateFromSession();
         if (!$flowState->isFlowComplete()) {
@@ -32,12 +34,12 @@ class FlowController extends Controller
         return redirect()->route('timeline.fetch');
     }
 
-    public function editConsent()
+    public function editConsent(): View
     {
         return $this->returnFlowView(editConsent: true);
     }
 
-    public function storeConsent(FlowConsentRequest $request)
+    public function storeConsent(FlowConsentRequest $request): RedirectResponse
     {
         $data = new ConsentData(
             bsn: $request->validated('bsn'),
@@ -49,7 +51,7 @@ class FlowController extends Controller
         return redirect()->route('flow');
     }
 
-    public function editAuthorization()
+    public function editAuthorization(): View
     {
         return $this->returnFlowView(
             editConsent: false,
@@ -57,7 +59,7 @@ class FlowController extends Controller
         );
     }
 
-    public function storeAuthorization(FlowAuthorizationRequest $request)
+    public function storeAuthorization(FlowAuthorizationRequest $request): RedirectResponse
     {
         $data = new AuthorizationData(
             informationTypes: DataDomain::fromStringArray($request->validated('information_types')),
@@ -68,7 +70,7 @@ class FlowController extends Controller
         return redirect()->route('flow');
     }
 
-    protected function returnFlowView(bool $editConsent = false, bool $editAuthorization = false)
+    protected function returnFlowView(bool $editConsent = false, bool $editAuthorization = false): View
     {
         $state = $this->stateService->getFlowStateFromSession();
 

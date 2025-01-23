@@ -74,10 +74,13 @@ class UziAuthGuard implements Guard
     public function logout(): void
     {
         $user = $this->user();
+        if (!$user) {
+            return;
+        }
 
         $this->session->remove(self::SESSION_KEY);
         $this->session->migrate(true);
 
-        $this->events?->dispatch(new Logout('oidc', $user));
+        $this->events->dispatch(new Logout('oidc', $user));
     }
 }
