@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\FlowController;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\TimelineController;
 use App\Http\Controllers\Auth\DigidMockController;
 use Illuminate\Support\Facades\Route;
@@ -33,11 +33,8 @@ if (config('auth.digid_mock_enabled')) {
 }
 
 Route::middleware(['auth'])
-    ->prefix('landing')
-    ->name('landing.')
     ->group(function () {
-        Route::get('home', [HomeController::class, 'home'])->name('home');
-        Route::get('logout', [HomeController::class, 'logout'])->name('logout');
+        Route::post('logout', LogoutController::class)->name('logout');
     });
 
 Route::middleware(['auth'])

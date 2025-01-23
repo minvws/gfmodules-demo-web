@@ -78,9 +78,13 @@ class UziAuthGuard implements Guard
             return;
         }
 
-        $this->session->remove(self::SESSION_KEY);
-        $this->session->migrate(true);
+        $this->clearUserDataFromStorage();
 
         $this->events->dispatch(new Logout('oidc', $user));
+    }
+
+    protected function clearUserDataFromStorage(): void
+    {
+        $this->session->forget(self::SESSION_KEY);
     }
 }

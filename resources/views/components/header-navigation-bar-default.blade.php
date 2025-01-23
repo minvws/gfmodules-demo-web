@@ -7,18 +7,29 @@
     <div class="collapsing-element">
         <ul>
             <li>
-                <a href="{{ route('landing.home') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'landing.home') aria-current="page" @endif><span class="icon icon-home">Home-icoon</span>@lang('Landing')</a>
+                <a href="{{ route('index') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'index') aria-current="page" @endif><span class="icon icon-home">Home-icoon</span>@lang('Home')</a>
+                <a href="{{ route('flow') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'flow') aria-current="page" @endif>@lang('Flow')</a>
             </li>
         </ul>
+        @auth
+        <ul>
+            <li>
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit">@lang('Logout')</button>
+                </form>
+            </li>
+        </ul>
+        @endauth
     </div>
 </nav>
 
-@if(!request()->routeIs('home'))
-<nav class="breadcrumb-bar">
-    <div>
-        <ul>
-            <li><a href="{{ route('index') }}"><span class="icon icon-home">Home-icoon</span>@lang('Landing')</a></li>
-        </ul>
-    </div>
-</nav>
-@endif
+{{--@if(!request()->routeIs('index'))--}}
+{{--<nav class="breadcrumb-bar">--}}
+{{--    <div>--}}
+{{--        <ul>--}}
+{{--            <li><a href="{{ route('index') }}"><span class="icon icon-home">Home-icoon</span>@lang('Landing')</a></li>--}}
+{{--        </ul>--}}
+{{--    </div>--}}
+{{--</nav>--}}
+{{--@endif--}}
