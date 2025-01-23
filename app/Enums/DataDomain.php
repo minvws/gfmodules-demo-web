@@ -8,9 +8,6 @@ enum DataDomain: string
 {
     case ImagingStudy = 'ImagingStudy';
     case MedicationStatement = 'MedicationStatement';
-    case AcuteCare = 'AcuteCare';
-    case ETransfer = 'ETransfer';
-    case BGZ = 'BGZ';
 
     /**
      * @param string[] $dataDomains

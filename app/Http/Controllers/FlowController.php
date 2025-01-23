@@ -86,9 +86,6 @@ class FlowController extends Controller
         return [
             DataDomain::ImagingStudy->value => 'Beeld',
             DataDomain::MedicationStatement->value => 'Medicatie',
-            DataDomain::AcuteCare->value => 'Acute zorg',
-            DataDomain::ETransfer->value => 'eOverdracht',
-            DataDomain::BGZ->value => 'Basisgegevensset zorg (BGZ)',
         ];
     }
 }
