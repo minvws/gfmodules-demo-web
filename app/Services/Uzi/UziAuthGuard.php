@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Services\Uzi;
 
 use App\Models\UziUser;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Session\Session;
 
 class UziAuthGuard implements Guard
@@ -14,7 +16,8 @@ class UziAuthGuard implements Guard
     protected const SESSION_KEY = 'uzi_user';
 
     public function __construct(
-        protected Session $session
+        protected Session $session,
+        protected Dispatcher $events,
     ) {
     }
 
@@ -70,7 +73,18 @@ class UziAuthGuard implements Guard
      */
     public function logout(): void
     {
-        $this->session->remove(self::SESSION_KEY);
-        $this->session->migrate(true);
+        $user = $this->user();
+        if (!$user) {
+            return;
+        }
+
+        $this->clearUserDataFromStorage();
+
+        $this->events->dispatch(new Logout('oidc', $user));
+    }
+
+    protected function clearUserDataFromStorage(): void
+    {
+        $this->session->forget(self::SESSION_KEY);
     }
 }

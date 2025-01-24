@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Services\AddressingService;
-use App\Services\BsnService;
+use App\Services\FlowStateService;
 use App\Services\TimelineService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,11 +14,6 @@ use Illuminate\View\View;
 
 class TimelineController extends Controller
 {
-    public function home(Request $request): View
-    {
-        return view('timeline.home')->with('user', $request->user());
-    }
-
     public function orgInfo(Request $request, string $ref, AddressingService $addressingService): View
     {
         $org = $addressingService->findOrganization($ref, includeEndpoints: true);
@@ -29,19 +24,22 @@ class TimelineController extends Controller
     }
 
     public function fetch(
-        Request $request,
-        BsnService $bsnService,
-        TimelineService $timelineService
+        FlowStateService $stateService,
+        TimelineService $timelineService,
     ): View|RedirectResponse {
-        $bsn = strval($request->request->get('bsn'));
-        if (!$bsn) {
-            return redirect()->route('timeline.home');
-        }
-        if (!$bsnService->isValid($bsn)) {
-            return redirect()->route('timeline.home')->with('error', 'Invalid BSN');
+        $flowState = $stateService->getFlowStateFromSession();
+        if (!$flowState->isFlowComplete()) {
+            return redirect()->route('flow');
         }
 
-        $dataDomain = strval($request->request->get('data_domain'));
+        $bsn = $flowState->getConsentData()?->getBsn();
+        $informationTypes = $flowState->getAuthorizationData()?->getInformationTypes() ?? [];
+        if (empty($bsn) || empty($informationTypes)) {
+            return redirect()->route('flow');
+        }
+
+        $dataDomain = $informationTypes[0];
+
         $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain);
 
         $patient = null;
@@ -50,15 +48,25 @@ class TimelineController extends Controller
         $imagingStudiesSeries = [];
         $medicationStatements = [];
         $errors = [];
+
+        if (isset($timelineBundle['detail']) && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
+            foreach ($timelineBundle['detail']['issue'] ?? [] as $issue) {
+                $errors[] = [
+                    'severity' => $issue['severity'],
+                    'details' => $issue['details']['text']
+                ];
+            }
+        }
+
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
             $meta = $searchSet['resource']['entry'][1];
             $addressingInformation = $this->getAddressingInformation($searchSet);
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
-                    array_push($errors, [
+                    $errors[] = [
                         'severity' => $issue['severity'],
                         'details' => $issue['details']['text']
-                    ]);
+                    ];
                 }
             }
 
@@ -110,7 +118,7 @@ class TimelineController extends Controller
             return $da <=> $db;
         });
 
-        if ($dataDomain === 'ImagingStudy') {
+        if ($dataDomain->value === 'ImagingStudy') {
             return view('timeline.imagingstudy_result')
                 ->with('bsn', $bsn)
                 ->with('patient', $patient)

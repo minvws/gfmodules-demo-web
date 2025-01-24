@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\DataDomain;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class TimelineService
 {
@@ -13,7 +15,7 @@ class TimelineService
     ) {
     }
 
-    public function findTimeline(string $bsn, string $dataDomain): array
+    public function findTimeline(string $bsn, DataDomain $dataDomain): array
     {
         $client = new Client();
 
@@ -28,11 +30,21 @@ class TimelineService
         $data = json_decode($result->getBody()->getContents(), true);
         $pseudonym = $data['pseudonym'] ?? '';
 
-        $result = $client->request('POST', config('timeline.timeline.endpoint') . '/fhir/' . $dataDomain . '/_search', [
-            'query' => [
-                'pseudonym' => $pseudonym
-            ],
-        ]);
-        return json_decode($result->getBody()->getContents(), true);
+        try {
+            $result = $client->request(
+                method: 'POST',
+                uri: config('timeline.timeline.endpoint') . '/fhir/' . $dataDomain->value . '/_search',
+                options: [
+                    'query' => [
+                        'pseudonym' => $pseudonym
+                    ],
+                ]
+            );
+
+            return json_decode($result->getBody()->getContents(), true);
+        } catch (ClientException $e) {
+            // Handle 4xx errors
+            return json_decode($e->getResponse()->getBody()->getContents(), true);
+        }
     }
 }

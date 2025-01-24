@@ -12,6 +12,7 @@
         "minvws/openid-connect-php-laravel": "^0.3.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
         "barryvdh/laravel-ide-helper": "^3.0",
         "fakerphp/faker": "^1.23",
         "jorijn/laravel-security-checker": "^2.4",

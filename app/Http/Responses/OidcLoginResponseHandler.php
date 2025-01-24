@@ -38,6 +38,6 @@ class OidcLoginResponseHandler implements LoginResponseHandlerInterface
         }
 
         Auth::setUser($user);
-        return new RedirectResponse(route('landing.home'));
+        return new RedirectResponse(route('flow'));
     }
 }

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\FlowController;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\TimelineController;
 use App\Http\Controllers\Auth\DigidMockController;
 use Illuminate\Support\Facades\Route;
@@ -20,24 +21,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', IndexController::class)->name('index');
+Route::get('/flow', [FlowController::class, 'index'])->name('flow');
+Route::post('/flow', [FlowController::class, 'retrieveTimeline'])->name('flow.retrieve-timeline');
+Route::get('/flow/consent', [FlowController::class, 'editConsent'])->name('flow-consent');
+Route::post('/flow/consent', [FlowController::class, 'storeConsent'])->name('flow-consent.store');
+Route::get('/flow/authorization', [FlowController::class, 'editAuthorization'])->name('flow-authorization');
+Route::post('/flow/authorization', [FlowController::class, 'storeAuthorization'])->name('flow-authorization.store');
 
 if (config('auth.digid_mock_enabled')) {
     Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
 }
 
 Route::middleware(['auth'])
-    ->prefix('landing')
-    ->name('landing.')
     ->group(function () {
-        Route::get('home', [HomeController::class, 'home'])->name('home');
-        Route::get('logout', [HomeController::class, 'logout'])->name('logout');
+        Route::post('logout', LogoutController::class)->name('logout');
     });
 
 Route::middleware(['auth'])
     ->prefix('timeline')
     ->name('timeline.')
     ->group(function () {
-        Route::get('home', [TimelineController::class, 'home'])->name('home');
-        Route::post('fetch', [TimelineController::class, 'fetch'])->name('fetch');
+        Route::get('fetch', [TimelineController::class, 'fetch'])->name('fetch');
         Route::get('org/{ref}', [TimelineController::class, 'orgInfo'])->name('org_info');
     });

@@ -27,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Auth::extend('oidc', function ($app, $name, array $config) {
-            return new UziAuthGuard($app->make('session')->driver());
+            return new UziAuthGuard($app->make('session')->driver(), $app->make('events'));
         });
     }
 }
