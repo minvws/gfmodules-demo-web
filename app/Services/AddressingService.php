@@ -12,11 +12,12 @@ class AddressingService
     {
         $query = [];
         if ($includeEndpoints) {
+            $query['_id'] = $id;
             $query['_include'] = 'Organization:endpoint';
         }
 
         $client = new Client();
-        $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search/{$id}", [
+        $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search", [
             'query' => $query,
             'headers' => [
                 'accept' => 'application/json',

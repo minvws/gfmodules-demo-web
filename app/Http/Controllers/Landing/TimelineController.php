@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Landing;
 
+use App\Enums\DataDomain;
 use App\Http\Controllers\Controller;
 use App\Services\AddressingService;
 use App\Services\FlowStateService;
@@ -39,15 +40,57 @@ class TimelineController extends Controller
         }
 
         $dataDomain = $informationTypes[0];
-
         $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain);
 
         $patient = null;
-
-        // Convert timeline bundle to a list of series
         $imagingStudiesSeries = [];
         $medicationStatements = [];
         $errors = [];
+
+        $this->processTimelineBundle(
+            $timelineBundle,
+            $dataDomain,
+            $patient,
+            $imagingStudiesSeries,
+            $medicationStatements,
+            $errors
+        );
+
+        usort($imagingStudiesSeries, function ($a, $b) {
+            $da = new \DateTime($a['resource']['started']);
+            $db = new \DateTime($b['resource']['started']);
+            return $db <=> $da;
+        });
+
+        usort($medicationStatements, function ($a, $b) {
+            $da = new \DateTime($a['resource']['effectivePeriod']['start']);
+            $db = new \DateTime($b['resource']['effectivePeriod']['start']);
+            return $da <=> $db;
+        });
+
+        if ($dataDomain->value === 'ImagingStudy') {
+            return view('timeline.imagingstudy_result')
+                ->with('bsn', $bsn)
+                ->with('patient', $patient)
+                ->with('series', $imagingStudiesSeries)
+                ->with('errors', $errors);
+        }
+        return view('timeline.medicationstatement_result')
+            ->with('bsn', $bsn)
+            ->with('patient', $patient)
+            ->with('medicationStatements', $medicationStatements)
+            ->with('errors', $errors);
+    }
+
+    private function processTimelineBundle(
+        array $timelineBundle,
+        DataDomain $dataDomain,
+        ?array &$patient,
+        array &$imagingStudiesSeries,
+        array &$medicationStatements,
+        array &$errors
+    ): void {
+        $find_through_careplans = $dataDomain->value === 'MedicationStatement';
 
         if (isset($timelineBundle['detail']) && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
             foreach ($timelineBundle['detail']['issue'] ?? [] as $issue) {
@@ -60,7 +103,10 @@ class TimelineController extends Controller
 
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
             $meta = $searchSet['resource']['entry'][1];
-            $addressingInformation = $this->getAddressingInformation($searchSet);
+            $addressingInformation = [];
+            if (!$find_through_careplans) {
+                $addressingInformation = $this->getAddressingInformation($searchSet);
+            }
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
                     $errors[] = [
@@ -70,68 +116,102 @@ class TimelineController extends Controller
                 }
             }
 
-            foreach ($meta['resource']['entry'] ?? [] as $entry) {
-                if ($entry['resource']['resourceType'] === "ImagingStudy") {
-                    // Set patient if not set yet
-                    if (!$patient) {
-                        $patient = $this->getPatient($meta, $entry);
-                    }
+            foreach ($meta['resource']['entry'] ?? [] as $provider_entry) {
+                if (!$find_through_careplans) {
+                    $this->processEntry(
+                        $meta,
+                        $provider_entry,
+                        $patient,
+                        $imagingStudiesSeries,
+                        $medicationStatements,
+                        $addressingInformation
+                    );
+                    continue;
+                }
 
-                    foreach ($entry['resource']['series'] as $resource) {
-                        $imagingStudiesSeries[] = [
-                            'resource' => $resource,
-                            'references' => [
-                                'organization' => $this->getOrganisation($meta, $resource),
-                                'practitioner' => $this->getPractitioner($meta, $resource),
-                                'patient' => $this->getPatient($meta, $entry),
-                                'addressingInformation' => $this->parseAddressingInformation($addressingInformation),
-                            ]
+                $addressingInformation = $this->getAddressingInformation($provider_entry);
+                $outcomeCheck = $provider_entry['resource']['entry'][1]['resource'];
+
+                if (
+                    array_key_exists('resourceType', $outcomeCheck) &&
+                    $outcomeCheck['resourceType'] === "OperationOutcome"
+                ) {
+                    foreach ($provider_entry['resource']['entry'][1]['resourceType'] ?? [] as $issue) {
+                        $errors[] = [
+                            'severity' => $issue['severity'],
+                            'details' => $issue['details']['text']
                         ];
                     }
+                    continue;
                 }
-                if ($entry['resource']['resourceType'] === "MedicationStatement") {
-                    if (!$patient) {
-                        $patient = $this->getPatient($meta, $entry);
-                    }
 
-                    $medicationStatements[] = [
-                        'resource' => $entry['resource'],
-                        'references' => [
-                            'addressingInformation' => $this->parseAddressingInformation($addressingInformation),
-                        ]
-                    ];
+                $entries = $provider_entry['resource']['entry'][1]['resource']['entry'];
+                foreach ($entries ?? [] as $entry) {
+                    $this->processEntry(
+                        $meta,
+                        $entry,
+                        $patient,
+                        $imagingStudiesSeries,
+                        $medicationStatements,
+                        $addressingInformation
+                    );
                 }
             }
         }
+    }
 
-        // sort series by started
-        usort($imagingStudiesSeries, function ($a, $b) {
-            $da = new \DateTime($a['resource']['started']);
-            $db = new \DateTime($b['resource']['started']);
-            return $db <=> $da;
-        });
-
-        // sort medicationstatement ['resource']['effectivePeriod']['start'] by earliest started first
-        usort($medicationStatements, function ($a, $b) {
-            $da = new \DateTime($a['resource']['effectivePeriod']['start']);
-            $db = new \DateTime($b['resource']['effectivePeriod']['start']);
-            return $da <=> $db;
-        });
-
-        if ($dataDomain->value === 'ImagingStudy') {
-            return view('timeline.imagingstudy_result')
-                ->with('bsn', $bsn)
-                ->with('patient', $patient)
-                ->with('series', $imagingStudiesSeries)
-                ->with('errors', $errors)
-            ;
+    private function processEntry(
+        array $meta,
+        array $entry,
+        ?array &$patient,
+        array &$imagingStudiesSeries,
+        array &$medicationStatements,
+        array $addressingInformation
+    ): void {
+        if ($entry['resource']['resourceType'] === "ImagingStudy") {
+            if (!$patient) {
+                $patient = $this->getPatient($meta, $entry);
+            }
+            $imagingStudiesSeries = array_merge(
+                $imagingStudiesSeries,
+                $this->getImagingStudySeries($meta, $entry, $addressingInformation)
+            );
         }
-        return view('timeline.medicationstatement_result')
-            ->with('bsn', $bsn)
-            ->with('patient', $patient)
-            ->with('medicationStatements', $medicationStatements)
-            ->with('errors', $errors)
-        ;
+        if ($entry['resource']['resourceType'] === "MedicationStatement") {
+            if (!$patient) {
+                $patient = $this->getPatient($meta, $entry);
+            }
+            $medicationStatements[] = $this->getMedicationStatement($entry, $addressingInformation);
+        }
+    }
+
+    protected function getImagingStudySeries(array $meta, array $entry, array $addressingInformation): array
+    {
+        $imagingStudiesSeries = [];
+        // Set patient if not set yet
+        foreach ($entry['resource']['series'] as $resource) {
+            $imagingStudiesSeries[] = [
+                'resource' => $resource,
+                'references' => [
+                    'organization' => $this->getOrganisation($meta, $resource),
+                    'practitioner' => $this->getPractitioner($meta, $resource),
+                    'patient' => $this->getPatient($meta, $entry),
+                    'addressingInformation' => $this->parseAddressingInformation($addressingInformation),
+                ]
+            ];
+        }
+        return $imagingStudiesSeries;
+    }
+
+    protected function getMedicationStatement(array $entry, array $addressingInformation): array
+    {
+
+        return [
+            'resource' => $entry['resource'],
+            'references' => [
+                'addressingInformation' => $this->parseAddressingInformation($addressingInformation),
+            ]
+        ];
     }
 
     protected function parseAddressingInformation(array $addressingInformation): array
@@ -153,6 +233,7 @@ class TimelineController extends Controller
 
     protected function getUra(array $addressingInformation): string
     {
+
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
         return $addressingInformation['entry'][0]['resource']['identifier'][1]['value'];
