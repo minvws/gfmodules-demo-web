@@ -27,9 +27,4 @@ class BsnService
 
         return $sum % 11 == 0;
     }
-
-    public function hashBsn(string $bsn): string
-    {
-        return hash('sha256', $bsn);
-    }
 }
