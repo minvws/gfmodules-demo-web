@@ -91,7 +91,7 @@
                             <td>{{ $entry['resource']['reasonCode'][0]['coding'][0]['display'] ?? '-' }}</td> <!-- Reden -->
                             <td>{{ $entry['resource']['note'][0]['text'] ?? '-' }}</td> <!-- Toelichting -->
                             <td>{{ $entry['resource']['informationSource']['display'] ?? '-' }}</td> <!-- Bron -->
-                            <td>&nbsp;</td>
+                            <td>{{ $entry['resource']['id'] }}</td>
                             <td><a href="{{route('timeline.org_info', ['ref' => $entry['references']['addressingInformation']['organizationId'] ])}}">{{ $entry['references']['addressingInformation']['ura'] }}</a></td>
                         </tr>
                     @endforeach
