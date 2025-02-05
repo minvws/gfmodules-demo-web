@@ -10,25 +10,9 @@ use GuzzleHttp\Exception\ClientException;
 
 class TimelineService
 {
-    public function __construct(
-        private BsnService $bsnService,
-    ) {
-    }
-
     public function findTimeline(string $bsn, DataDomain $dataDomain): array
     {
         $client = new Client();
-
-        $hashedBsn = $this->bsnService->hashBsn($bsn);
-
-        $result = $client->request('POST', config('timeline.pseudonym.endpoint') . '/register', [
-            'json' => [
-                'provider_id' => config('timeline.timeline.provider_id'),
-                'bsn_hash' => $hashedBsn,
-            ],
-        ]);
-        $data = json_decode($result->getBody()->getContents(), true);
-        $pseudonym = $data['pseudonym'] ?? '';
 
         try {
             $result = $client->request(
@@ -36,7 +20,7 @@ class TimelineService
                 uri: config('timeline.timeline.endpoint') . '/fhir/' . $dataDomain->value . '/_search',
                 options: [
                     'query' => [
-                        'pseudonym' => $pseudonym
+                        'bsn' => $bsn
                     ],
                 ]
             );

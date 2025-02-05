@@ -10,12 +10,11 @@ use App\Services\AddressingService;
 use App\Services\FlowStateService;
 use App\Services\TimelineService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TimelineController extends Controller
 {
-    public function orgInfo(Request $request, string $ref, AddressingService $addressingService): View
+    public function orgInfo(string $ref, AddressingService $addressingService): View
     {
         $org = $addressingService->findOrganization($ref, includeEndpoints: true);
         return view('timeline.org_info')
