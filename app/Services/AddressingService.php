@@ -12,18 +12,18 @@ class AddressingService
     {
         $query = [];
         if ($includeEndpoints) {
+            $query['_id'] = $id;
             $query['_include'] = 'Organization:endpoint';
         }
 
         $client = new Client();
-        $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search/{$id}", [
+        $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search", [
             'query' => $query,
             'headers' => [
                 'accept' => 'application/json',
             ],
         ]);
         $data = json_decode($result->getBody()->getContents(), true);
-
         // Iterate searchbundle and find organization and endpoints
         $ret = [];
         foreach ($data['entry'] as $entry) {
