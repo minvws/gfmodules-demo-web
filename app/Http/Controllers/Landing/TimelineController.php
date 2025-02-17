@@ -235,7 +235,12 @@ class TimelineController extends Controller
 
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
-        return $addressingInformation['entry'][0]['resource']['identifier'][1]['value'];
+        foreach($addressingInformation['entry'][0]['resource']['identifier'] as $ura) {
+            if($ura['system'] === 'http://fhir.nl/fhir/NamingSystem/ura'){
+                return $ura['value'];
+            }
+        }
+        return '#';
     }
 
     protected function getAddressingName(array $addressingInformation): string
