@@ -54,7 +54,6 @@ class TimelineController extends Controller
             $medicationStatements,
             $errors
         );
-
         usort($imagingStudiesSeries, function ($a, $b) {
             $da = new \DateTime($a['resource']['started']);
             $db = new \DateTime($b['resource']['started']);
@@ -62,8 +61,8 @@ class TimelineController extends Controller
         });
 
         usort($medicationStatements, function ($a, $b) {
-            $da = new \DateTime($a['resource']['effectivePeriod']['start']);
-            $db = new \DateTime($b['resource']['effectivePeriod']['start']);
+            $da = $this->nullableDatetime($a['resource']['effectivePeriod']['start'] ?? null);
+            $db = $this->nullableDatetime($b['resource']['effectivePeriod']['start'] ?? null);
             return $da <=> $db;
         });
 
@@ -311,5 +310,13 @@ class TimelineController extends Controller
         }
 
         return [];
+    }
+
+    private function nullableDatetime(string|null $input): \DateTime | null
+    {
+        if ($input === null){
+            return null;
+        }
+        return new \DateTime($input);
     }
 }
