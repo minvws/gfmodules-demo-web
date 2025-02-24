@@ -12,21 +12,21 @@
                 <tbody>
                 <tr>
                     <th>Name</th>
-                    <td>{{ $organization['name'] }}</td>
+                    <td>{{ $organization['name'] ?? '' }}</td>
                 </tr>
 
                 @foreach($organization['address'] as $address)
                 <tr>
-                    <th>Address <small>({{ $address['type'] }})</small></th>
-                    <td>{{ $address['postalCode'] }}, {{ $address['city'] }} <br>
-                        {{ $address['state'] }}, {{ $address['country'] }}</td>
+                    <th>Address <small>({{ $address['type'] ?? ''}})</small></th>
+                    <td>{{ $address['postalCode'] ?? '' }}, {{ $address['city'] ?? ''}} <br>
+                        {{ $address['state'] ?? ''}}, {{ $address['country'] ?? ''}}</td>
                 </tr>
                 @endforeach
 
                 <tr>
                     <th>Contact address</th>
-                    <td>{{ $organization['contact'][0]['name']['text'] }},<br/>
-                        {{ $organization['contact'][0]['address']['text'] }}</td>
+                    <td>{{ $organization['contact'][0]['name']['text'] ?? ''}},<br/>
+                        {{ $organization['contact'][0]['address']['text'] ?? ''}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -46,8 +46,8 @@
                     <tbody>
                     @foreach($endpoints as $endpoint)
                         <tr>
-                            <td>{{ $endpoint['name'] }}</td>
-                            <td>{{ $endpoint['address'] }}</td>
+                            <td>{{ $endpoint['name'] ?? '' }}</td>
+                            <td>{{ $endpoint['address'] ?? '' }}</td>
                             <td>{{ implode(", ", $endpoint['payloadMimeType']) }}</td>
                         </tr>
                     @endforeach

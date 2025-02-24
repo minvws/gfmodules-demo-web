@@ -232,7 +232,6 @@ class TimelineController extends Controller
 
     protected function getUra(array $addressingInformation): string
     {
-
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
         foreach ($addressingInformation['entry'][0]['resource']['identifier'] as $ura) {
