@@ -19,8 +19,8 @@
         "eslint": "^9.20.1"
     },
     "overrides": {
-        "vite": {
-            "esbuild": "^0.25.0"
-        }
+         "vite": {
+             "esbuild": "^0.25.0"
+         }
     }
 }
