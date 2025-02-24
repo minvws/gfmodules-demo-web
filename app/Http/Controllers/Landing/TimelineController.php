@@ -37,9 +37,13 @@ class TimelineController extends Controller
         if (empty($bsn) || empty($informationTypes)) {
             return redirect()->route('flow');
         }
+        $authorization_token = $flowState->getAuthorizationData();
+        if (!$authorization_token) {
+            return redirect()->route('flow');
+        }
 
         $dataDomain = $informationTypes[0];
-        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain);
+        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $authorization_token);
 
         $patient = null;
         $imagingStudiesSeries = [];

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\DataDomain;
+use App\Dto\AuthorizationData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 class TimelineService
 {
-    public function findTimeline(string $bsn, DataDomain $dataDomain): array
+    public function findTimeline(string $bsn, DataDomain $dataDomain, AuthorizationData $authorization_token): array
     {
         $client = new Client();
 
@@ -20,7 +21,8 @@ class TimelineService
                 uri: config('timeline.timeline.endpoint') . '/fhir/' . $dataDomain->value . '/_search',
                 options: [
                     'query' => [
-                        'bsn' => $bsn
+                        'bsn' => $bsn,
+                        'authorization_token' => $authorization_token->getAccessCode(),
                     ],
                 ]
             );
