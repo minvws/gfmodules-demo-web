@@ -27,8 +27,8 @@
                 $futureMedications = [];
 
                 foreach ($medicationStatements as $entry) {
-                    $startDate = \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start'] ?? null);
-                    $endDate = \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['end'] ?? null);
+                    $startDate = \Carbon\Carbon::parse($entry['resource']['dateAsserted'] ?? null);
+                    $endDate = \Carbon\Carbon::parse($entry['resource']['dateAsserted'] ?? null);
 
                     if ($endDate->isBefore($currentDate)) {
                         $pastMedications[] = $entry;
@@ -69,7 +69,7 @@
                         <th>Type</th>
                         <th>Geneesmiddel</th>
                         <th>Ingangsdatum</th>
-                        <th>Stopdatum/Duur</th>
+                        <!--<th>Stopdatum/Duur</th>-->
                         <th>Dosering</th>
                         <th>Toedieningsweg</th>
                         <th>Reden</th>
@@ -85,8 +85,8 @@
                             <td>{{ ['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'][array_rand(['Medicatiegebruik'])] }}</td> <!-- type -->
                             <!--<td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? '-'}}</td>  Geneesmiddel -->
                             <td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? entry['resource']['medicationReference']['display'] ?? '-' }}</td>  <!-- Geneesmiddel -->
-                            <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start'] ?? null)->format('d M Y') }}</td> <!-- Ingangsdatum -->
-                            <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['end'] ?? null)->format('d M Y') }}</td> <!-- Stopdatum/Duur -->
+                            <td>{{ \Carbon\Carbon::parse($entry['resource']['dateAsserted'] ?? null)->format('d M Y') }}</td> <!-- Ingangsdatum -->
+                            <!--<td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['end'] ?? null)->format('d M Y') }}</td> <!-- Stopdatum/Duur -->
                             <td>{{ $entry['resource']['dosage'][0]['doseAndRate'][0]['type']['coding'][0]['display'] ?? '-' }} {{ number_format($entry['resource']['dosage'][0]['doseAndRate'][0]['doseQuantity']['value'] ?? 0, 2) }} {{ $entry['resource']['dosage'][0]['doseAndRate'][0]['doseQuantity']['unit'] ?? '-' }}</td> <!-- Dosering -->
                             <td>{{ $entry['resource']['dosage'][0]['route']['coding'][0]['display'] ?? '-' }}</td> <!-- Toedieningsweg -->
                             <td>{{ $entry['resource']['reasonCode'][0]['coding'][0]['display'] ?? '-' }}</td> <!-- Reden -->
@@ -94,6 +94,7 @@
                             <td>{{ $entry['resource']['informationSource']['display'] ?? '-' }}</td> <!-- Bron -->
                             <td>{{ $entry['resource']['id'] }}</td>
                             <td><a href="{{route('timeline.org_info', ['ref' => $entry['references']['addressingInformation']['organizationId'] ])}}">{{ $entry['references']['addressingInformation']['ura'] }}</a></td>
+                            <!--<td>{{ json_encode($entry['resource']) }}</td>-->
                         </tr>
                     @endforeach
                     </tbody>

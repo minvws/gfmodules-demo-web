@@ -61,8 +61,12 @@ class TimelineController extends Controller
         });
 
         usort($medicationStatements, function ($a, $b) {
-            $da = $this->nullableDatetime($a['resource']['effectivePeriod']['start'] ?? null);
-            $db = $this->nullableDatetime($b['resource']['effectivePeriod']['start'] ?? null);
+            #dd($a['resource']);
+            #$da = $this->nullableDatetime($a['resource']['effectivePeriod']['start'] ?? null);
+            #$db = $this->nullableDatetime($b['resource']['effectivePeriod']['start'] ?? null);
+            $da = $this->nullableDatetime($a['resource']['dateAsserted'] ?? null);
+            $db = $this->nullableDatetime($b['resource']['dateAsserted'] ?? null);
+
             return $da <=> $db;
         });
 
@@ -100,11 +104,8 @@ class TimelineController extends Controller
         }
 
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
+            #$meta = $searchSet['resource']['entry'][1] ?? $searchSet['resource']['entry'][0];
             $meta = $searchSet['resource']['entry'][1];
-            $addressingInformation = [];
-            if (!$find_through_careplans) {
-                $addressingInformation = $this->getAddressingInformation($searchSet);
-            }
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
                     $errors[] = [
@@ -112,6 +113,10 @@ class TimelineController extends Controller
                         'details' => $issue['details']['text']
                     ];
                 }
+            }
+            $addressingInformation = [];
+            if (!$find_through_careplans) {
+                $addressingInformation = $this->getAddressingInformation($searchSet);
             }
 
             foreach ($meta['resource']['entry'] ?? [] as $provider_entry) {
