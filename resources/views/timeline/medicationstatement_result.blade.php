@@ -27,12 +27,16 @@
                 $futureMedications = [];
 
                 foreach ($medicationStatements as $entry) {
-                    $startDate = \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start']);
-                    $endDate = \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['end']);
+                    $resource = $entry['resource'];
+                    $startDate = $resource['effectivePeriod']['start'] ?? $resource['effectiveDateTime'] ?? $resource['dateAsserted'];
+                    $endDate = $resource['effectivePeriod']['end'] ?? $resource['effectiveDateTime'] ?? $resource['dateAsserted'];
 
-                    if ($endDate->isBefore($currentDate)) {
+                    $startDateCarbon = \Carbon\Carbon::parse($startDate ?? null);
+                    $endDateCarbon = \Carbon\Carbon::parse($endDate ?? null);
+
+                    if ($endDateCarbon->isBefore($currentDate)) {
                         $pastMedications[] = $entry;
-                    } elseif ($startDate->isAfter($currentDate)) {
+                    } elseif ($startDateCarbon->isAfter($currentDate)) {
                         $futureMedications[] = $entry;
                     } else {
                         $currentMedications[] = $entry;
@@ -48,8 +52,8 @@
             <!-- Filter: alle medicatie die in de afgelopen 2 maanden geëindigd of gestopt is. -->
             <!-- Filter: alle medicatie die in de komende 3 maanden actueel wordt. Dit is inclusief voorgenomen medicatiegebruik. -->
 
-            <!-- 
-            Type Medicatieafspraak of Toedieningsafspraak of Medicatiegebruik 
+            <!--
+            Type Medicatieafspraak of Toedieningsafspraak of Medicatiegebruik
             Geneesmiddel Medicatieafspraak:AfgesprokenGeneesmiddel of Toedieningsafspraak:GeneesmiddelBijToedieningsafspraak of Medicatiegebruik:Gebruiksproduct -> Altijd: Product – ProductCode (als afwezig: ProductSpecificatie, ProductNaam)
             Ingangsdatum startDatumTijd
             Stopdatum/Duur eindDatumTijd(als afwezig: tijdsDuur)
@@ -68,7 +72,7 @@
                     <tr>
                         <th>Type</th>
                         <th>Geneesmiddel</th>
-                        <th>Ingangsdatum</th>
+                        <th>Innamedatum/Ingangsdatum</th>
                         <th>Stopdatum/Duur</th>
                         <th>Dosering</th>
                         <th>Toedieningsweg</th>
@@ -82,10 +86,15 @@
                     <tbody>
                     @foreach ($medications as $entry)
                         <tr>
-                            <td>{{ ['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'][array_rand(['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'])] }}</td> <!-- type -->
-                            <td>{{ $entry['resource']['medicationReference']['display'] ?? '-' }}</td> <!-- Geneesmiddel -->
-                            <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start'])->format('d M Y') }}</td> <!-- Ingangsdatum -->
-                            <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['end'])->format('d M Y') }}</td> <!-- Stopdatum/Duur -->
+                            <td>{{ ['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'][array_rand(['Medicatiegebruik'])] }}</td> <!-- type -->
+                            <!--<td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? '-'}}</td>  Geneesmiddel -->
+                            <td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? $entry['resource']['medicationReference']['display'] ?? '-' }}</td>  <!-- Geneesmiddel -->
+                            <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start'] ?? $entry['resource']['effectiveDateTime'] ?? $entry['resource']['dateAsserted'] ?? null)->format('d M Y') }}</td> <!-- Ingangsdatum -->
+                            @if($entry['resource']['effectivePeriod']['end'] ?? false)
+                                <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['end'] ?? null)->format('d M Y') }}</td> <!-- Stopdatum/Duur -->
+                            @else
+                                <td>--</td>
+                            @endif
                             <td>{{ $entry['resource']['dosage'][0]['doseAndRate'][0]['type']['coding'][0]['display'] ?? '-' }} {{ number_format($entry['resource']['dosage'][0]['doseAndRate'][0]['doseQuantity']['value'] ?? 0, 2) }} {{ $entry['resource']['dosage'][0]['doseAndRate'][0]['doseQuantity']['unit'] ?? '-' }}</td> <!-- Dosering -->
                             <td>{{ $entry['resource']['dosage'][0]['route']['coding'][0]['display'] ?? '-' }}</td> <!-- Toedieningsweg -->
                             <td>{{ $entry['resource']['reasonCode'][0]['coding'][0]['display'] ?? '-' }}</td> <!-- Reden -->

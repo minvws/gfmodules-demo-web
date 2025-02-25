@@ -54,7 +54,6 @@ class TimelineController extends Controller
             $medicationStatements,
             $errors
         );
-
         usort($imagingStudiesSeries, function ($a, $b) {
             $da = new \DateTime($a['resource']['started']);
             $db = new \DateTime($b['resource']['started']);
@@ -62,9 +61,10 @@ class TimelineController extends Controller
         });
 
         usort($medicationStatements, function ($a, $b) {
-            $da = new \DateTime($a['resource']['effectivePeriod']['start']);
-            $db = new \DateTime($b['resource']['effectivePeriod']['start']);
-            return $da <=> $db;
+            $startA = $a['resource']['effectivePeriod']['start'] ?? $a['resource']['effectiveDateTime'] ?? null;
+            $startB = $b['resource']['effectivePeriod']['start'] ?? $a['resource']['effectiveDateTime'] ?? null;
+
+            return $this->nullableDatetime($startA) <=> $this->nullableDatetime($startB);
         });
 
         if ($dataDomain->value === 'ImagingStudy') {
@@ -102,10 +102,6 @@ class TimelineController extends Controller
 
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
             $meta = $searchSet['resource']['entry'][1];
-            $addressingInformation = [];
-            if (!$find_through_careplans) {
-                $addressingInformation = $this->getAddressingInformation($searchSet);
-            }
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
                     $errors[] = [
@@ -113,6 +109,10 @@ class TimelineController extends Controller
                         'details' => $issue['details']['text']
                     ];
                 }
+            }
+            $addressingInformation = [];
+            if (!$find_through_careplans) {
+                $addressingInformation = $this->getAddressingInformation($searchSet);
             }
 
             foreach ($meta['resource']['entry'] ?? [] as $provider_entry) {
@@ -311,5 +311,13 @@ class TimelineController extends Controller
         }
 
         return [];
+    }
+
+    private function nullableDatetime(string|null $input): \DateTime | null
+    {
+        if ($input === null) {
+            return null;
+        }
+        return new \DateTime($input);
     }
 }
