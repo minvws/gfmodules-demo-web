@@ -33,17 +33,16 @@ class TimelineController extends Controller
         }
 
         $bsn = $flowState->getConsentData()?->getBsn();
-        $informationTypes = $flowState->getAuthorizationData()?->getInformationTypes() ?? [];
-        if (empty($bsn) || empty($informationTypes)) {
-            return redirect()->route('flow');
-        }
-        $authorization_token = $flowState->getAuthorizationData();
-        if (!$authorization_token) {
+        $authorizationData = $flowState->getAuthorizationData();
+        $informationTypes = $authorizationData?->getInformationTypes() ?? [];
+        $accessCode = $authorizationData?->getAccessCode();
+
+        if (empty($bsn) || empty($informationTypes) || empty($accessCode)) {
             return redirect()->route('flow');
         }
 
         $dataDomain = $informationTypes[0];
-        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $authorization_token);
+        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $accessCode);
 
         $patient = null;
         $imagingStudiesSeries = [];

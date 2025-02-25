@@ -11,7 +11,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class TimelineService
 {
-    public function findTimeline(string $bsn, DataDomain $dataDomain, AuthorizationData $authorization_token): array
+    public function findTimeline(string $bsn, DataDomain $dataDomain, string $accessCode): array
     {
         $client = new Client();
 
@@ -22,7 +22,7 @@ class TimelineService
                 options: [
                     'query' => [
                         'bsn' => $bsn,
-                        'authorization_token' => $authorization_token->getAccessCode(),
+                        'authorization_token' => $accessCode,
                     ],
                 ]
             );
