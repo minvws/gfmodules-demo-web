@@ -61,13 +61,10 @@ class TimelineController extends Controller
         });
 
         usort($medicationStatements, function ($a, $b) {
-            #dd($a['resource']);
-            #$da = $this->nullableDatetime($a['resource']['effectivePeriod']['start'] ?? null);
-            #$db = $this->nullableDatetime($b['resource']['effectivePeriod']['start'] ?? null);
-            $da = $this->nullableDatetime($a['resource']['dateAsserted'] ?? null);
-            $db = $this->nullableDatetime($b['resource']['dateAsserted'] ?? null);
+            $startA = $a['resource']['effectivePeriod']['start'] ?? $a['resource']['effectiveDateTime'] ?? null;
+            $startB = $b['resource']['effectivePeriod']['start'] ?? $a['resource']['effectiveDateTime'] ?? null;
 
-            return $da <=> $db;
+            return $this->nullableDatetime($startA) <=> $this->nullableDatetime($startB);
         });
 
         if ($dataDomain->value === 'ImagingStudy') {
@@ -104,7 +101,6 @@ class TimelineController extends Controller
         }
 
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
-            #$meta = $searchSet['resource']['entry'][1] ?? $searchSet['resource']['entry'][0];
             $meta = $searchSet['resource']['entry'][1];
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
