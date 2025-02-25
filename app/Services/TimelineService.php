@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\DataDomain;
-use App\Dto\AuthorizationData;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
@@ -20,7 +19,7 @@ class TimelineService
                 method: 'POST',
                 uri: config('timeline.timeline.endpoint') . '/fhir/' . $dataDomain->value . '/_search',
                 options: [
-                    'query' => [
+                    'json' => [
                         'bsn' => $bsn,
                         'authorization_token' => $accessCode,
                     ],
