@@ -238,8 +238,8 @@ class TimelineController extends Controller
     {
         // TODO: As long as we're not using a FHIR extension to define the setup of the bundle
         // we're bound to fixed indexes to tind the resource.
-        foreach($addressingInformation['entry'][0]['resource']['identifier'] as $ura) {
-            if($ura['system'] === 'http://fhir.nl/fhir/NamingSystem/ura'){
+        foreach ($addressingInformation['entry'][0]['resource']['identifier'] as $ura) {
+            if ($ura['system'] === 'http://fhir.nl/fhir/NamingSystem/ura') {
                 return $ura['value'];
             }
         }
@@ -319,7 +319,7 @@ class TimelineController extends Controller
 
     private function nullableDatetime(string|null $input): \DateTime | null
     {
-        if ($input === null){
+        if ($input === null) {
             return null;
         }
         return new \DateTime($input);
