@@ -37,7 +37,7 @@ class TimelineController extends Controller
         $informationTypes = $authorizationData?->getInformationTypes() ?? [];
         $accessCode = $authorizationData?->getAccessCode();
 
-        if (empty($bsn) || empty($informationTypes) || empty($accessCode)) {
+        if (empty($bsn) || empty($informationTypes) || is_null($accessCode) || $accessCode === '') {
             return redirect()->route('flow');
         }
 
