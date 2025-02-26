@@ -30,6 +30,9 @@ class TimelineService
         } catch (ClientException $e) {
             // Handle 4xx errors
             return json_decode($e->getResponse()->getBody()->getContents(), true);
+        } catch (\Exception $e) {
+            // Handle other errors
+            return [];
         }
     }
 }
