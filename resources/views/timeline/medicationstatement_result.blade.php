@@ -86,7 +86,7 @@
                     <tbody>
                     @foreach ($medications as $entry)
                         <tr>
-                            <td>{{ ['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'][array_rand(['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'])] }}</td> <!-- type -->
+                            <td>Medicatiegebruik</td> <!-- type -->
                             <!--<td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? '-'}}</td>  Geneesmiddel -->
                             <td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? $entry['resource']['medicationReference']['display'] ?? '-' }}</td>  <!-- Geneesmiddel -->
                             <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start'] ?? $entry['resource']['effectiveDateTime'] ?? $entry['resource']['dateAsserted'] ?? null)->format('d M Y') }}</td> <!-- Ingangsdatum -->
