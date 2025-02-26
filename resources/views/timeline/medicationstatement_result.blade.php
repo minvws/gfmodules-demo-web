@@ -86,7 +86,7 @@
                     <tbody>
                     @foreach ($medications as $entry)
                         <tr>
-                            <td>{{ ['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'][array_rand(['Medicatiegebruik'])] }}</td> <!-- type -->
+                            <td>{{ ['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'][array_rand(['Medicatieafspraak', 'Toedieningsafspraak', 'Medicatiegebruik'])] }}</td> <!-- type -->
                             <!--<td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? '-'}}</td>  Geneesmiddel -->
                             <td>{{ $entry['resource']['medicationCodeableConcept']['coding'][0]['display'] ?? $entry['resource']['medicationReference']['display'] ?? '-' }}</td>  <!-- Geneesmiddel -->
                             <td>{{ \Carbon\Carbon::parse($entry['resource']['effectivePeriod']['start'] ?? $entry['resource']['effectiveDateTime'] ?? $entry['resource']['dateAsserted'] ?? null)->format('d M Y') }}</td> <!-- Ingangsdatum -->
@@ -100,7 +100,7 @@
                             <td>{{ $entry['resource']['reasonCode'][0]['coding'][0]['display'] ?? '-' }}</td> <!-- Reden -->
                             <td>{{ $entry['resource']['note'][0]['text'] ?? '-' }}</td> <!-- Toelichting -->
                             <td>{{ $entry['resource']['informationSource']['display'] ?? '-' }}</td> <!-- Bron -->
-                            <td>{{ $entry['resource']['id'] }}</td>
+                            <td>{{ $entry['resource']['id'] ?? '-' }}</td>
                             <td><a href="{{route('timeline.org_info', ['ref' => $entry['references']['addressingInformation']['organizationId'] ])}}">{{ $entry['references']['addressingInformation']['ura'] }}</a></td>
                         </tr>
                     @endforeach

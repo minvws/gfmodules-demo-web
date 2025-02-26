@@ -49,6 +49,13 @@ class TimelineController extends Controller
         $medicationStatements = [];
         $errors = [];
 
+        if (empty($timelineBundle) || !array_key_exists('entry', $timelineBundle) || empty($timelineBundle['entry'])) {
+            $errors[] = [
+                'severity' => 'error',
+                'details' => 'Geen tijdlijn gevonden, probeer het later opnieuw.'
+            ];
+        }
+
         $this->processTimelineBundle(
             $timelineBundle,
             $dataDomain,
@@ -57,6 +64,7 @@ class TimelineController extends Controller
             $medicationStatements,
             $errors
         );
+
         usort($imagingStudiesSeries, function ($a, $b) {
             $da = new \DateTime($a['resource']['started']);
             $db = new \DateTime($b['resource']['started']);
@@ -104,6 +112,22 @@ class TimelineController extends Controller
         }
 
         foreach ($timelineBundle['entry'] ?? [] as $searchSet) {
+            if (!array_key_exists('resource', $searchSet)) {
+                $errors[] = [
+                    'severity' => 'error',
+                    'details' => 'Geen tijdlijn gevonden, probeer het later opnieuw.'
+                ];
+                continue;
+            }
+            if ($searchSet['resource']['resourceType'] === "OperationOutcome") {
+                foreach ($searchSet['resource']['issue'] ?? [] as $issue) {
+                    $errors[] = [
+                        'severity' => $issue['severity'],
+                        'details' => $issue['details']['text']
+                    ];
+                }
+                continue;
+            }
             $meta = $searchSet['resource']['entry'][1];
             if ($meta['resource']['resourceType'] === "OperationOutcome") {
                 foreach ($meta['resource']['issue'] ?? [] as $issue) {
@@ -134,11 +158,8 @@ class TimelineController extends Controller
                 $addressingInformation = $this->getAddressingInformation($provider_entry);
                 $outcomeCheck = $provider_entry['resource']['entry'][1]['resource'];
 
-                if (
-                    array_key_exists('resourceType', $outcomeCheck) &&
-                    $outcomeCheck['resourceType'] === "OperationOutcome"
-                ) {
-                    foreach ($provider_entry['resource']['entry'][1]['resourceType'] ?? [] as $issue) {
+                if ($outcomeCheck['resourceType'] === "OperationOutcome") {
+                    foreach ($outcomeCheck['issue'] ?? [] as $issue) {
                         $errors[] = [
                             'severity' => $issue['severity'],
                             'details' => $issue['details']['text']
