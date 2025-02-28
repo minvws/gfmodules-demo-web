@@ -44,7 +44,7 @@ class TimelineController extends Controller
         $dataDomain = $informationTypes[0];
         $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $accessCode);
 
-        $patient = null;
+        $patient = [];
         $imagingStudiesSeries = [];
         $medicationStatements = [];
         $errors = [];
@@ -95,7 +95,7 @@ class TimelineController extends Controller
     private function processTimelineBundle(
         array $timelineBundle,
         DataDomain $dataDomain,
-        ?array &$patient,
+        array &$patient,
         array &$imagingStudiesSeries,
         array &$medicationStatements,
         array &$errors
@@ -137,48 +137,17 @@ class TimelineController extends Controller
                     ];
                 }
             }
-            $addressingInformation = [];
-            if (!$find_through_careplans) {
-                $addressingInformation = $this->getAddressingInformation($searchSet);
-            }
+            $addressingInformation = $this->getAddressingInformation($searchSet);
 
             foreach ($meta['resource']['entry'] ?? [] as $provider_entry) {
-                if (!$find_through_careplans) {
-                    $this->processEntry(
-                        $meta,
-                        $provider_entry,
-                        $patient,
-                        $imagingStudiesSeries,
-                        $medicationStatements,
-                        $addressingInformation
-                    );
-                    continue;
-                }
-
-                $addressingInformation = $this->getAddressingInformation($provider_entry);
-                $outcomeCheck = $provider_entry['resource']['entry'][1]['resource'];
-
-                if ($outcomeCheck['resourceType'] === "OperationOutcome") {
-                    foreach ($outcomeCheck['issue'] ?? [] as $issue) {
-                        $errors[] = [
-                            'severity' => $issue['severity'],
-                            'details' => $issue['details']['text']
-                        ];
-                    }
-                    continue;
-                }
-
-                $entries = $provider_entry['resource']['entry'][1]['resource']['entry'];
-                foreach ($entries ?? [] as $entry) {
-                    $this->processEntry(
-                        $meta,
-                        $entry,
-                        $patient,
-                        $imagingStudiesSeries,
-                        $medicationStatements,
-                        $addressingInformation
-                    );
-                }
+                $this->processEntry(
+                    $meta,
+                    $provider_entry,
+                    $patient,
+                    $imagingStudiesSeries,
+                    $medicationStatements,
+                    $addressingInformation
+                );
             }
         }
     }
@@ -186,24 +155,21 @@ class TimelineController extends Controller
     private function processEntry(
         array $meta,
         array $entry,
-        ?array &$patient,
+        array &$patient,
         array &$imagingStudiesSeries,
         array &$medicationStatements,
         array $addressingInformation
     ): void {
+        if (!$patient) {
+            $patient = $this->getPatient($meta, $entry);
+        }
         if ($entry['resource']['resourceType'] === "ImagingStudy") {
-            if (!$patient) {
-                $patient = $this->getPatient($meta, $entry);
-            }
             $imagingStudiesSeries = array_merge(
                 $imagingStudiesSeries,
                 $this->getImagingStudySeries($meta, $entry, $addressingInformation)
             );
         }
         if ($entry['resource']['resourceType'] === "MedicationStatement") {
-            if (!$patient) {
-                $patient = $this->getPatient($meta, $entry);
-            }
             $medicationStatements[] = $this->getMedicationStatement($entry, $addressingInformation);
         }
     }

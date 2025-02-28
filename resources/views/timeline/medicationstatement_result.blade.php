@@ -17,7 +17,7 @@
             @endif
 
             @if ($patient)
-            <h2>Tijdslijn van {{ $patient['display'] }} <small>({{$bsn}})</small></h2>
+            <h2>Tijdslijn van {{  ($patient['display'] ?? ($patient['name'][0]['given'][0] . ' ' . $patient['name'][0]['family'])) ?? 'Onbekend' }} <small>({{$bsn}})</small></h2>
             @endif
 
             @php
