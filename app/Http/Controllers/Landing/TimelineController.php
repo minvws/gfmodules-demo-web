@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Landing;
 
-use App\Enums\DataDomain;
 use App\Http\Controllers\Controller;
 use App\Services\AddressingService;
 use App\Services\FlowStateService;
@@ -58,7 +57,6 @@ class TimelineController extends Controller
 
         $this->processTimelineBundle(
             $timelineBundle,
-            $dataDomain,
             $patient,
             $imagingStudiesSeries,
             $medicationStatements,
@@ -94,19 +92,17 @@ class TimelineController extends Controller
 
     private function processTimelineBundle(
         array $timelineBundle,
-        DataDomain $dataDomain,
         array &$patient,
         array &$imagingStudiesSeries,
         array &$medicationStatements,
         array &$errors
     ): void {
-        $find_through_careplans = $dataDomain->value === 'MedicationStatement';
-
         if (isset($timelineBundle['detail']) && $timelineBundle['detail']['resourceType'] === 'OperationOutcome') {
             foreach ($timelineBundle['detail']['issue'] ?? [] as $issue) {
                 $errors[] = [
                     'severity' => $issue['severity'],
-                    'details' => $issue['details']['text']
+                    'details' => $issue['details']['text'],
+                    'diagnostics' => $issue['diagnostics'] ?? null
                 ];
             }
         }
@@ -123,20 +119,23 @@ class TimelineController extends Controller
                 foreach ($searchSet['resource']['issue'] ?? [] as $issue) {
                     $errors[] = [
                         'severity' => $issue['severity'],
-                        'details' => $issue['details']['text']
+                        'details' => $issue['details']['text'],
+                        'diagnostics' => $issue['diagnostics'] ?? null
+                    ];
+                }
+                continue;
+            }
+            if ($searchSet['resource']['entry'][0]['resource']['resourceType'] === "OperationOutcome") {
+                foreach ($searchSet['resource']['entry'][0]['resource']['issue'] ?? [] as $issue) {
+                    $errors[] = [
+                        'severity' => $issue['severity'],
+                        'details' => $issue['details']['text'],
+                        'diagnostics' => $issue['diagnostics'] ?? null
                     ];
                 }
                 continue;
             }
             $meta = $searchSet['resource']['entry'][1];
-            if ($meta['resource']['resourceType'] === "OperationOutcome") {
-                foreach ($meta['resource']['issue'] ?? [] as $issue) {
-                    $errors[] = [
-                        'severity' => $issue['severity'],
-                        'details' => $issue['details']['text']
-                    ];
-                }
-            }
             $addressingInformation = $this->getAddressingInformation($searchSet);
 
             foreach ($meta['resource']['entry'] ?? [] as $provider_entry) {
