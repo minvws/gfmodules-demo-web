@@ -11,6 +11,9 @@
                     <ul>
                         @foreach ($errors as $error)
                             <li>{{ $error['details'] }}</li>
+                            @if (isset($error['diagnostics']))
+                                <ul>{{ $error['diagnostics'] }}</ul>
+                            @endif
                         @endforeach
                     </ul>
                 </div>
