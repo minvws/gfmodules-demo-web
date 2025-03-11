@@ -42,7 +42,6 @@ class TimelineController extends Controller
 
         $dataDomain = $informationTypes[0];
         $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $accessCode);
-
         $patient = [];
         $imagingStudiesSeries = [];
         $medicationStatements = [];
@@ -125,16 +124,28 @@ class TimelineController extends Controller
                 }
                 continue;
             }
-            if ($searchSet['resource']['entry'][0]['resource']['resourceType'] === "OperationOutcome") {
-                foreach ($searchSet['resource']['entry'][0]['resource']['issue'] ?? [] as $issue) {
-                    $errors[] = [
-                        'severity' => $issue['severity'],
-                        'details' => $issue['details']['text'],
-                        'diagnostics' => $issue['diagnostics'] ?? null
-                    ];
+            $counter = 0; // Counter to check if no addressing information is found
+            $no_addressing_found = false;
+            foreach ($searchSet['resource']['entry'] ?? [] as $entry) {
+                if ($entry['resource']['resourceType'] === "OperationOutcome") {
+                    foreach ($entry['resource']['issue'] ?? [] as $issue) {
+                        $errors[] = [
+                            'severity' => $issue['severity'],
+                            'details' => $issue['details']['text'],
+                            'diagnostics' => $issue['diagnostics'] ?? null
+                        ];
+                    }
+                    if ($counter === 0) {
+                        // If the first entry is an OperationOutcome, we didnt find the addressing information
+                        $no_addressing_found = true;
+                    }
                 }
-                continue;
+                $counter++;
             }
+            if ($no_addressing_found) {
+                continue; // There is no meta information, so we skip this searchset entry
+            }
+
             $meta = $searchSet['resource']['entry'][1];
             $addressingInformation = $this->getAddressingInformation($searchSet);
 
