@@ -27,7 +27,6 @@ class FlowAuthorizationRequest extends FormRequest
     {
         return [
             'information_types' => ['required', 'array', Rule::in(DataDomain::cases())],
-            'access_code' => ['required', 'string'],
         ];
     }
 }

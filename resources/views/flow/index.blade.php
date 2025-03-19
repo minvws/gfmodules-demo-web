@@ -36,15 +36,13 @@
                 </li>
                 <li>
                     <button aria-expanded="{{ $state->getUser() ? "true" : "false" }}" id="flow-consent">2.
-                        Toestemming
+                        Patient
                     </button>
                     <div aria-labelledby="flow-consent">
                         @if(!$state->getConsentData() || $editConsent)
                             <form action="{{ route('flow-consent.store') }}" method="POST">
                                 @csrf
                                 <fieldset {{ !$state->getUser() ? "disabled" : "" }}>
-                                    <p>Controleer of u toestemming heeft om de gegevens van de patient/client of burger
-                                        op te vragen.</p>
                                     <div>
                                         <label for="flow-consent-bsn">Burgerservicenummer</label>
                                         <span
@@ -67,25 +65,6 @@
                                             />
                                         </div>
                                     </div>
-{{--                                <div>--}}
-{{--                                    <label for="flow-consent-birthyear">Geboortejaar</label>--}}
-{{--                                    <span class="nota-bene">JJJJ</span>--}}
-{{--                                    <div>--}}
-{{--                                        @error('birthyear')--}}
-{{--                                        <p class="error" id="flow-consent-birthyear-error-message">--}}
-{{--                                            <span>Foutmelding:</span> {{ $message }}--}}
-{{--                                        </p>--}}
-{{--                                        @enderror--}}
-{{--                                        <input--}}
-{{--                                            id="flow-consent-birthyear"--}}
-{{--                                            name="birthyear"--}}
-{{--                                            type="number"--}}
-{{--                                            required--}}
-{{--                                            aria-describedby="flow-consent-birthyear-error-message"--}}
-{{--                                            value="{{ old('birthyear', $state->getConsentData()?->getBirthYear()) }}"--}}
-{{--                                        />--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                                     <div>
                                         <label for="flow-consent-consent">Behandelrelatie</label>
                                         <div>
@@ -111,7 +90,7 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit">Controleer toestemming</button>
+                                    <button type="submit">Volgende</button>
                                 </fieldset>
                             </form>
                         @else
@@ -122,15 +101,13 @@
                 </li>
                 <li>
                     <button aria-expanded="{{ $state->getConsentData() && !$editConsent  ? "true" : "false" }}"
-                            id="flow-authorization">3. Autorisatie
+                            id="flow-authorization">3. Informatie type
                     </button>
                     <div aria-labelledby="flow-authorization">
                         @if(!$state->getAuthorizationData() || $editAuthorization)
                             <form action="{{ route('flow-authorization.store') }}" method="POST">
                                 @csrf
                                 <fieldset {{ !$state->getUser() || !$state->getConsentData() ? "disabled" : "" }}>
-                                    <p>Controleer of u geautoriseerd bent voor het opvragen van het informatietype voor
-                                        deze patient.</p>
                                     <div>
                                         <label for="flow-authorization-information-types">Type informatie</label>
                                         <span class="nota-bene">Welke informatietypen wilt u opvragen</span>
@@ -152,26 +129,7 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    <div>
-                                        <label for="flow-authorization-access-code">Accordering</label>
-                                        <span class="nota-bene">Lorem ipsum token</span>
-                                        <div>
-                                            @error('access_code')
-                                            <p class="error" id="flow-authorization-access-code-error-message">
-                                                <span>Foutmelding:</span> {{ $message }}
-                                            </p>
-                                            @enderror
-                                            <input
-                                                id="flow-authorization-access-code"
-                                                name="access_code"
-                                                type="number"
-                                                required
-                                                aria-describedby="flow-authorization-access-code-error-message"
-                                                value="{{ old('access_code', $state->getAuthorizationData()?->getAccessCode()) }}"
-                                            />
-                                        </div>
-                                    </div>
-                                    <button type="submit">Controleer autorisatie</button>
+                                    <button type="submit">Volgende</button>
                                 </fieldset>
                             </form>
                         @else
@@ -189,7 +147,7 @@
                 @csrf
                 <button
                     type="submit" {{ $state->getConsentData() && $state->getAuthorizationData() ? "" : "disabled" }}>
-                    Informatie opvragen
+                    Lokaliseren
                 </button>
             </form>
         </div>

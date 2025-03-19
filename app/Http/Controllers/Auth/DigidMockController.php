@@ -19,7 +19,7 @@ class DigidMockController extends Controller
     {
         return $this->loginResponseHandler->handleLoginResponse(
             (object)[
-                "relations" => [],
+                "relations" => [(object)['entity_name' => "BossEntity", 'ura' => "12341234", 'roles' => ["01.000"]]],
                 "initials" => "m",
                 "surname" => "Boss",
                 "surname_prefix" => "",
