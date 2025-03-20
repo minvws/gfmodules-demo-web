@@ -34,14 +34,14 @@ class TimelineController extends Controller
         $bsn = $flowState->getConsentData()?->getBsn();
         $authorizationData = $flowState->getAuthorizationData();
         $informationTypes = $authorizationData?->getInformationTypes() ?? [];
-        $accessCode = $authorizationData?->getAccessCode();
+        $user = $flowState->getUser();
 
-        if (empty($bsn) || empty($informationTypes) || is_null($accessCode) || $accessCode === '') {
+        if (empty($bsn) || empty($informationTypes) || $user === null) {
             return redirect()->route('flow');
         }
 
         $dataDomain = $informationTypes[0];
-        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $accessCode);
+        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $user);
         $patient = [];
         $imagingStudiesSeries = [];
         $medicationStatements = [];

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\DataDomain;
+use App\Models\UziUser;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 class TimelineService
 {
-    public function findTimeline(string $bsn, DataDomain $dataDomain, string $accessCode): array
+    public function findTimeline(string $bsn, DataDomain $dataDomain, UziUser $uziUser): array
     {
         $client = new Client();
 
@@ -21,7 +22,7 @@ class TimelineService
                 options: [
                     'json' => [
                         'bsn' => $bsn,
-                        'authorization_token' => $accessCode,
+                        'ura' => $uziUser->getFirstRelation()->ura ?? '',
                     ],
                 ]
             );

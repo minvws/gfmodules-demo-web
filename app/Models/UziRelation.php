@@ -7,12 +7,12 @@ namespace App\Models;
 class UziRelation
 {
     /**
-     * @param string $entityName
+     * @param string $entity_name
      * @param string $ura
      * @param UziRelationRole[] $roles
      */
     public function __construct(
-        public string $entityName,
+        public string $entity_name,
         public string $ura,
         public array $roles
     ) {

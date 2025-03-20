@@ -119,6 +119,20 @@ class UziUser implements Authenticatable
     }
 
     /**
+     * Get the first relation for the user.
+     *
+     * @return UziRelation|null
+     */
+    public function getFirstRelation(): ?UziRelation
+    {
+        if ($this->hasRelations()) {
+            return $this->uras[0];  // For now only use the first URA
+        }
+
+        return null;
+    }
+
+    /**
      * Get the unique identifier for the user.
      *
      * @return string

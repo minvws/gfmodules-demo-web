@@ -43,7 +43,6 @@ class FlowController extends Controller
     {
         $data = new ConsentData(
             bsn: $request->validated('bsn'),
-            //            birthYear: $request->validated('birthyear'),
             consent: $request->validated('consent') ? true : false,
         );
         $this->stateService->setConsentDataInSession($data);
@@ -63,7 +62,6 @@ class FlowController extends Controller
     {
         $data = new AuthorizationData(
             informationTypes: DataDomain::fromStringArray($request->validated('information_types')),
-            accessCode: $request->validated('access_code'),
         );
         $this->stateService->setAuthorizationDataInSession($data);
 
