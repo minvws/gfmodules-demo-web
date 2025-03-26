@@ -48,4 +48,55 @@
             </form>
         </div>
     </section>
+    <section>
+        <div>
+            <h2>Resultaten</h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Organisatie</th>
+                    <th>URA</th>
+                    <th>Actie</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($results['organizations'] as $organization)
+                    <tr>
+                        <td>{{ $organization['name'] }}</td>
+                        <td>{{ (array_values(array_filter($organization['identifier'], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
+                        <td><a href="{{route('timeline.org_info', ['ref' => $organization['id'] ])}}">Bekijken</a></td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section>
+        <div>
+            @if ($results['endpoints'] ?? [])
+                <h2>Endpoints</h2>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>URL</th>
+                        <th>payloadMimeTypes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($results['endpoints'] as $endpoint)
+                        <tr>
+                            <td>{{ $endpoint['name'] ?? '' }}</td>
+                            <td>{{ $endpoint['address'] ?? '' }}</td>
+                            <td>{{ implode(", ", $endpoint['payloadMimeType']) }}</td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+
+            @endif
+        </div>
+    </section>
 @endsection
