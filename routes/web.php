@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AddressBookController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\FlowController;
 use App\Http\Controllers\IndexController;
@@ -27,6 +28,8 @@ Route::get('/flow/consent', [FlowController::class, 'editConsent'])->name('flow-
 Route::post('/flow/consent', [FlowController::class, 'storeConsent'])->name('flow-consent.store');
 Route::get('/flow/authorization', [FlowController::class, 'editAuthorization'])->name('flow-authorization');
 Route::post('/flow/authorization', [FlowController::class, 'storeAuthorization'])->name('flow-authorization.store');
+
+Route::get('/address-book', [AddressBookController::class, 'index'])->name('address-book');
 
 if (config('auth.digid_mock_enabled')) {
     Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
