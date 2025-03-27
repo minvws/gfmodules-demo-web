@@ -13,15 +13,6 @@ use Illuminate\View\View;
 
 class TimelineController extends Controller
 {
-    public function orgInfo(string $ref, AddressingService $addressingService): View
-    {
-        $org = $addressingService->findOrganization($ref, includeEndpoints: true);
-        return view('timeline.org_info')
-            ->with('organization', $org['organization'])
-            ->with('endpoints', $org['endpoints'] ?? [])
-        ;
-    }
-
     public function fetch(
         FlowStateService $stateService,
         TimelineService $timelineService,

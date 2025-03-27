@@ -27,4 +27,13 @@ class AddressBookController extends Controller
         return view('address-book.index')
             ->with('results', $results);
     }
+
+    public function orgInfo(string $ref, AddressingService $addressingService): View
+    {
+        $org = $addressingService->findOrganization($ref, includeEndpoints: true);
+
+        return view('address-book.org_info')
+            ->with('organization', $org['organization'])
+            ->with('endpoints', $org['endpoints'] ?? []);
+    }
 }

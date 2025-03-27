@@ -64,7 +64,7 @@
                     <tr>
                         <td>{{ $organization['name'] }}</td>
                         <td>{{ (array_values(array_filter($organization['identifier'], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
-                        <td><a href="{{route('timeline.org_info', ['ref' => $organization['id'] ])}}">Bekijken</a></td>
+                        <td><a href="{{route('address-book.org-info', ['ref' => $organization['id'] ])}}">Bekijken</a></td>
                     </tr>
                 @endforeach
                 </tbody>
