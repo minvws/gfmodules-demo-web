@@ -62,8 +62,8 @@
                 <tbody>
                 @forelse ($organizations as $organization)
                     <tr>
-                        <td>{{ $organization['name'] }}</td>
-                        <td>{{ (array_values(array_filter($organization['identifier'], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
+                        <td>{{ $organization['name'] ?? '' }}</td>
+                        <td>{{ (array_values(array_filter($organization['identifier'] ?? [], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
                         <td><a href="{{route('address-book.org-info', ['ref' => $organization['id'] ])}}">Bekijken</a></td>
                     </tr>
                 @empty
