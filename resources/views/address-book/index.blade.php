@@ -75,32 +75,4 @@
             </table>
         </div>
     </section>
-    <section>
-        <div>
-            @if ($endpoints ?? [])
-                <h2>Endpoints</h2>
-
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>URL</th>
-                        <th>payloadMimeTypes</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($endpoints as $endpoint)
-                        <tr>
-                            <td>{{ $endpoint['name'] ?? '' }}</td>
-                            <td>{{ $endpoint['address'] ?? '' }}</td>
-                            <td>{{ implode(", ", $endpoint['payloadMimeType']) }}</td>
-                        </tr>
-                    @endforeach
-
-                    </tbody>
-                </table>
-
-            @endif
-        </div>
-    </section>
 @endsection

@@ -62,21 +62,17 @@ class AddressingService
 
         // Iterate searchbundle and find organizations and endpoints
         $organizations = [];
-        $endpoints = [];
 
         if (empty($data['entry'])) {
-            return [$organizations, $endpoints];
+            return $organizations;
         }
 
         foreach ($data['entry'] as $entry) {
             if ($entry['resource']['resourceType'] === 'Organization') {
                 $organizations[] = $entry['resource'];
             }
-            if ($entry['resource']['resourceType'] === 'Endpoint') {
-                $endpoints[] = $entry['resource'];
-            }
         }
 
-        return [$organizations, $endpoints];
+        return $organizations;
     }
 }

@@ -17,13 +17,12 @@ class AddressBookController extends Controller
 
     public function index(AddressBookSearchRequest $request): View
     {
-        [$organizations, $endpoints] = $this->addressingService->findOrganizations(
+        $organizations = $this->addressingService->findOrganizations(
             searchValues: $request->getSearchValues(),
         );
 
         return view('address-book.index')
-            ->with('organizations', $organizations)
-            ->with('endpoints', $endpoints);
+            ->with('organizations', $organizations);
     }
 
     public function orgInfo(string $ref, AddressingService $addressingService): View
