@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
-use App\Services\AddressingService;
 use App\Services\FlowStateService;
 use App\Services\TimelineService;
 use Illuminate\Http\RedirectResponse;

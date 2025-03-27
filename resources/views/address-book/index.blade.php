@@ -60,20 +60,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($results['organizations'] as $organization)
+                @forelse ($organizations as $organization)
                     <tr>
                         <td>{{ $organization['name'] }}</td>
                         <td>{{ (array_values(array_filter($organization['identifier'], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
                         <td><a href="{{route('address-book.org-info', ['ref' => $organization['id'] ])}}">Bekijken</a></td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="3">Geen resultaten gevonden</td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>
     </section>
     <section>
         <div>
-            @if ($results['endpoints'] ?? [])
+            @if ($endpoints ?? [])
                 <h2>Endpoints</h2>
 
                 <table>
@@ -85,7 +89,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($results['endpoints'] as $endpoint)
+                    @foreach($endpoints as $endpoint)
                         <tr>
                             <td>{{ $endpoint['name'] ?? '' }}</td>
                             <td>{{ $endpoint['address'] ?? '' }}</td>

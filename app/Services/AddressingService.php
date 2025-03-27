@@ -44,6 +44,9 @@ class AddressingService
     {
         $query = [];
         $query['_include'] = 'Organization:endpoint';
+        if (!empty($searchValues->name)) {
+            $query['name'] = $searchValues->name;
+        }
 
         $client = new Client();
         $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search", [
@@ -55,17 +58,22 @@ class AddressingService
         $data = json_decode($result->getBody()->getContents(), true);
 
         // Iterate searchbundle and find organizations and endpoints
-        $ret = [];
+        $organizations = [];
+        $endpoints = [];
+
+        if (empty($data['entry'])) {
+            return [$organizations, $endpoints];
+        }
 
         foreach ($data['entry'] as $entry) {
             if ($entry['resource']['resourceType'] === 'Organization') {
-                $ret['organizations'][] = $entry['resource'];
+                $organizations[] = $entry['resource'];
             }
             if ($entry['resource']['resourceType'] === 'Endpoint') {
-                $ret['endpoints'][] = $entry['resource'];
+                $endpoints[] = $entry['resource'];
             }
         }
 
-        return $ret;
+        return [$organizations, $endpoints];
     }
 }
