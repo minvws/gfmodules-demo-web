@@ -47,6 +47,9 @@ class AddressingService
         if (!empty($searchValues->name)) {
             $query['name'] = $searchValues->name;
         }
+        if (!empty($searchValues->ura)) {
+            $query['identifier'] = $searchValues->ura;
+        }
 
         $client = new Client();
         $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search", [
