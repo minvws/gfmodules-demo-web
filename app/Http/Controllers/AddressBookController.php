@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddressBookSearchRequest;
 use App\Services\AddressingService;
+use Illuminate\View\View;
 
 class AddressBookController extends Controller
 {
@@ -14,13 +15,13 @@ class AddressBookController extends Controller
     ) {
     }
 
-    public function index(AddressBookSearchRequest $request)
+    public function index(AddressBookSearchRequest $request): View
     {
         $results = [];
 
         if ($request->isSearchPerformed()) {
             // Perform search
-            $results = $this->addressingService->findOrganizations();
+            $results = $this->addressingService->findOrganizations(searchValues: $request->getSearchValues());
         }
 
         return view('address-book.index')

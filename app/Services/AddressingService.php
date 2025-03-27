@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Dto\AddressBookSearchValues;
 use GuzzleHttp\Client;
 
 class AddressingService
@@ -39,7 +40,7 @@ class AddressingService
         return $ret;
     }
 
-    public function findOrganizations(): array
+    public function findOrganizations(AddressBookSearchValues $searchValues): array
     {
         $query = [];
         $query['_include'] = 'Organization:endpoint';

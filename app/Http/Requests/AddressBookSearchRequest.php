@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Dto\AddressBookSearchValues;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddressBookSearchRequest extends FormRequest
@@ -28,14 +29,22 @@ class AddressBookSearchRequest extends FormRequest
         return $this->query('name') || $this->query('ura');
     }
 
-    /**
-     * @return array{name: string|null, ura: string|null}
-     */
-    public function getSearchValues(): array
+    public function getSearchValues(): AddressBookSearchValues
     {
-        return [
-            'name' => $this->query('name'),
-            'ura' => $this->query('ura'),
-        ];
+        $name = $this->query('name');
+        $ura = $this->query('ura');
+
+        if (!is_string($name)) {
+            $name = null;
+        }
+
+        if (!is_string($ura)) {
+            $ura = null;
+        }
+
+        return new AddressBookSearchValues(
+            name: $name,
+            ura: $ura,
+        );
     }
 }
