@@ -8,11 +8,11 @@
             <form action="{{ route('address-book') }}" method="GET" class="layout-form">
                 <fieldset>
                     <div>
-                        <label for="address-book-search-name">Zoeken op naam</label>
+                        <label for="address-book-search-name">@lang('Search on name')</label>
                         <div>
                             @error('name')
                             <p class="error" id="address-book-search-name-error-message">
-                                <span>Foutmelding:</span> {{ $message }}
+                                <span>@lang('Error'):</span> {{ $message }}
                             </p>
                             @enderror
                             <input
@@ -25,11 +25,11 @@
                         </div>
                     </div>
                     <div>
-                        <label for="address-book-search-ura">Zoeken op ura</label>
+                        <label for="address-book-search-ura">@lang('Search on ura')</label>
                         <div>
                             @error('ura')
                             <p class="error" id="address-book-search-ura-error-message">
-                                <span>Foutmelding:</span> {{ $message }}
+                                <span>@lang('Error'):</span> {{ $message }}
                             </p>
                             @enderror
                             <input
@@ -43,52 +43,52 @@
                         </div>
                     </div>
 
-                    <button type="submit">Zoeken</button>
+                    <button type="submit">@lang('Search')</button>
                 </fieldset>
             </form>
         </div>
     </section>
     <section>
         <div>
-            <h2>Resultaten</h2>
+            <h2>@lang('Results')</h2>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                 <tr>
-                    <th>Organisatie</th>
-                    <th>URA</th>
-                    <th>Actie</th>
+                    <th>@lang('Organization')</th>
+                    <th>@lang('URA')</th>
+                    <th>@lang('Action')</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse ($result->organizations as $organization)
                     <tr>
                         <td>{{ $organization['name'] ?? '' }}</td>
-                        <td>{{ (array_values(array_filter($organization['identifier'] ?? [], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
-                        <td><a href="{{route('address-book.org-info', ['ref' => $organization['id'] ])}}">Bekijken</a></td>
+                        <td><x-company-identifier :identifiers="$organization['identifier'] ?? null" /></td>
+                        <td><a href="{{ route('address-book.org-info', ['ref' => $organization['id'] ]) }}">@lang('View')</a></td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3">Geen resultaten gevonden</td>
+                        <td colspan="3">@lang('No results found')</td>
                     </tr>
                 @endforelse
                 </tbody>
             </table>
 
             @if ($result->total)
-                <p>A total of {{ $result->total }} organizations have been found.</p>
+                <p>@lang('A total of :number organizations have been found.', ['number' => $result->total])</p>
             @endif
 
-            <nav class="pagination" aria-label="Paginering">
+            <nav class="pagination" aria-label="@lang('Pagination')">
                 @if ($result->hasPreviousPage())
-                <a class="adjacent previous" href="{{ route('address-book', $result->previousPageQuery) }}" aria-label="Vorige pagina">Vorige pagina</a>
+                <a class="adjacent previous" href="{{ route('address-book', $result->previousPageQuery) }}" aria-label="@lang('Previous Page')">@lang('Previous Page')</a>
                 @else
-                <span class="disabled adjacent previous" aria-label="Vorige pagina">Vorige pagina</span>
+                <span class="disabled adjacent previous" aria-label="@lang('Previous Page')">@lang('Previous Page')</span>
                 @endif
 
                 @if ($result->hasNextPage())
-                    <a class="adjacent next" href="{{ route('address-book', $result->nextPageQuery) }}" aria-label="Volgende pagina">Volgende pagina</a>
+                    <a class="adjacent next" href="{{ route('address-book', $result->nextPageQuery) }}" aria-label="@lang('Next Page')">@lang('Next Page')</a>
                 @else
-                    <span class="disabled adjacent next" aria-label="Volgende pagina">Volgende pagina</span>
+                    <span class="disabled adjacent next" aria-label="@lang('Next Page')">@lang('Next Page')</span>
                 @endif
             </nav>
         </div>
