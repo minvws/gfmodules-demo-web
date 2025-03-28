@@ -60,7 +60,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($organizations as $organization)
+                @forelse ($result->organizations as $organization)
                     <tr>
                         <td>{{ $organization['name'] ?? '' }}</td>
                         <td>{{ (array_values(array_filter($organization['identifier'] ?? [], fn($identifier) => ($identifier['system'] ?? '') === 'http://fhir.nl/fhir/NamingSystem/ura') ?? []))[0]['value'] ?? '' }}</td>
@@ -73,6 +73,24 @@
                 @endforelse
                 </tbody>
             </table>
+
+            @if ($result->total)
+                <p>A total of {{ $result->total }} organizations have been found.</p>
+            @endif
+
+            <nav class="pagination" aria-label="Paginering">
+                @if ($result->hasPreviousPage())
+                <a class="adjacent previous" href="{{ route('address-book', $result->previousPageQuery) }}" aria-label="Vorige pagina">Vorige pagina</a>
+                @else
+                <span class="disabled adjacent previous" aria-label="Vorige pagina">Vorige pagina</span>
+                @endif
+
+                @if ($result->hasNextPage())
+                    <a class="adjacent next" href="{{ route('address-book', $result->nextPageQuery) }}" aria-label="Volgende pagina">Volgende pagina</a>
+                @else
+                    <span class="disabled adjacent next" aria-label="Volgende pagina">Volgende pagina</span>
+                @endif
+            </nav>
         </div>
     </section>
 @endsection

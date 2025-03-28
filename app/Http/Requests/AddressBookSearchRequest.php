@@ -21,18 +21,16 @@ class AddressBookSearchRequest extends FormRequest
         return [
             'name' => ['nullable', 'string', 'max:255'],
             'ura' => ['nullable', 'integer', 'max_digits:8'],
+//            '_count' => ['nullable', 'integer', 'min:1', 'max:20'],
+            '_getpagesoffset' => ['nullable', 'integer'],
         ];
-    }
-
-    public function isSearchPerformed(): bool
-    {
-        return $this->query('name') || $this->query('ura');
     }
 
     public function getSearchValues(): AddressBookSearchValues
     {
         $name = $this->query('name');
         $ura = $this->query('ura');
+        $offset = (int) $this->query('_getpagesoffset', '0');
 
         if (!is_string($name)) {
             $name = null;
@@ -45,6 +43,7 @@ class AddressBookSearchRequest extends FormRequest
         return new AddressBookSearchValues(
             name: $name,
             ura: $ura,
+            offset: $offset,
         );
     }
 }
