@@ -11,7 +11,7 @@
     "Action": "Actie",
     "View": "Bekijken",
     "No results found": "Geen resultaten gevonden",
-    "A total of :number organizations have been found.": "Er zijn :number organisaties gevonden.",
+    ":number organisation found.|A total of :number organizations have been found.": "Er is :number organisatie gevonden.|Er zijn :number organisaties gevonden.",
     "Pagination": "Paginering",
     "Previous Page": "Vorige pagina",
     "Next Page": "Volgende pagina",

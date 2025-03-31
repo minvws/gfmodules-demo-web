@@ -75,7 +75,7 @@
             </table>
 
             @if ($result->total)
-                <p>@lang('A total of :number organizations have been found.', ['number' => $result->total])</p>
+                <p>{{ trans_choice(':number organisation found.|A total of :number organizations have been found.', $result->total, ['number' => $result->total]) }}</p>
             @endif
 
             <nav class="pagination" aria-label="@lang('Pagination')">
