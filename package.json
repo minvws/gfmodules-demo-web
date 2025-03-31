@@ -10,7 +10,7 @@
     "devDependencies": {
         "laravel-vite-plugin": "^1.0.5",
         "sass": "^1.85.1",
-        "vite": "^6.2.3"
+        "vite": "^6.2.4"
     },
     "dependencies": {
         "@minvws/manon": "^17.0.0-rc.0",
