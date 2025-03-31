@@ -70,7 +70,7 @@
                 @forelse ($result->organizations ?? [] as $organization)
                     <tr>
                         <td>{{ $organization['name'] ?? '' }}</td>
-                        <td><x-company-identifier :identifiers="$organization['identifier'] ?? null" /></td>
+                        <td><x-company-ura-identifier :identifiers="$organization['identifier'] ?? null" /></td>
                         <td><a href="{{ route('address-book.org-info', ['ref' => $organization['id'] ]) }}">@lang('View')</a></td>
                     </tr>
                 @empty

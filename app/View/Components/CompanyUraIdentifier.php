@@ -6,7 +6,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class CompanyIdentifier extends Component
+class CompanyUraIdentifier extends Component
 {
     protected const URA_IDENTIFIER = 'http://fhir.nl/fhir/NamingSystem/ura';
 
