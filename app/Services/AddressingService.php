@@ -6,7 +6,13 @@ namespace App\Services;
 
 use App\Dto\AddressBookSearchValues;
 use App\Dto\OrganizationsListResult;
+ use App\Exceptions\AddressingResponseException;
+use App\Exceptions\AddressingUnavailableException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\GuzzleException;
+use JsonException;
 
 class AddressingService
 {
@@ -41,28 +47,39 @@ class AddressingService
         return $ret;
     }
 
+    /**
+     * @throws AddressingUnavailableException|AddressingResponseException
+     */
     public function findOrganizations(AddressBookSearchValues $searchValues): OrganizationsListResult
     {
-        $query = [
-            '_include' => 'Organization:endpoint',
-            '_count' => $searchValues->count,
-            '_getpagesoffset' => $searchValues->offset,
-        ];
-        if (!empty($searchValues->name)) {
-            $query['name'] = $searchValues->name;
-        }
-        if (!empty($searchValues->ura)) {
-            $query['identifier'] = $searchValues->ura;
-        }
+        try {
+            $query = [
+                '_include' => 'Organization:endpoint',
+                '_count' => $searchValues->count,
+                '_getpagesoffset' => $searchValues->offset,
+            ];
+            if (!empty($searchValues->name)) {
+                $query['name:contains'] = $searchValues->name;
+            }
+            if (!empty($searchValues->ura)) {
+                $query['identifier'] = $searchValues->ura;
+            }
 
-        $client = new Client();
-        $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search", [
-            'query' => $query,
-            'headers' => [
-                'accept' => 'application/json',
-            ],
-        ]);
-        $data = json_decode($result->getBody()->getContents(), true);
+            $client = new Client();
+            $result = $client->request('GET', config('addressing.endpoint') . "/Organization/_search", [
+                'query' => $query,
+                'headers' => [
+                    'accept' => 'application/json',
+                ],
+            ]);
+            $data = json_decode($result->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (BadResponseException $e) {
+            throw new AddressingResponseException('Addressing service returned an error', 0, $e);
+        } catch (ConnectException | GuzzleException $e) {
+            throw new AddressingUnavailableException('Addressing service is unavailable', 0, $e);
+        } catch (JsonException $e) {
+            throw new AddressingResponseException('Addressing service returned invalid JSON', 0, $e);
+        }
 
         return $this->buildOrganizationListResult($data, $searchValues);
     }

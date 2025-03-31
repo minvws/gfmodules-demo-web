@@ -51,6 +51,13 @@
     <section>
         <div>
             <h2>@lang('Results')</h2>
+
+            @if($error)
+                <p class="error" aria-label="{{__('Error') }}">
+                    <span>@lang('Error'):</span> {{ $error }}
+                </p>
+            @endif
+
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                 <tr>
@@ -60,7 +67,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse ($result->organizations as $organization)
+                @forelse ($result->organizations ?? [] as $organization)
                     <tr>
                         <td>{{ $organization['name'] ?? '' }}</td>
                         <td><x-company-identifier :identifiers="$organization['identifier'] ?? null" /></td>
@@ -74,23 +81,25 @@
                 </tbody>
             </table>
 
-            @if ($result->total)
+            @if($result && $result->total)
                 <p>{{ trans_choice(':number organisation found.|A total of :number organizations have been found.', $result->total, ['number' => $result->total]) }}</p>
             @endif
 
-            <nav class="pagination" aria-label="@lang('Pagination')">
-                @if ($result->hasPreviousPage())
-                <a class="adjacent previous" href="{{ route('address-book', $result->previousPageQuery) }}" aria-label="@lang('Previous Page')">@lang('Previous Page')</a>
-                @else
-                <span class="disabled adjacent previous" aria-label="@lang('Previous Page')">@lang('Previous Page')</span>
-                @endif
+            @if($result)
+                <nav class="pagination" aria-label="@lang('Pagination')">
+                    @if ($result->hasPreviousPage())
+                    <a class="adjacent previous" href="{{ route('address-book', $result->previousPageQuery) }}" aria-label="@lang('Previous Page')">@lang('Previous Page')</a>
+                    @else
+                    <span class="disabled adjacent previous" aria-label="@lang('Previous Page')">@lang('Previous Page')</span>
+                    @endif
 
-                @if ($result->hasNextPage())
-                    <a class="adjacent next" href="{{ route('address-book', $result->nextPageQuery) }}" aria-label="@lang('Next Page')">@lang('Next Page')</a>
-                @else
-                    <span class="disabled adjacent next" aria-label="@lang('Next Page')">@lang('Next Page')</span>
-                @endif
-            </nav>
+                    @if ($result->hasNextPage())
+                        <a class="adjacent next" href="{{ route('address-book', $result->nextPageQuery) }}" aria-label="@lang('Next Page')">@lang('Next Page')</a>
+                    @else
+                        <span class="disabled adjacent next" aria-label="@lang('Next Page')">@lang('Next Page')</span>
+                    @endif
+                </nav>
+            @endif
         </div>
     </section>
 @endsection

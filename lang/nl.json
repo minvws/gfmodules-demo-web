@@ -15,5 +15,7 @@
     "Pagination": "Paginering",
     "Previous Page": "Vorige pagina",
     "Next Page": "Volgende pagina",
-    "Search": "Zoeken"
+    "Search": "Zoeken",
+    "Addressing service is unavailable.": "Adresseringsdienst is niet beschikbaar.",
+    "Addressing service returned an error.": "Adresseringsdienst gaf een foutmelding terug."
 }
