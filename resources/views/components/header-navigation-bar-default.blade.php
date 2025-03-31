@@ -9,6 +9,7 @@
             <li>
                 <a href="{{ route('index') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'index') aria-current="page" @endif><span class="icon icon-home">Home-icoon</span>@lang('Home')</a>
                 <a href="{{ route('flow') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'flow') aria-current="page" @endif>@lang('Flow')</a>
+                <a href="{{ route('address-book') }}" @if(\Illuminate\Support\Facades\Route::currentRouteName() === 'address-book') aria-current="page" @endif>@lang('Address Book')</a>
             </li>
         </ul>
         @auth

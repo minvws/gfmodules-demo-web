@@ -1,3 +1,21 @@
 {
-    "Logout": "Uitloggen"
+    "Logout": "Uitloggen",
+    "Address Book": "Adresboek",
+    "Search Address Book": "Zoeken in adresboek",
+    "Search on name": "Zoeken op naam",
+    "Search on ura": "Zoeken op ura",
+    "Error": "Foutmelding",
+    "Results": "Resultaten",
+    "Organization": "Organisatie",
+    "URA": "URA",
+    "Action": "Actie",
+    "View": "Bekijken",
+    "No results found": "Geen resultaten gevonden",
+    ":number organisation found.|A total of :number organizations have been found.": "Er is :number organisatie gevonden.|Er zijn :number organisaties gevonden.",
+    "Pagination": "Paginering",
+    "Previous Page": "Vorige pagina",
+    "Next Page": "Volgende pagina",
+    "Search": "Zoeken",
+    "Addressing service is unavailable.": "Adresseringsdienst is niet beschikbaar.",
+    "Addressing service returned an error.": "Adresseringsdienst gaf een foutmelding terug."
 }

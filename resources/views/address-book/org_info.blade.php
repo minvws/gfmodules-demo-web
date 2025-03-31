@@ -15,7 +15,7 @@
                     <td>{{ $organization['name'] ?? '' }}</td>
                 </tr>
 
-                @foreach($organization['address'] as $address)
+                @foreach($organization['address'] ?? [] as $address)
                 <tr>
                     <th>Address <small>({{ $address['type'] ?? ''}})</small></th>
                     <td>{{ $address['postalCode'] ?? '' }}, {{ $address['city'] ?? ''}} <br>

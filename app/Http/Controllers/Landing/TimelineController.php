@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
-use App\Services\AddressingService;
 use App\Services\FlowStateService;
 use App\Services\TimelineService;
 use Illuminate\Http\RedirectResponse;
@@ -13,15 +12,6 @@ use Illuminate\View\View;
 
 class TimelineController extends Controller
 {
-    public function orgInfo(string $ref, AddressingService $addressingService): View
-    {
-        $org = $addressingService->findOrganization($ref, includeEndpoints: true);
-        return view('timeline.org_info')
-            ->with('organization', $org['organization'])
-            ->with('endpoints', $org['endpoints'] ?? [])
-        ;
-    }
-
     public function fetch(
         FlowStateService $stateService,
         TimelineService $timelineService,

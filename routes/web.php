@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AddressBookController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\FlowController;
 use App\Http\Controllers\IndexController;
@@ -28,6 +29,9 @@ Route::post('/flow/consent', [FlowController::class, 'storeConsent'])->name('flo
 Route::get('/flow/authorization', [FlowController::class, 'editAuthorization'])->name('flow-authorization');
 Route::post('/flow/authorization', [FlowController::class, 'storeAuthorization'])->name('flow-authorization.store');
 
+Route::get('/address-book', [AddressBookController::class, 'index'])->name('address-book');
+Route::get('/address-book/org/{ref}', [AddressBookController::class, 'orgInfo'])->name('address-book.org-info');
+
 if (config('auth.digid_mock_enabled')) {
     Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
 }
@@ -42,5 +46,4 @@ Route::middleware(['auth'])
     ->name('timeline.')
     ->group(function () {
         Route::get('fetch', [TimelineController::class, 'fetch'])->name('fetch');
-        Route::get('org/{ref}', [TimelineController::class, 'orgInfo'])->name('org_info');
     });
