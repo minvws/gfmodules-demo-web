@@ -8,7 +8,7 @@
             <table class="table table-bordered table-striped">
                 <tbody>
                 <tr>
-                    <th>Laatste update</th>
+                    <th>@lang('Last update')</th>
                     <td><x-company-last-updated :meta="$organization['meta']" /></td>
                 </tr>
                 </tbody>
@@ -28,17 +28,17 @@
                 </tbody>
             </table>
 
-            <h2>Contactgegevens organisatie</h2>
+            <h2>@lang('Contact information organization')</h2>
             <table class="table table-bordered table-striped">
                 <tbody>
                 <tr>
-                    <th>Name</th>
+                    <th>@lang('Name')</th>
                     <td>{{ $organization['name'] ?? '' }}</td>
                 </tr>
 
                 @foreach($organization['address'] ?? [] as $address)
                     <tr>
-                        <th>Address <small>({{ $address['type'] ?? ''}})</small></th>
+                        <th>@lang('Address') <small>({{ $address['type'] ?? ''}})</small></th>
                         <td>{{ $address['postalCode'] ?? '' }}, {{ $address['city'] ?? ''}} <br>
                             {{ $address['state'] ?? ''}}, {{ $address['country'] ?? ''}}</td>
                     </tr>
@@ -46,15 +46,14 @@
                 </tbody>
             </table>
 
-
             @if ($endpoints)
-                <h2>Endpoints</h2>
+                <h2>@lang('Endpoints')</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>URL</th>
-                            <th>payloadMimeTypes</th>
+                            <th>@lang('Name')</th>
+                            <th>@lang('URL')</th>
+                            <th>@lang('payloadMimeTypes')</th>
                         </tr>
                     </thead>
                     <tbody>
