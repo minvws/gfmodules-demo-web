@@ -5,12 +5,11 @@
         <div>
             <h1>{{ $organization['name'] ?? '' }}</h1>
 
-
             <table class="table table-bordered table-striped">
                 <tbody>
                 <tr>
                     <th>Laatste update</th>
-                    <td>{{ $organization['meta']['lastUpdated'] ?? '' }}</td>
+                    <td><x-company-last-updated :meta="$organization['meta']" /></td>
                 </tr>
                 </tbody>
             </table>
@@ -24,7 +23,7 @@
                 </tr>
                 <tr>
                     <th>KvK</th>
-                    <td></td>
+                    <td><x-company-kvk-identifier :identifiers="$organization['identifier'] ?? null" /></td>
                 </tr>
                 </tbody>
             </table>
@@ -66,10 +65,8 @@
                             <td>{{ implode(", ", $endpoint['payloadMimeType']) }}</td>
                         </tr>
                     @endforeach
-
                     </tbody>
                 </table>
-
             @endif
 
         </div>
