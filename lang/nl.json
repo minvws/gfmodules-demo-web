@@ -17,5 +17,12 @@
     "Next Page": "Volgende pagina",
     "Search": "Zoeken",
     "Addressing service is unavailable.": "Adresseringsdienst is niet beschikbaar.",
-    "Addressing service returned an error.": "Adresseringsdienst gaf een foutmelding terug."
+    "Addressing service returned an error.": "Adresseringsdienst gaf een foutmelding terug.",
+    "Last update": "Laatst bijgewerkt",
+    "Contact information organization": "Contactgegevens organisatie",
+    "Name": "Naam",
+    "Address": "Adres",
+    "Endpoints": "Endpoints",
+    "URL": "URL",
+    "payloadMimeTypes": "payloadMimeTypes"
 }

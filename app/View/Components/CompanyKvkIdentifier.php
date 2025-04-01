@@ -6,9 +6,9 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class CompanyIdentifier extends Component
+class CompanyKvkIdentifier extends Component
 {
-    protected const URA_IDENTIFIER = 'http://fhir.nl/fhir/NamingSystem/ura';
+    protected const KVK_IDENTIFIER = 'http://example.com/fhir/NamingSystem/kvk';
 
     public function __construct(
         protected ?array $identifiers = null,
@@ -23,7 +23,7 @@ class CompanyIdentifier extends Component
 
     protected function getIdentifier(): string
     {
-        $filterFunction = static fn($identifier) => ($identifier['system'] ?? '') === self::URA_IDENTIFIER;
+        $filterFunction = static fn($identifier) => ($identifier['system'] ?? '') === self::KVK_IDENTIFIER;
 
         $uraIdentifier = array_values(array_filter($this->identifiers ?? [], $filterFunction))[0] ?? [];
         return $uraIdentifier['value'] ?? '';
