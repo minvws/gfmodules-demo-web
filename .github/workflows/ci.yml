@@ -55,7 +55,7 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: public/build
-          key: ${{ runner.os }}-public-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-public-${{ hashFiles('package-lock.json') }}
       - run: npm run build
 
   # ------------------------------------------------------------------------------------
@@ -187,7 +187,7 @@ jobs:
   laravel-tests:
     needs:
       - composer-install
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     strategy:
       max-parallel: 3
       matrix:
@@ -238,7 +238,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@/restorev4
+      - uses: actions/cache/restore@v4
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -250,7 +250,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: public/build
-          key: ${{ runner.os }}-public-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-public-${{ hashFiles('package-lock.json') }}
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
