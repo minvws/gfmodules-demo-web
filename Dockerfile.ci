@@ -1,0 +1,12 @@
+# This dockerfile will spin up the php server for easy testing
+# through our CI systems. Do not use this container file for
+# production purposes.
+FROM php:8.2-cli
+
+RUN mkdir /src
+COPY . /src
+
+WORKDIR /src
+CMD ["php", "artisan", "serve", "--host", "0.0.0.0"]
+
+EXPOSE 8000
