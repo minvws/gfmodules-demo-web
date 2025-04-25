@@ -23,7 +23,7 @@
             <h2>Tijdslijn van {{ $patient['display'] }} <small>({{$bsn}})</small></h2>
             @endif
 
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" id="timeline-result-table">
                 <thead class="table-dark">
                 <tr>
                     <th>Datum</th>
