@@ -21,6 +21,8 @@ run: ## Run the project
 	npm run build
 	php artisan serve --port=9000
 
+container-build: ## Build the standalone container
+	docker build . -t gfmodules-viewer-web --file ./docker/Dockerfile
 
 test: test-php test-js ## Runs tests
 
