@@ -21,7 +21,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.3', '8.4' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache@v4
@@ -81,7 +81,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.3', '8.4' ]
 
   # ------------------------------------------------------------------------------------
   php-linting-psr12:
@@ -104,7 +104,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.3', '8.4' ]
 
   # ------------------------------------------------------------------------------------
   php-linting-stan:
@@ -131,7 +131,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.3', '8.4' ]
 
   # ------------------------------------------------------------------------------------
   php-linting-cve:
@@ -154,7 +154,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.3', '8.4' ]
 
   # ------------------------------------------------------------------------------------
   npm-audit:
@@ -177,7 +177,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        php-versions: [ '8.2', '8.3', '8.4' ]
+        php-versions: [ '8.3', '8.4' ]
     steps:
       - uses: actions/checkout@v4
       - name: Install PHP
