@@ -1,7 +1,7 @@
 # This dockerfile will spin up the php server for easy testing
 # through our CI systems. Do not use this container file for
 # production purposes.
-FROM php:8.2-cli
+FROM php:8.3-cli
 
 RUN mkdir /src
 COPY . /src
