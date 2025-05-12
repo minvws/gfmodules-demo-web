@@ -5,11 +5,10 @@
     "license": "EUPL-1.2",
     "require": {
         "php": "^8.3.0",
-        "guzzlehttp/guzzle": "^7.8",
         "jumbojett/openid-connect-php": "1.0.2",
         "laravel/framework": "^12.8",
         "laravel/tinker": "^2.10.1",
-        "minvws/openid-connect-php-laravel": "^0.3.0"
+        "minvws/openid-connect-php-laravel": "^0.4.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",
@@ -22,7 +21,7 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^11.5.3",
+        "phpunit/phpunit": "^12.1",
         "psalm/plugin-laravel": "^3.0",
         "slevomat/coding-standard": "^8.14",
         "squizlabs/php_codesniffer": "^3.7",
