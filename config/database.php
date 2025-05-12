@@ -163,8 +163,8 @@ return [
                     'cafile' => env('REDIS_TLS_CAFILE', ''),
                     'local_cert' => env('REDIS_TLS_LOCAL_CERT', ''),
                     'local_pk' => env('REDIS_TLS_LOCAL_PK', ''),
-                ]
-            ]
+                ],
+            ],
         ],
 
         'default' => [
@@ -175,7 +175,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
-            // TLS Config for predis
+            // TLS Config for phpredis
             'ssl' => [
                 'peer_name' => env('REDIS_TLS_PEER_NAME', ''),
                 'verify_peer' => env('REDIS_TLS_VERIFY_PEER', true),
@@ -183,7 +183,7 @@ return [
                 'cafile' => env('REDIS_TLS_CAFILE', ''),
                 'local_cert' => env('REDIS_TLS_LOCAL_CERT', ''),
                 'local_pk' => env('REDIS_TLS_LOCAL_PK', ''),
-            ]
+            ],
         ],
 
         'cache' => [
@@ -194,7 +194,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
-            // TLS Config for predis
+            // TLS Config for phpredis
             'ssl' => [
                 'peer_name' => env('REDIS_TLS_PEER_NAME', ''),
                 'verify_peer' => env('REDIS_TLS_VERIFY_PEER', true),
@@ -202,7 +202,7 @@ return [
                 'cafile' => env('REDIS_TLS_CAFILE', ''),
                 'local_cert' => env('REDIS_TLS_LOCAL_CERT', ''),
                 'local_pk' => env('REDIS_TLS_LOCAL_PK', ''),
-            ]
+            ],
         ],
 
     ],
