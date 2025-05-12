@@ -23,7 +23,7 @@ class CompanyUraIdentifier extends Component
 
     protected function getIdentifier(): string
     {
-        $filterFunction = static fn($identifier) => ($identifier['system'] ?? '') === self::URA_IDENTIFIER;
+        $filterFunction = static fn($identifier): bool => ($identifier['system'] ?? '') === self::URA_IDENTIFIER;
 
         $uraIdentifier = array_values(array_filter($this->identifiers ?? [], $filterFunction))[0] ?? [];
         return $uraIdentifier['value'] ?? '';
