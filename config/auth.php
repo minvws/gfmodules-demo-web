@@ -17,7 +17,6 @@ return [
 
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
     /*
@@ -83,14 +82,7 @@ return [
     |
     */
 
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
-    ],
+    'passwords' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -107,10 +99,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Digid mock enabled
+    | DigiD mock enabled
     |--------------------------------------------------------------------------
     |
-    | Here you may define if the digid mock is enabled or not.
+    | Here you may define if the DigiD mock is enabled or not.
     |
     */
 
