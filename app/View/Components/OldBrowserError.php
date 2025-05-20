@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class OldBrowserError extends Component
@@ -22,9 +19,9 @@ class OldBrowserError extends Component
     }
 
     /**
-     * Get the view / contents that represent the component.
+     * Get the view / view contents that represent the component.
      *
-     * @return Application|Factory|View|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\Support\Htmlable|\Closure|string
      */
     public function render()
     {
