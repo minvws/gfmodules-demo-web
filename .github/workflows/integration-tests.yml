@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-ti-suite:
-    if: github.event.pull_request.merged == true || github.ref == 'refs/heads/main'
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Trigger a run on the ti-suite
