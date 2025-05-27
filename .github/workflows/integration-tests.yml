@@ -11,5 +11,5 @@ jobs:
       - name: Trigger CI suite
         uses: minvws/nl-irealisatie-generic-pipelines/.github/actions/gfmodules-trigger-ci@gfmodules-trigger-ci
         with:
-          orac_htpasswd: ${{ secrets.ORAC_HTPASSWD }}
+          orac_htpasswd: '${{ secrets.ORAC_HTPASSWD }}'
           endpoint_url: https://orac.test.gf.irealisatie.nl/run
