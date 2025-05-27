@@ -8,8 +8,8 @@ jobs:
   trigger-ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
+      - name: Trigger CI suite
         uses: minvws/nl-irealisatie-generic-pipelines/.github/actions/gfmodules-trigger-ci@gfmodules-trigger-ci
         with:
-          orac_htpassword: ${{ secrets.ORAC_HTPASSWD }}
+          orac_htpasswd: ${{ secrets.ORAC_HTPASSWD }}
           endpoint_url: https://orac.test.gf.irealisatie.nl/run
