@@ -21,11 +21,19 @@
                     </button>
                     <div aria-labelledby="flow-identification-authentication">
                         @if(!$state->getUser())
+                            @error('login')
+                            <p class="error"><span>@lang('Error'):</span> {{ $message }}</p>
+                            @enderror
                             <ul class="external-login">
                                 <li>
                                     <a href="{{ route('oidc.login') }}">
                                         <img src="{{ asset('img/signin-method-logo.png') }}" alt="" rel="external">
                                         @lang('Login with') Dezi-online
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('vc.login') }}">
+                                        @lang('Login with') VC
                                     </a>
                                 </li>
                             </ul>

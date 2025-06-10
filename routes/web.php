@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AddressBookController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\VcLoginController;
 use App\Http\Controllers\FlowController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Landing\TimelineController;
@@ -35,6 +36,13 @@ Route::get('/address-book/org/{ref}', [AddressBookController::class, 'orgInfo'])
 if (config('auth.digid_mock_enabled')) {
     Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
 }
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('vc/login', [VcLoginController::class, 'login'])->name('vc.login');
+    Route::get('vc/login/{sessionId}', [VcLoginController::class, 'session'])
+        ->name('vc.login-session')
+        ->middleware(['throttle:60,1']);
+});
 
 Route::middleware(['auth'])
     ->group(function () {

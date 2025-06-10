@@ -24,5 +24,7 @@
     "Address": "Adres",
     "Endpoints": "Endpoints",
     "URL": "URL",
-    "payloadMimeTypes": "payloadMimeTypes"
+    "payloadMimeTypes": "payloadMimeTypes",
+    "Login session could not be found. Please try again.": "Inlogsessie kon niet worden gevonden. Probeer het opnieuw.",
+    "VC Login - Present credential": "VC Login - Presenteer credential"
 }
