@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\PresentationSessionInitiated;
+use App\Dto\PresentationSessionResult;
 use Illuminate\Container\Attributes\Config;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use JsonException;
 use RuntimeException;
 
 class VCVerifierService
@@ -31,8 +33,7 @@ class VCVerifierService
         string $credentialType,
         ?string $successRedirectUrl = null,
         ?string $errorRedirectUrl = null,
-    ): PresentationSessionInitiated
-    {
+    ): PresentationSessionInitiated {
         $additionalHeaders = [];
 
         if (!empty($successRedirectUrl)) {
@@ -67,10 +68,10 @@ class VCVerifierService
      * Retrieve the verifiable presentation session.
      *
      * @param string $sessionId The session ID of the verifiable presentation session
-     * @return array<mixed> The session information
-     * @throws ConnectionException
+     * @return PresentationSessionResult The session information
+     * @throws ConnectionException|JsonException
      */
-    public function getPresentationSession(string $sessionId): array
+    public function getPresentationSession(string $sessionId): PresentationSessionResult
     {
         $response = Http::get($this->getSessionEndpointUrl($sessionId));
 
@@ -83,8 +84,7 @@ class VCVerifierService
             throw new RuntimeException('Invalid response format for the verifiable presentation session');
         }
 
-        // TODO: Map to a DTO
-        return $data;
+        return PresentationSessionResult::parse($data);
     }
 
     protected function getSessionIdOfVpAuthorizeUrl(string $authorizeUrl): string
