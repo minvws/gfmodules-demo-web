@@ -38,7 +38,7 @@
                                 </li>
                             </ul>
                         @else
-                            <p>Je bent ingelogd als: {{ $state->getUser()->getName() }}</p>
+                            <p>Je bent ingelogd als: {{ $state->getUser()->getName() }} ({{ $state->getUser()->getAuthIdentifier() }})</p>
                         @endif
                     </div>
                 </li>
