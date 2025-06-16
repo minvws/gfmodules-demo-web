@@ -19,7 +19,8 @@ setup-php:
 
 run: ## Run the project
 	npm run build
-	php artisan serve --port=9000
+	vendor/bin/sail up -d
+	vendor/bin/sail artisan key:generate
 
 container-build: ## Build the standalone container
 	docker build . -t gfmodules-viewer-web --file ./docker/Dockerfile
