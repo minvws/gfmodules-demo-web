@@ -1,4 +1,4 @@
-# gfmodules-viewer-web
+# GFModules - Viewer Web
 
 This is the web frontend containing a flow to find discover patient data and an address book to find organization information.
 
