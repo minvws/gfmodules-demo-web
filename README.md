@@ -1,6 +1,25 @@
 # GFModules - Viewer Web
 
-This is the web frontend containing a flow to find discover patient data and an address book to find organization information.
+This viewer application can be used to find patient data and also provides an address book to find organization information.
+
+## Disclaimer
+
+This project and all associated code serve solely as documentation
+and demonstration purposes to illustrate potential system
+communication patterns and architectures.
+
+This codebase:
+
+- Is NOT intended for production use
+- Does NOT represent a final specification
+- Should NOT be considered feature-complete or secure
+- May contain errors, omissions, or oversimplified implementations
+- Has NOT been tested or hardened for real-world scenarios
+
+The code examples are only meant to help understand concepts and demonstrate possibilities.
+
+By using or referencing this code, you acknowledge that you do so at your own
+risk and that the authors assume no liability for any consequences of its use.
 
 ## Development setup
 
@@ -17,7 +36,7 @@ make setup
 make run
 ```
 
-After this you can access the application at [http://localhost:8500/](http://localhost:8500).
+After this you can access the application at [http://localhost:8500](http://localhost:8500).
 
 ## Run on docker
 
@@ -39,4 +58,4 @@ Make sure you build the frontend assets locally first:
         gfmodules-viewer-web:latest
 ```
 
-After this you can access the application at [http://localhost:8500/](http://localhost:8500).
+After this you can access the application at [http://localhost:8500](http://localhost:8500).
