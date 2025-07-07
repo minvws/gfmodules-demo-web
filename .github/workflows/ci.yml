@@ -237,6 +237,11 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
 
+      - name: Pre-build frontend
+        run: |
+          npm ci
+          npm run build
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
