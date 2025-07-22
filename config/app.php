@@ -13,7 +13,9 @@ return [
     | framework needs to place the application's name in a notification or
     | other UI elements where an application name needs to be displayed.
     |
-    */
+     */
+
+    'force_https' => env('FORCE_HTTPS', false),
 
     'name' => env('APP_NAME', 'Laravel'),
 
