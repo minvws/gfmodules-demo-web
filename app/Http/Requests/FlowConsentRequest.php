@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\ConsentType;
 use App\Rules\BsnRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FlowConsentRequest extends FormRequest
 {
@@ -27,7 +29,7 @@ class FlowConsentRequest extends FormRequest
         return [
             'bsn' => ['required', 'min:8', 'max:9', $rule],
 //            'birthyear' => ['required'],
-            'consent' => ['required', 'accepted'],
+            'access_type' => ['required', Rule::enum(ConsentType::class)],
         ];
     }
 }

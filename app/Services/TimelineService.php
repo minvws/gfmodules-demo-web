@@ -11,8 +11,13 @@ use GuzzleHttp\Exception\ClientException;
 
 class TimelineService
 {
-    public function findTimeline(string $bsn, DataDomain $dataDomain, UziUser $uziUser): array
-    {
+    public function findTimeline(
+        string $bsn,
+        DataDomain $dataDomain,
+        UziUser $uziUser,
+        string $caseNumber,
+        bool $breakingGlass
+    ): array {
         $client = new Client();
 
         try {
@@ -23,6 +28,9 @@ class TimelineService
                     'json' => [
                         'bsn' => $bsn,
                         'ura' => $uziUser->getFirstRelation()->ura ?? '',
+                        'dezi_jwt' => $uziUser->getJwt() ?? null,
+                        'breakingGlass' => $breakingGlass,
+                        'caseNumber' => $caseNumber,
                     ],
                 ]
             );

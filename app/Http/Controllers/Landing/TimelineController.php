@@ -9,6 +9,7 @@ use App\Services\FlowStateService;
 use App\Services\TimelineService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Enums\ConsentType;
 
 class TimelineController extends Controller
 {
@@ -30,8 +31,12 @@ class TimelineController extends Controller
             return redirect()->route('flow');
         }
 
+        // Generate a case number since it is not in the viewer
+        $caseNr = 'CASE_' . time() . '_' . substr(md5($bsn . $user->uziId), 0, 8);
+        $breakingGlass = $flowState->getConsentData()?->getConsentType() === ConsentType::BreakingGlass;
+
         $dataDomain = $informationTypes[0];
-        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $user);
+        $timelineBundle = $timelineService->findTimeline($bsn, $dataDomain, $user, $caseNr, $breakingGlass);
         $patient = [];
         $imagingStudiesSeries = [];
         $medicationStatements = [];

@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use MinVWS\OpenIDConnectLaravel\Http\Responses\LoginResponseHandlerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Session;
 
 class OidcLoginResponseHandler implements LoginResponseHandlerInterface
 {
@@ -35,6 +36,14 @@ class OidcLoginResponseHandler implements LoginResponseHandlerInterface
         }
         if (!$user->hasUziId()) {
             throw new UziNoUziNumberException();
+        }
+
+        $user->setJwt(Session::get('oidc_jwt') ?? '');
+
+        if (empty($user->getJwt())) {
+            return redirect()
+            ->route('index')
+            ->with('error', __('Something went wrong with logging in, please try again.'));
         }
 
         Auth::setUser($user);
