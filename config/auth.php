@@ -107,4 +107,6 @@ return [
     */
 
     'digid_mock_enabled' => env('DIGID_MOCK_ENABLED', false),
+    'uzi_jwt_signing_key' => env('UZI_JWT_SIGNING_KEY'),
+    'uzi_jwt_signing_cert' => env('UZI_JWT_SIGNING_CERT'),
 ];
