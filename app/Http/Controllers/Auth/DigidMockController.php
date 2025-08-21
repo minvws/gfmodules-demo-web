@@ -21,57 +21,28 @@ class DigidMockController extends Controller
     private readonly JWK $publicKey;
     private readonly JWSBuilder $jwsBuilder;
     private readonly CompactSerializer $serializer;
-    private readonly string $kid;
 
     public function __construct(
         private readonly LoginResponseHandlerInterface $loginResponseHandler
     ) {
         // Load private key for signing
-        $privateKeyPath = config('auth.uzi_jwt_signing_key');
+        $privateKeyPath = config('auth.dezi_mock_jwt_signing_key');
         if (!$privateKeyPath || !file_exists($privateKeyPath)) {
             throw new \RuntimeException('UZI JWT signing key not configured or not found');
         }
         $this->signingKey = JWKFactory::createFromKeyFile($privateKeyPath);
 
         // Load certificate for x5c/x5t headers
-        $certificatePath = config('auth.uzi_jwt_signing_cert');
+        $certificatePath = config('auth.dezi_mock_jwt_signing_cert');
         if (!$certificatePath || !file_exists($certificatePath)) {
             throw new \RuntimeException('UZI JWT signing certificate not configured or not found');
         }
         $this->publicKey = JWKFactory::createFromCertificateFile($certificatePath);
-        $this->kid = $this->kidFromCertificate($certificatePath);
 
         // Initialize Jose components
         $algorithmManager = new AlgorithmManager([new RS256()]);
         $this->jwsBuilder = new JWSBuilder($algorithmManager);
         $this->serializer = new CompactSerializer();
-    }
-
-    /**
-     * Generate a "kid" (Key ID) from a certificate.
-     * The "kid" is a unique identifier for the key. There is no standard way to generate a kid.
-     */
-    private function kidFromCertificate(string $certificatePath): string
-    {
-        $certificateContent = file_get_contents($certificatePath);
-        if ($certificateContent === false) {
-            throw new \RuntimeException('Unable to read certificate file');
-        }
-
-        // Parse the certificate
-        $certificate = openssl_x509_read($certificateContent);
-        if ($certificate === false) {
-            throw new \RuntimeException('Unable to parse certificate');
-        }
-
-        // Get the certificate fingerprint (SHA256)
-        $fingerprint = openssl_x509_fingerprint($certificate, 'sha256', true);
-        if ($fingerprint === false) {
-            throw new \RuntimeException('Unable to generate certificate fingerprint');
-        }
-
-        // Convert to URL-safe base64
-        return strtr(base64_encode($fingerprint), '+/', '-_');
     }
 
     private function createMockPayload(): array
@@ -108,8 +79,8 @@ class DigidMockController extends Controller
             ->addSignature($this->signingKey, [
                 'alg' => 'RS256',
                 'typ' => 'JWT',
-                'x5t' => rtrim($this->publicKey->get('x5t'), '='), // Remove padding
-                'kid' => $this->kid,
+                'x5t' => $this->publicKey->get('x5t'),
+                'kid' => $this->publicKey->get('x5t#256'),
             ])
             ->build();
 

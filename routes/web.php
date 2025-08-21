@@ -32,7 +32,7 @@ Route::post('/flow/authorization', [FlowController::class, 'storeAuthorization']
 Route::get('/address-book', [AddressBookController::class, 'index'])->name('address-book');
 Route::get('/address-book/org/{ref}', [AddressBookController::class, 'orgInfo'])->name('address-book.org-info');
 
-if (config('auth.digid_mock_enabled')) {
+if (config('auth.dezi_mock_enabled')) {
     Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
 }
 
