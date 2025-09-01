@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Dto\AuthorizationData;
 use App\Dto\ConsentData;
 use App\Enums\DataDomain;
+use App\Enums\ConsentType;
 use App\Http\Requests\FlowAuthorizationRequest;
 use App\Http\Requests\FlowConsentRequest;
 use App\Services\FlowStateService;
@@ -41,12 +42,13 @@ class FlowController extends Controller
 
     public function storeConsent(FlowConsentRequest $request): RedirectResponse
     {
+        $this->stateService->clearFlowState();
         $data = new ConsentData(
             bsn: $request->validated('bsn'),
-            consent: $request->validated('consent') ? true : false,
+            consentType: $request->validated('access_type') ?
+                ConsentType::from($request->validated('access_type')) : null,
         );
         $this->stateService->setConsentDataInSession($data);
-
         return redirect()->route('flow');
     }
 

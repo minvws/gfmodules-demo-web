@@ -66,30 +66,45 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label for="flow-consent-consent">Behandelrelatie</label>
-                                        <div>
-                                            <p class="warning" id="flow-consent-consent-warning-message">
-                                                <span>Waarschuwing:</span> De behandelrelatie wordt steeksproefsgewijs
-                                                gecontroleerd. Indien er geen sprake blijkt te zijn van een geldige
-                                                relatie kan dit tot royement leiden.
-                                            </p>
+                                        <fieldset>
+                                            <legend>Toegangstype</legend>
                                             <div>
-                                                @error('consent')
-                                                <p class="error" id="flow-consent-consent-error-message">
-                                                    <span>Foutmelding:</span> {{ $message }}
-                                                </p>
-                                                @enderror
-                                                <div class="checkbox">
-                                                    <input type="checkbox" id="flow-consent-consent" name="consent"
-                                                           class="warning" required
-                                                           aria-describedby="flow-consent-consent-warning-message flow-consent-consent-error-message">
-                                                    <label for="flow-consent-consent">Ik heb een behandelrelatie met
-                                                        deze patient</label>
+                                                <div>
+                                                    @error('access_type')
+                                                    <p class="error" id="flow-consent-access-type-error-message">
+                                                        <span>Foutmelding:</span> {{ $message }}
+                                                    </p>
+                                                    @enderror
+                                                    <div class="radio">
+                                                        <input type="radio" id="flow-consent-consent" name="access_type" value="treatment_relation"
+                                                               class="warning" required
+                                                               aria-describedby="flow-consent-access-type-warning-message flow-consent-access-type-error-message flow-consent-consent-warning-message"
+                                                               {{ old('access_type', $state->getConsentData()?->getConsentType()?->value) === 'treatment_relation' ? 'checked' : '' }}>
+                                                        <label for="flow-consent-consent">Ik heb een behandelrelatie met
+                                                            deze patient</label>
+                                                        <p class="warning" id="flow-consent-consent-warning-message">
+                                                            <span>Waarschuwing:</span> De behandelrelatie wordt steeksproefsgewijs
+                                                            gecontroleerd. Indien er geen sprake blijkt te zijn van een geldige
+                                                            relatie kan dit tot royement leiden.
+                                                        </p>
+                                                    </div>
+                                                    <div class="radio">
+                                                        <input type="radio" id="flow-consent-breaking-glass" name="access_type" value="breaking_glass"
+                                                               class="warning"
+                                                               aria-describedby="flow-consent-access-type-warning-message flow-consent-access-type-error-message flow-consent-breaking-glass-warning-message"
+                                                               {{ old('access_type', $state->getConsentData()?->getConsentType()?->value) === 'breaking_glass' ? 'checked' : '' }}>
+                                                        <label for="flow-consent-breaking-glass">Ik verzoek om noodtoegang
+                                                            (breaking the glass) tot deze patiëntgegevens</label>
+                                                        <p class="warning" id="flow-consent-breaking-glass-warning-message">
+                                                            <span>Waarschuwing:</span> Breaking the glass toegang is alleen toegestaan
+                                                            in noodsituaties wanneer directe toegang tot patiëntgegevens noodzakelijk is
+                                                            voor de zorgverlening. Deze toegang wordt gelogd en gecontroleerd.
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </fieldset>
                                     </div>
-
                                     <button type="submit">Volgende</button>
                                 </fieldset>
                             </form>
@@ -120,9 +135,9 @@
                                             @foreach($informationTypes as $informationTypeKey => $informationType)
                                                 <div class="checkbox">
                                                     <input type="checkbox"
-                                                           id="flow-authorization-information-types-{{ $informationTypeKey }}"
-                                                           name="information_types[]" value="{{ $informationTypeKey }}"
-                                                           aria-describedby="flow-authorization-information-types-error-message" {{ in_array($informationTypeKey, old('information_types', \App\Enums\DataDomain::toStringArray($state->getAuthorizationData()?->getInformationTypes() ?? []))) ? 'checked' : '' }}>
+                                                        id="flow-authorization-information-types-{{ $informationTypeKey }}"
+                                                        name="information_types[]" value="{{ $informationTypeKey }}"
+                                                        aria-describedby="flow-authorization-information-types-error-message" {{ in_array($informationTypeKey, old('information_types', \App\Enums\DataDomain::toStringArray($state->getAuthorizationData()?->getInformationTypes() ?? []))) ? 'checked' : '' }}>
                                                     <label
                                                         for="flow-authorization-information-types-{{ $informationTypeKey }}">{{ $informationType }}</label>
                                                 </div>

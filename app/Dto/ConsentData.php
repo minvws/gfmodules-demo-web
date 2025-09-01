@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
+use App\Enums\ConsentType;
+
 class ConsentData
 {
     protected ?string $bsn = null;
     protected ?string $birthYear = null;
-    protected bool $consent = false;
+    protected ?ConsentType $consentType = null;
 
     public function __construct(
         ?string $bsn = null,
         ?string $birthYear = null,
-        bool $consent = false
+        ?ConsentType $consentType = null
     ) {
         $this->bsn = $bsn;
         $this->birthYear = $birthYear;
-        $this->consent = $consent;
+        $this->consentType = $consentType;
     }
 
     public function getBsn(): ?string
@@ -30,8 +32,8 @@ class ConsentData
         return $this->birthYear;
     }
 
-    public function getConsent(): bool
+    public function getConsentType(): ?ConsentType
     {
-        return $this->consent;
+        return $this->consentType;
     }
 }

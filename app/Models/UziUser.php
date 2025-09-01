@@ -31,7 +31,8 @@ class UziUser implements Authenticatable
         public string|null $loaAuthn,
         public string $loaUzi,
         public array $uras,
-        public string $email = ''
+        public string $email = '',
+        public string|null $jwt = null
     ) {
         if (empty($email)) {
             $this->email = $uziId . '@uzi.pas';
@@ -96,6 +97,24 @@ class UziUser implements Authenticatable
             Log::error("Trying to build an uzi user from userinfo failed", [$e]);
             return null;
         }
+    }
+
+    /**
+     * Get the JWT token for the user.
+     *
+     * @return string|null
+     */
+    public function getJwt(): ?string
+    {
+        return $this->jwt;
+    }
+
+    /**
+     * Set the JWT token for the user.
+     */
+    public function setJwt(string $jwt): void
+    {
+        $this->jwt = $jwt;
     }
 
     /**

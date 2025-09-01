@@ -106,5 +106,7 @@ return [
     |
     */
 
-    'digid_mock_enabled' => env('DIGID_MOCK_ENABLED', false),
+    'dezi_mock_enabled' => env('DEZI_MOCK_ENABLED', false),
+    'dezi_mock_jwt_signing_key' => env('DEZI_MOCK_JWT_SIGNING_KEY'),
+    'dezi_mock_jwt_signing_cert' => env('DEZI_MOCK_JWT_SIGNING_CERT'),
 ];
