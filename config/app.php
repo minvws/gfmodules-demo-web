@@ -144,4 +144,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'show_diagnostics' => (bool) env('SHOW_DIAGNOSTICS', false),
 ];
