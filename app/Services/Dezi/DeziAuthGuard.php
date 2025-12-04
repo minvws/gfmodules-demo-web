@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Uzi;
+namespace App\Services\Dezi;
 
-use App\Models\UziUser;
+use App\Models\DeziUser;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Session\Session;
 
-class UziAuthGuard implements Guard
+class DeziAuthGuard implements Guard
 {
-    protected const SESSION_KEY = 'uzi_user';
+    protected const SESSION_KEY = 'dezi_user';
 
     public function __construct(
         protected Session $session,
@@ -31,7 +31,7 @@ class UziAuthGuard implements Guard
         return !$this->check();
     }
 
-    public function user(): UziUser | null
+    public function user(): DeziUser | null
     {
         if (!$this->check()) {
             return null;
@@ -42,7 +42,7 @@ class UziAuthGuard implements Guard
 
     public function id(): string | null
     {
-        return $this->user()?->uziId;
+        return $this->user()?->declaration->deziNumber;
     }
 
     /**
@@ -51,12 +51,12 @@ class UziAuthGuard implements Guard
      */
     public function validate(array $credentials = [])
     {
-        throw new \RuntimeException('Not implemented UziAuthGuard::validate() method');
+        throw new \RuntimeException('Not implemented DeziAuthGuard::validate() method');
     }
 
     public function hasUser()
     {
-        throw new \RuntimeException('Not implemented UziAuthGuard::hasUser() method');
+        throw new \RuntimeException('Not implemented DeziAuthGuard::hasUser() method');
     }
 
     public function setUser(Authenticatable $user): static

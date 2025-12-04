@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Uzi;
+namespace App\Services\Dezi;
 
 use Illuminate\Support\Facades\Session;
 use MinVWS\OpenIDConnectLaravel\Services\JWE\JweDecryptException;

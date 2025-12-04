@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\FlowController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\Landing\TimelineController;
-use App\Http\Controllers\Auth\DigidMockController;
+use App\Http\Controllers\Auth\DeziMockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +33,7 @@ Route::get('/address-book', [AddressBookController::class, 'index'])->name('addr
 Route::get('/address-book/org/{ref}', [AddressBookController::class, 'orgInfo'])->name('address-book.org-info');
 
 if (config('auth.dezi_mock_enabled')) {
-    Route::get('oidc/login', [DigidMockController::class, 'login'])->name('oidc.login');
+    Route::get('oidc/login', [DeziMockController::class, 'login'])->name('oidc.login');
 }
 
 Route::middleware(['auth'])

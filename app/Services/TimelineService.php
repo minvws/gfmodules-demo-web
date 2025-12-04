@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\DataDomain;
-use App\Models\UziUser;
+use App\Models\DeziUser;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -15,11 +15,11 @@ class TimelineService
     public function findTimeline(
         string $bsn,
         DataDomain $dataDomain,
-        UziUser $uziUser,
+        DeziUser $deziUser,
         string $caseNumber,
         bool $breakingGlass
     ): array {
-        $timelineResponse = $this->requestTimeline($bsn, $dataDomain, $uziUser, $caseNumber, $breakingGlass);
+        $timelineResponse = $this->requestTimeline($bsn, $dataDomain, $deziUser, $caseNumber, $breakingGlass);
         $errors = $this->catchErrors($timelineResponse);
         [$requested_resources, $patient, $patientName, $references]
             = $this->parseResources($timelineResponse, $dataDomain);
@@ -146,7 +146,7 @@ class TimelineService
     private function requestTimeline(
         string $bsn,
         DataDomain $dataDomain,
-        UziUser $uziUser,
+        DeziUser $deziUser,
         string $caseNumber,
         bool $breakingGlass
     ): array {
@@ -176,8 +176,8 @@ class TimelineService
                 options: [
                     'json' => [
                         'bsn' => $bsn,
-                        'ura' => $uziUser->getFirstRelation()->ura ?? '',
-                        'dezi_jwt' => $uziUser->getJwt() ?? null,
+                        'ura' => $deziUser->ura ?? '',
+                        'dezi_jwt' => $deziUser->getJwt() ?? null,
                         'breakingGlass' => $breakingGlass,
                         'caseNumber' => $caseNumber,
                     ],
