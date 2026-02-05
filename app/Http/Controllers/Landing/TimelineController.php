@@ -32,7 +32,7 @@ class TimelineController extends Controller
         }
 
         // Generate a case number since this feature is not in the viewer
-        $caseNr = 'CASE_' . time() . '_' . substr(md5($bsn . $user->uziId), 0, 8);
+        $caseNr = 'CASE_' . time() . '_' . substr(md5($bsn . $user->declaration->deziNumber), 0, 8);
         $breakingGlass = $flowState->getConsentData()?->getConsentType() === ConsentType::BreakingGlass;
 
         $dataDomain = $resource_types[0];

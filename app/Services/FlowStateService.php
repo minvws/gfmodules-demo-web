@@ -7,20 +7,20 @@ namespace App\Services;
 use App\Dto\AuthorizationData;
 use App\Dto\ConsentData;
 use App\Dto\FlowState;
-use App\Services\Uzi\UziAuthGuard;
+use App\Services\Dezi\DeziAuthGuard;
 use Illuminate\Contracts\Session\Session;
 
 class FlowStateService
 {
     public function __construct(
-        protected UziAuthGuard $uziAuthGuard,
+        protected DeziAuthGuard $deziAuthGuard,
         protected Session $session,
     ) {
     }
 
     public function getFlowStateFromSession(): FlowState
     {
-        $user = $this->uziAuthGuard->user();
+        $user = $this->deziAuthGuard->user();
 
         return new FlowState(
             user: $user,

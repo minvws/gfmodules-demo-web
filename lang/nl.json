@@ -24,5 +24,7 @@
     "Address": "Adres",
     "Endpoints": "Endpoints",
     "URL": "URL",
-    "payloadMimeTypes": "payloadMimeTypes"
+    "payloadMimeTypes": "payloadMimeTypes",
+    "Something went wrong during the Dezi login process": "Er is iets misgegaan tijdens het Dezi-aanmeldproces",
+    "Go back to homepage": "Ga terug naar de startpagina"
 }

@@ -9,10 +9,11 @@
                     @lang('Error')
                     @lang(403)
                 </h1>
-                <p>U zit momenteel niet in de Dezi-pilot.</p>
+                <p>@lang('Something went wrong during the Dezi login process.')</p>
 
-                @csrf
-                <input type="submit" value="{{ __('Logout') }}" />
+                <a href="{{ route('index') }}" class="button">
+                    @lang('Go back to homepage')
+                </a>
             </div>
         </div>
     </section>

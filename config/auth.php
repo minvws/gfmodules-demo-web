@@ -97,16 +97,30 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+
     /*
     |--------------------------------------------------------------------------
-    | DigiD mock enabled
+    | Dezi minimum LoA
+    |--------------------------------------------------------------------------
+    | Here you may define the minimum Level of Assurance (LoA) required
+    | for users authenticating via Dezi.
+    |
+    */
+
+    'minimum_loa' => env('OIDC_MINIMUM_LOA'),
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dezi mock enabled
     |--------------------------------------------------------------------------
     |
-    | Here you may define if the DigiD mock is enabled or not.
+    | Here you may define if the Dezi mock is enabled or not.
     |
     */
 
     'dezi_mock_enabled' => env('DEZI_MOCK_ENABLED', false),
+    'dezi_mock_issuer' => env('DEZI_MOCK_ISSUER', 'https://example.com/mock-issuer'),
     'dezi_mock_jwt_signing_key' => env('DEZI_MOCK_JWT_SIGNING_KEY'),
     'dezi_mock_jwt_signing_cert' => env('DEZI_MOCK_JWT_SIGNING_CERT'),
 ];

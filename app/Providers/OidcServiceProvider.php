@@ -6,7 +6,7 @@ namespace App\Providers;
 
 use App\Http\Responses\OidcLoginResponseHandler;
 use App\Services\OidcExceptionHandler;
-use App\Services\Uzi\JweDecryptService;
+use App\Services\Dezi\JweDecryptService;
 use MinVWS\OpenIDConnectLaravel\Http\Responses\LoginResponseHandlerInterface;
 use MinVWS\OpenIDConnectLaravel\OpenIDConnectServiceProvider;
 use MinVWS\OpenIDConnectLaravel\Services\ExceptionHandlerInterface;

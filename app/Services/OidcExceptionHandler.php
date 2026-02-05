@@ -21,7 +21,7 @@ class OidcExceptionHandler extends ExceptionHandler
     {
         $error = $this->getErrorParamFromRequest();
         switch ($error) {
-            // If authentication flow cancelled from uzi pilot
+            // If authentication flow cancelled from dezi pilot
             // If authentication flow cancelled from chosen authentication provider
             case 'login_required':
                 return redirect()

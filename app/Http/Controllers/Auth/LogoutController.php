@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\Uzi\UziAuthGuard;
+use App\Services\Dezi\DeziAuthGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class LogoutController extends Controller
 {
-    public function __construct(protected UziAuthGuard $guard)
+    public function __construct(protected DeziAuthGuard $guard)
     {
     }
 

@@ -8,12 +8,10 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class UziNoUziNumberException extends Exception
+class DeziLoginException extends Exception
 {
     /**
      * Report the exception.
-     *
-     * @return bool|null
      */
     public function report(): ?bool
     {
@@ -23,12 +21,11 @@ class UziNoUziNumberException extends Exception
     /**
      * Render the exception into an HTTP response.
      *
-     * @param  Request $request
      * @return Response
      */
     public function render(Request $request)
     {
         return response()
-            ->view('errors.no-uzi-number', [], 403);
+            ->view('errors.dezi-login-exception', [], 403);
     }
 }
