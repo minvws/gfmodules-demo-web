@@ -1,6 +1,6 @@
 // Import manon JS components
-import '@minvws/manon/accordion';
-import '@minvws/manon/collapsible';
+import '@minvws/manon/js/accordion.js';
+import '@minvws/manon/js/collapsible.js';
 
 // wait for the document to be loaded
 document.addEventListener('DOMContentLoaded', function() {

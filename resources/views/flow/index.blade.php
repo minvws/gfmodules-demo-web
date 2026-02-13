@@ -11,7 +11,7 @@
     @endif
 
     <section class="layout-form">
-        <div>
+        <div class="content-wrapper">
             <h1>Informatie opvragen</h1>
 
             <ul class="accordion">
@@ -105,8 +105,8 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <button type="submit">Volgende</button>
                                 </fieldset>
+                                <button type="submit">Volgende</button>
                             </form>
                         @else
                             <p>U gaat gegevens opvragen van bsn: {{ $state->getConsentData()?->getBsn() }}</p>
@@ -144,8 +144,8 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    <button type="submit">Volgende</button>
                                 </fieldset>
+                                <button type="submit">Volgende</button>
                             </form>
                         @else
                             @php

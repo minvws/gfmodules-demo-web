@@ -11,7 +11,7 @@
     @endif
 
     <section>
-        <div>
+        <div class="content-wrapper">
             <h1>Landingspagina</h1>
 
             <p>Here be llamas...</p>

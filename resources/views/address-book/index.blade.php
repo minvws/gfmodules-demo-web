@@ -2,7 +2,7 @@
 
 @section('content')
     <section>
-        <div>
+        <div class="content-wrapper">
             <h1>@lang('Search Address Book')</h1>
 
             <form action="{{ route('address-book') }}" method="GET" class="layout-form">
@@ -43,13 +43,13 @@
                         </div>
                     </div>
 
-                    <button type="submit">@lang('Search')</button>
                 </fieldset>
+                <button type="submit">@lang('Search')</button>
             </form>
         </div>
     </section>
     <section>
-        <div>
+        <div class="content-wrapper">
             <h2>@lang('Results')</h2>
 
             @if($error)
