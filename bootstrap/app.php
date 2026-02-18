@@ -11,8 +11,6 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->redirectGuestsTo(fn (Request $request) => route('flow'));
-        $middleware->redirectUsersTo(fn (Request $request) => route('flow'));
         $middleware->trustHosts(static function (): array {
             $trustedHosts = Config::array('app.trusted_hosts');
 
