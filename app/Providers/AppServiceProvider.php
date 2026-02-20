@@ -19,8 +19,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(DemoService::class, function ($app) {
             return new DemoService(
-                storage_path('certs/client.crt'),
-                storage_path('certs/client.key')
+                config('gfmodules.client_cert'),
+                config('gfmodules.client_key'),
+                config('gfmodules.client_verify', true),
             );
         });
     }

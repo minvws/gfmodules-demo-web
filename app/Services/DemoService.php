@@ -19,10 +19,19 @@ class DemoService
      */
     protected string $mtls_key;
 
-    public function __construct(string $mtls_cert, string $mtls_key)
+    /**
+     * The verify option for Guzzle. This can be set to false to disable SSL verification, or it can
+     * be set to a path to a CA bundle.
+     *
+     * @var string|bool
+     */
+    protected string|bool $verify;
+
+    public function __construct(string $mtls_cert, string $mtls_key, string|bool $verify)
     {
         $this->mtls_cert = $mtls_cert;
         $this->mtls_key = $mtls_key;
+        $this->verify = $verify;
     }
 
     /**
@@ -37,6 +46,7 @@ class DemoService
             'base_uri' => config('gfmodules.oauth.url'),
             'cert' => $this->mtls_cert,
             'ssl_key' => $this->mtls_key,
+            'verify' => $this->verify,
         ]);
 
         $response = $client->post('/oauth/token', [
@@ -66,6 +76,7 @@ class DemoService
             'base_uri' => config('gfmodules.prs.url'),
             'cert' => $this->mtls_cert,
             'ssl_key' => $this->mtls_key,
+            'verify' => $this->verify,
         ]);
 
         $response = $client->post('/test/oprf/client', [
@@ -94,6 +105,7 @@ class DemoService
             'base_uri' => config('gfmodules.prs.url'),
             'cert' => $this->mtls_cert,
             'ssl_key' => $this->mtls_key,
+            'verify' => $this->verify,
         ]);
 
         $response = $client->post('/oprf/eval', [
@@ -125,6 +137,7 @@ class DemoService
             'base_uri' => config('gfmodules.nvi.url'),
             'cert' => $this->mtls_cert,
             'ssl_key' => $this->mtls_key,
+            'verify' => $this->verify,
         ]);
 
         $response = $client->post('/Organization/$localize', [
@@ -179,8 +192,9 @@ class DemoService
         $token = $this->getOauthToken(config('gfmodules.nvi.url'));
         $client = new Client([
             'base_uri' => config('gfmodules.nvi.url'),
-            'cert' => storage_path('certs/client.crt'),
-            'ssl_key' => storage_path('certs/client.key'),
+            'cert' => $this->mtls_cert,
+            'ssl_key' => $this->mtls_key,
+            'verify' => $this->verify,
         ]);
 
         $client->post('/NVIDataReference', [

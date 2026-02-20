@@ -15,4 +15,7 @@ return [
     'nvi' => [
         'url' => env('GF_NVI_URL'),
     ],
+    'client_cert' => env('GF_CLIENT_CERT'),
+    'client_key' => env('GF_CLIENT_KEY'),
+    'client_verify' => env('GF_CLIENT_VERIFY', true),
 ];
