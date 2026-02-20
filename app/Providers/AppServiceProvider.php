@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Services\Dezi\DeziAuthGuard;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
+use App\Services\DemoService;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,7 +17,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(DemoService::class, function ($app) {
+            return new DemoService(
+                config('gfmodules.client_cert'),
+                config('gfmodules.client_key'),
+                config('gfmodules.client_verify', true),
+            );
+        });
     }
 
     /**
@@ -38,8 +42,5 @@ class AppServiceProvider extends ServiceProvider
 
     public function bootAuth(): void
     {
-        Auth::extend('oidc', function (Application $app, string $name, array $config) {
-            return new DeziAuthGuard($app->make('session')->driver(), $app->make('events'));
-        });
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="nl">
 <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex,nofollow">
@@ -11,26 +11,20 @@
     @stack('styles')
 </head>
 <body>
-@yield('header')
+<div class="container">
 
-<main id="main-content" tabindex="-1" @hasSection('sidemenu') class="sidemenu" @endif>
-    @hasSection('sidemenu')
-        @yield('sidemenu')
+    @hasSection('sidebar')
+        @yield('sidebar')
     @endif
 
-    @if (session()->has('error'))
-        <section role="alert" class="error no-print" aria-label="{{ __('error') }}">
-            <div>
-                <p><span>@lang('Error'):</span> {{ session('error') }} {{ session('error_description') }}</p>
-            </div>
-        </section>
-    @endif
+    <!-- Main Content -->
+    <main class="main-content">
+        @yield('content')
 
+        @yield('explanation')
+    </main>
+</div>
 
-    @yield('content')
-</main>
-
-@yield('footer')
 @stack('scripts')
 </body>
 </html>
