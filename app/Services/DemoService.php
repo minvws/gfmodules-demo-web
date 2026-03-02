@@ -158,7 +158,7 @@ class DemoService
                     [
                         'name' => 'careContext',
                         'valueCoding' => [
-                            'system' => 'http://nictiz.nl/fhir/hcim-2024',
+                            'system' => 'https://nvi.proeftuin.gf.irealisatie.nl/fhir/CodeSystem/care-context-type',
                             'code' => 'LaboratoryTestResult',
                         ],
                     ],
