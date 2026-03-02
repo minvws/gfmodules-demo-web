@@ -210,7 +210,7 @@ class DemoService
                 'sourceType' => [
                     'coding' => [
                         [
-                            'system' => 'http://vws.nl/fhir/CodeSystem/nvi-organization-types',
+                            'system' => 'https://nvi.proeftuin.gf.irealisatie.nl/fhir/CodeSystem/nvi-organization-types',
                             'code' => 'laboratorium',
                         ],
                     ],
@@ -218,13 +218,13 @@ class DemoService
                 'careContext' => [
                     'coding' => [
                         [
-                            'system' => 'http://nictiz.nl/fhir/hcim-2024',
+                            'system' => 'https://nvi.proeftuin.gf.irealisatie.nl/fhir/CodeSystem/care-context-type',
                             'code' => 'LaboratoryTestResult',
                         ],
                     ],
                 ],
                 'subject' => [
-                    'system' => 'http://vws.nl/fhir/NamingSystem/nvi-pseudonym',
+                    'system' => 'https://nvi.proeftuin.gf.irealisatie.nl/fhir/NamingSystem/nvi-pseudonym',
                     'value' => $eval_input,
                 ],
                 'oprfKey' => $blind_factor,
