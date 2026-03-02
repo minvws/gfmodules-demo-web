@@ -210,7 +210,8 @@ class DemoService
                 'sourceType' => [
                     'coding' => [
                         [
-                            'system' => 'https://nvi.proeftuin.gf.irealisatie.nl/fhir/CodeSystem/nvi-organization-types',
+                            'system' =>
+                                'https://nvi.proeftuin.gf.irealisatie.nl/fhir/CodeSystem/nvi-organization-types',
                             'code' => 'laboratorium',
                         ],
                     ],
