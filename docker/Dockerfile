@@ -1,33 +1,43 @@
-FROM php:8.3-fpm
+FROM php:8.3-apache AS builder
 
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
+    libzip-dev libmcrypt-dev libgmp3-dev \
     zip \
     unzip \
-    libzip-dev \
-    nginx \
-    supervisor \
-    && docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo_mysql mbstring exif pcntl bcmath gd
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install pdo_mysql bcmath gmp zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY docker/nginx.conf /etc/nginx/sites-available/default
-RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 WORKDIR /var/www/html
+
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
 
 COPY . .
 
-RUN composer install --optimize-autoloader --no-dev && \
-    chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+FROM php:8.3-apache
 
-EXPOSE 80
+ARG PORT=8080
+ENV PORT=$PORT
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libzip-dev libmcrypt-dev libgmp3-dev \
+    && docker-php-ext-install pdo_mysql bcmath gmp zip \
+    && a2enmod rewrite \
+    && sed -ri -e 's/^Listen 80$/Listen ${PORT}/' /etc/apache2/ports.conf \
+    && sed -ri -e 's/:80>/:${PORT}>/g' /etc/apache2/sites-available/*.conf \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+WORKDIR /var/www/html
+
+COPY --from=builder --chown=www-data:www-data /var/www/html /var/www/html
+
+EXPOSE ${PORT}
+
+USER www-data

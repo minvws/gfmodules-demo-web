@@ -23,7 +23,7 @@ run: ## Run the project
 	vendor/bin/sail artisan key:generate
 
 container-build: ## Build the standalone container
-	docker build . -t gfmodules-viewer-web --file ./docker/Dockerfile
+	docker build . -t gfmodules-demo-web --file ./docker/Dockerfile
 
 test: test-php test-js ## Runs tests
 
