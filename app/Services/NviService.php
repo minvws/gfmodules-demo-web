@@ -52,7 +52,7 @@ class NviService
      */
     private function getOauthToken(string $scope): string
     {
-        $response = $this->oauthClient->post('/oauth/token', [
+        $response = $this->oauthClient->post('oauth/token', [
             'form_params' => [
                 'target_audience' => $this->nviUrl,
                 'grant_type' => 'client_credentials',
@@ -72,7 +72,7 @@ class NviService
     {
         $token = $this->getOauthToken(self::OAUTH_SCOPE_READ);
 
-        $response = $this->nviClient->get('/List', [
+        $response = $this->nviClient->get('List', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
@@ -92,7 +92,7 @@ class NviService
     {
         $token = $this->getOauthToken(self::OAUTH_SCOPE_WRITE);
 
-        $this->nviClient->post('/List', [
+        $this->nviClient->post('List', [
             'headers' => [
                 'Authorization' => "Bearer $token",
                 'Content-Type' => 'application/fhir+json',
