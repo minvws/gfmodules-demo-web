@@ -34,7 +34,7 @@ class PrsService
      */
     private function getOauthToken(string $scope): string
     {
-        $response = $this->oauthClient->post('/oauth/token', [
+        $response = $this->oauthClient->post('oauth/token', [
             'form_params' => [
                 'target_audience' => $this->prsUrl,
                 'grant_type' => 'client_credentials',
@@ -73,7 +73,7 @@ class PrsService
     {
         $token = $this->getOauthToken(self::OAUTH_SCOPE_READ);
 
-        $response = $this->prsClient->post('/oprf/eval', [
+        $response = $this->prsClient->post('oprf/eval', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
