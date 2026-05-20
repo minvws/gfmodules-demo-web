@@ -23,7 +23,7 @@ class IndexController extends Controller
 
     public function index(DemoService $demoService): View
     {
-        $demoService->createNVIDataReference(self::REGISTERED_TEST_BSN);
+        $demoService->createNviListEntry(self::REGISTERED_TEST_BSN);
 
         return view('index', [
             'datadomains' => DATA_DOMAINS,
@@ -50,13 +50,12 @@ class IndexController extends Controller
             'organisation_type' => 'nullable|string',
         ]);
 
-        $hashed_bsn = hash_hmac('sha256', $validated['bsn'], config('gfmodules.hmac.key'));
         session([
             'patient' => [
-                'hashed_bsn' => $hashed_bsn,
+                'hashed_bsn' => $validated['bsn'],
                 'datadomain' => $validated['datadomain'],
                 'organisation_type' => $validated['organisation_type'] ?? null,
-            ]
+            ],
         ]);
 
         $patient = session('patient');
@@ -75,9 +74,8 @@ class IndexController extends Controller
     {
         $patient = session('patient');
 
-        $token = $demoService->getOauthToken(config('gfmodules.prs.url'));
-        $prs_input = $demoService->createPrsInput($token, $patient['hashed_bsn']);
-        $eval_output = $demoService->prsEvaluate($token, $prs_input['blinded_input']);
+        $prs_input = $demoService->createPrsInput($patient['hashed_bsn']);
+        $eval_output = $demoService->prsEvaluate($prs_input['blinded_input']);
 
         session([
             'eval_output' => $eval_output,
@@ -90,7 +88,7 @@ class IndexController extends Controller
             'organisation_type' => $patient['organisation_type'],
             'scope' => 'NVI',
             'organisatie' => 'VWS',
-            'eval_data' => substr(join("\n", str_split($eval_output['jwe'], 20)), 0, 40),
+            'eval_data' => substr(implode("\n", str_split($eval_output['jwe'], 20)), 0, 40),
         ]);
     }
 
@@ -101,16 +99,13 @@ class IndexController extends Controller
 
     public function step4(DemoService $demoService): View
     {
-        $token = $demoService->getOauthToken(config('gfmodules.nvi.url'));
-
         $data = $demoService->retrieveFromNVI(
-            $token,
-            (string)session('eval_output')['jwe'],
-            (string)session('blind_factor')
+            (string) session('eval_output')['jwe'],
+            (string) session('blind_factor')
         );
 
         return view('step_4', [
-            'organizations' => $data['entry']
+            'organizations' => $data['entry'],
         ]);
     }
 }
