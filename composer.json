@@ -6,7 +6,9 @@
     "require": {
         "php": "^8.3.0",
         "laravel/framework": "^12.8",
-        "laravel/tinker": "^3.0.0"
+        "laravel/tinker": "^3.0.0",
+        "noxlogic/oprf": "^0.9.1",
+        "paragonie/sodium_compat": "^2.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^4.0",
