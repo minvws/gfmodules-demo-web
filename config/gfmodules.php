@@ -38,6 +38,21 @@ return [
          * Recipient scope used for PRS authorization.
          */
         'recipient_scope' => env('GF_PRS_RECIPIENT_SCOPE', 'nationale-verwijsindex'),
+
+        /**
+         * Path to the client certificate (mTLS), if required by the remote API.
+         */
+        'client_cert' => env('GF_PRS_CLIENT_CERT'),
+
+        /**
+         * Path to the private key belonging to the configured client certificate.
+         */
+        'client_key' => env('GF_PRS_CLIENT_KEY'),
+
+        /**
+         * TLS server certificate verification (true/false or CA bundle path).
+         */
+        'client_verify' => env('GF_PRS_CLIENT_VERIFY', true),
     ],
 
     /*
@@ -121,26 +136,20 @@ return [
          * Human-readable display label for the configured data category code.
          */
         'list_code_display' => env('GF_NVI_LIST_CODE_DISPLAY', 'Laboratorium Uitslagen'),
+
+        /**
+         * Path to the client certificate (mTLS), if required by the remote API.
+         */
+        'client_cert' => env('GF_NVI_CLIENT_CERT'),
+
+        /**
+         * Path to the private key belonging to the configured client certificate.
+         */
+        'client_key' => env('GF_NVI_CLIENT_KEY'),
+
+        /**
+         * TLS server certificate verification (true/false or CA bundle path).
+         */
+        'client_verify' => env('GF_NVI_CLIENT_VERIFY', true),
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | mTLS
-    |--------------------------------------------------------------------------
-    */
-
-    /**
-     * Path to the client certificate (mTLS), if required by the remote API.
-     */
-    'client_cert' => env('GF_CLIENT_CERT'),
-
-    /**
-     * Path to the private key belonging to the configured client certificate.
-     */
-    'client_key' => env('GF_CLIENT_KEY'),
-
-    /**
-     * TLS server certificate verification (true/false or CA bundle path).
-     */
-    'client_verify' => env('GF_CLIENT_VERIFY', true),
 ];
