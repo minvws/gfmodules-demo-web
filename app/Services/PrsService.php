@@ -14,6 +14,8 @@ class PrsService
 {
     protected const OAUTH_SCOPE_READ = 'prs:read';
 
+    protected const AUTHORIZED_ROLE_CONSULTING = 'consulting';
+
     public function __construct(
         #[Give('gfmodules.prs_client')]
         protected Client $prsClient,
@@ -32,13 +34,14 @@ class PrsService
     /**
      * @throws GuzzleException
      */
-    private function getOauthToken(string $scope): string
+    private function getOauthToken(string $scope, string $authorizedRole): string
     {
-        $response = $this->oauthClient->post('oauth/token', [
+        $response = $this->oauthClient->post('token', [
             'form_params' => [
-                'target_audience' => $this->prsUrl,
+                'target_audience' => rtrim($this->prsUrl, '/'),
                 'grant_type' => 'client_credentials',
                 'scope' => $scope,
+                'authorized_role' => $authorizedRole,
             ],
         ]);
 
@@ -61,8 +64,8 @@ class PrsService
         $blind = $this->oprfClient->blind($pseudoInput);
 
         return [
-            'blind_factor' => strtr(base64_encode($blind->blind), '+/', '-_'),
-            'blinded_input' => strtr(base64_encode($blind->blindedElement), '+/', '-_'),
+            'blind_factor' => sodium_bin2base64($blind->blind, SODIUM_BASE64_VARIANT_URLSAFE),
+            'blinded_input' => sodium_bin2base64($blind->blindedElement, SODIUM_BASE64_VARIANT_URLSAFE),
         ];
     }
 
@@ -71,7 +74,7 @@ class PrsService
      */
     public function evaluate(string $input): array
     {
-        $token = $this->getOauthToken(self::OAUTH_SCOPE_READ);
+        $token = $this->getOauthToken(self::OAUTH_SCOPE_READ, self::AUTHORIZED_ROLE_CONSULTING);
 
         $response = $this->prsClient->post('oprf/eval', [
             'headers' => [
