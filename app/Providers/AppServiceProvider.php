@@ -18,36 +18,36 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('gfmodules.prs_oauth_client', function () {
             return new Client([
                 'base_uri' => config('gfmodules.prs.oauth_url'),
-                'cert' => config('gfmodules.client_cert'),
-                'ssl_key' => config('gfmodules.client_key'),
-                'verify' => config('gfmodules.client_verify', true),
+                'cert' => config('gfmodules.prs.client_cert'),
+                'ssl_key' => config('gfmodules.prs.client_key'),
+                'verify' => config('gfmodules.prs.client_verify', true),
             ]);
         });
 
         $this->app->singleton('gfmodules.nvi_oauth_client', function () {
             return new Client([
                 'base_uri' => config('gfmodules.nvi.oauth_url'),
-                'cert' => config('gfmodules.client_cert'),
-                'ssl_key' => config('gfmodules.client_key'),
-                'verify' => config('gfmodules.client_verify', true),
+                'cert' => config('gfmodules.nvi.client_cert'),
+                'ssl_key' => config('gfmodules.nvi.client_key'),
+                'verify' => config('gfmodules.nvi.client_verify', true),
             ]);
         });
 
         $this->app->singleton('gfmodules.prs_client', function () {
             return new Client([
                 'base_uri' => config('gfmodules.prs.url'),
-                'cert' => config('gfmodules.client_cert'),
-                'ssl_key' => config('gfmodules.client_key'),
-                'verify' => config('gfmodules.client_verify', true),
+                'cert' => config('gfmodules.prs.client_cert'),
+                'ssl_key' => config('gfmodules.prs.client_key'),
+                'verify' => config('gfmodules.prs.client_verify', true),
             ]);
         });
 
         $this->app->singleton('gfmodules.nvi_client', function () {
             return new Client([
                 'base_uri' => config('gfmodules.nvi.url'),
-                'cert' => config('gfmodules.client_cert'),
-                'ssl_key' => config('gfmodules.client_key'),
-                'verify' => config('gfmodules.client_verify', true),
+                'cert' => config('gfmodules.nvi.client_cert'),
+                'ssl_key' => config('gfmodules.nvi.client_key'),
+                'verify' => config('gfmodules.nvi.client_verify', true),
             ]);
         });
     }
@@ -64,7 +64,5 @@ class AppServiceProvider extends ServiceProvider
         $this->bootAuth();
     }
 
-    public function bootAuth(): void
-    {
-    }
+    public function bootAuth(): void {}
 }
