@@ -13,11 +13,15 @@ class NviService
 {
     protected const OAUTH_SCOPE_READ = 'nvi:read';
 
-    protected const OAUTH_SCOPE_WRITE = 'nvi:write';
+    protected const OAUTH_SCOPE_WRITE = 'nvi:create';
 
     protected const OAUTH_SCOPE_DELETE = 'nvi:delete';
 
     protected const OAUTH_SCOPE_LOCALIZE = 'nvi:localize';
+
+    protected const AUTHORIZED_ROLE_CONSULTING = 'consulting';
+
+    protected const AUTHORIZED_ROLE_SOURCE = 'source';
 
     public function __construct(
         #[Give('gfmodules.nvi_client')]
@@ -50,13 +54,15 @@ class NviService
     /**
      * @throws GuzzleException
      */
-    private function getOauthToken(string $scope): string
+    private function getOauthToken(string $scope, string $authorizedRole): string
     {
-        $response = $this->oauthClient->post('oauth/token', [
+        $response = $this->oauthClient->post('token', [
             'form_params' => [
-                'target_audience' => $this->nviUrl,
+                'target_audience' => rtrim($this->nviUrl, '/'),
                 'grant_type' => 'client_credentials',
                 'scope' => $scope,
+                'authorized_role' => $authorizedRole,
+                'source_id' => $this->sourceIdentifierValue,
             ],
         ]);
 
@@ -70,9 +76,9 @@ class NviService
      */
     public function retrieveList(string $subjectIdentifier): array
     {
-        $token = $this->getOauthToken(self::OAUTH_SCOPE_READ);
+        $token = $this->getOauthToken(self::OAUTH_SCOPE_READ, self::AUTHORIZED_ROLE_CONSULTING);
 
-        $response = $this->nviClient->get('List', [
+        $response = $this->nviClient->get('fhir/List', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
@@ -90,7 +96,7 @@ class NviService
      */
     public function createListReference(string $subjectIdentifier): void
     {
-        $token = $this->getOauthToken(self::OAUTH_SCOPE_WRITE);
+        $token = $this->getOauthToken(self::OAUTH_SCOPE_WRITE, self::AUTHORIZED_ROLE_SOURCE);
 
         $this->nviClient->post('List', [
             'headers' => [
