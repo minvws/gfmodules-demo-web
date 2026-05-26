@@ -64,5 +64,7 @@ class AppServiceProvider extends ServiceProvider
         $this->bootAuth();
     }
 
-    public function bootAuth(): void {}
+    public function bootAuth(): void
+    {
+    }
 }
