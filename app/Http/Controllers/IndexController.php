@@ -19,9 +19,11 @@ const DATA_DOMAINS = [
 
 class IndexController extends Controller
 {
+    public const REGISTERED_TEST_BSN = '999990007';
+
     public function index(DemoService $demoService): View
     {
-        $demoService->createNVIDataReference('999990007');
+        $demoService->createNVIDataReference(self::REGISTERED_TEST_BSN);
 
         return view('index', [
             'datadomains' => DATA_DOMAINS,

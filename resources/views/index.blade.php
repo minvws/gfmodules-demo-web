@@ -27,7 +27,7 @@
         @csrf
         <div class="form-group">
             <label class="required">Vindt patient</label>
-            <input name="bsn" type="text" maxlength="9" placeholder="BSN nummer">
+            <input name="bsn" type="text" maxlength="9" placeholder="BSN nummer" value="{{ \App\Http\Controllers\IndexController::REGISTERED_TEST_BSN }}">
         </div>
 
         <div class="form-group">
