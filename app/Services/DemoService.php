@@ -5,25 +5,23 @@ declare(strict_types=1);
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class DemoService
 {
     /**
      * The paths to the mTLS certificate and key. These are used to authenticate with the PRS and NVI.
-     * @var string
      */
     protected string $mtls_cert;
+
     /***
      * The paths to the mTLS certificate and key. These are used to authenticate with the PRS and NVI.
-     * @var string
      */
     protected string $mtls_key;
 
     /**
      * The verify option for Guzzle. This can be set to false to disable SSL verification, or it can
      * be set to a path to a CA bundle.
-     *
-     * @var string|bool
      */
     protected string|bool $verify;
 
@@ -36,9 +34,8 @@ class DemoService
 
     /**
      * Retrieves an OAuth token for the given URL (audience)
-     * @param string $url
-     * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
      */
     public function getOauthToken(string $url): string
     {
@@ -58,6 +55,7 @@ class DemoService
         ]);
 
         $data = json_decode((string) $response->getBody(), true);
+
         return $data['access_token'];
     }
 
@@ -65,10 +63,7 @@ class DemoService
      * This creates a blinded input for a given hashed BSN. We do this by calling a test endpoint on the PRS, since PHP
      * does not have the necessary cryptographic libraries to do this locally.
      *
-     * @param string $token
-     * @param string $hashed_bsn
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function createPrsInput(string $token, string $hashed_bsn): array
     {
@@ -88,16 +83,13 @@ class DemoService
             ],
         ]);
 
-        return json_decode((string)$response->getBody(), true);
+        return json_decode((string) $response->getBody(), true);
     }
 
     /**
      * Evaluate the blinded input with the PRS and return the result.
      *
-     * @param string $token
-     * @param string $input
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function prsEvaluate(string $token, string $input): array
     {
@@ -119,17 +111,13 @@ class DemoService
             ],
         ]);
 
-        return json_decode((string)$response->getBody(), true);
+        return json_decode((string) $response->getBody(), true);
     }
 
     /**
      * Retrieves data from the NVI for a given token, eval_input and blind_factor.
      *
-     * @param string $token
-     * @param string $eval_input
-     * @param string $blind_factor
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function retrieveFromNVI(string $token, string $eval_input, string $blind_factor): array
     {
@@ -162,21 +150,18 @@ class DemoService
                             'code' => 'LaboratoryTestResult',
                         ],
                     ],
-                ]
+                ],
             ],
         ]);
 
-        return json_decode((string)$response->getBody(), true);
+        return json_decode((string) $response->getBody(), true);
     }
-
 
     /**
      * Creates a NVIDataReference for the given BSN. This is used to demonstrate the full flow of creating a reference
      * in the NVI and then retrieving it.
      *
-     * @param string $bsn
-     * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function createNVIDataReference(string $bsn): void
     {
@@ -204,8 +189,8 @@ class DemoService
             'json' => [
                 'resourceType' => 'NVIDataReference',
                 'source' => [
-                    'system' => "urn:oid:2.16.528.1.1007.3.3",
-                    'value' => "90000206"
+                    'system' => 'urn:oid:2.16.528.1.1007.3.3',
+                    'value' => config('gfmodules.nvi.custodian_identifier_value'),
                 ],
                 'sourceType' => [
                     'coding' => [

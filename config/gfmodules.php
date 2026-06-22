@@ -14,6 +14,7 @@ return [
     ],
     'nvi' => [
         'url' => env('GF_NVI_URL'),
+        'custodian_identifier_value' => env('GF_NVI_CUSTODIAN_IDENTIFIER_VALUE', '90000206'),
     ],
     'client_cert' => env('GF_CLIENT_CERT'),
     'client_key' => env('GF_CLIENT_KEY'),
