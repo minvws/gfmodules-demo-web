@@ -19,7 +19,7 @@ const DATA_DOMAINS = [
 
 class IndexController extends Controller
 {
-    public const REGISTERED_TEST_BSN = '999990007';
+    public const string REGISTERED_TEST_BSN = '999990007';
 
     public function index(DemoService $demoService): View
     {
@@ -52,6 +52,7 @@ class IndexController extends Controller
 
         session([
             'patient' => [
+                // TODO: Rework hashed bsn as it is not hashed, maybe merge step 1 and 2?
                 'hashed_bsn' => $validated['bsn'],
                 'datadomain' => $validated['datadomain'],
                 'organisation_type' => $validated['organisation_type'] ?? null,
@@ -65,8 +66,8 @@ class IndexController extends Controller
             'data_domain' => DATA_DOMAINS[$patient['datadomain']],
             'organisation_type' => $patient['organisation_type'],
             'prs_input' => strtoupper(substr($patient['hashed_bsn'], 0, 10) . '...'),
-            'scope' => 'NVI',
-            'organisatie' => 'VWS',
+            'scope' => 'NVI', // TOOD: Use PrsService for receiving gfmodules.prs.recipient_scope.
+            'organisatie' => 'VWS', // TOOD: Use PrsService for receiving gfmodules.prs.recipient_organization.
         ]);
     }
 
