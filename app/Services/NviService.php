@@ -63,6 +63,7 @@ class NviService
                 'scope' => $scope,
                 'authorized_role' => $authorizedRole,
                 'source_id' => $this->sourceIdentifierValue,
+                'org_ura' => $this->custodianIdentifierValue,
             ],
         ]);
 
