@@ -49,9 +49,9 @@ class DemoService
             'verify' => $this->verify,
         ]);
 
-        $response = $client->post('/oauth/token', [
+        $response = $client->post('oauth/token', [
             'form_params' => [
-                'target_audience' => $url,
+                'target_audience' => rtrim($url, '/'),
                 'grant_type' => 'client_credentials',
                 'scope' => 'epd:read',
             ],
@@ -79,7 +79,7 @@ class DemoService
             'verify' => $this->verify,
         ]);
 
-        $response = $client->post('/test/oprf/client', [
+        $response = $client->post('test/oprf/client', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
@@ -108,7 +108,7 @@ class DemoService
             'verify' => $this->verify,
         ]);
 
-        $response = $client->post('/oprf/eval', [
+        $response = $client->post('oprf/eval', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
@@ -140,7 +140,7 @@ class DemoService
             'verify' => $this->verify,
         ]);
 
-        $response = $client->post('/Organization/$localize', [
+        $response = $client->post('Organization/$localize', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
@@ -197,7 +197,7 @@ class DemoService
             'verify' => $this->verify,
         ]);
 
-        $client->post('/NVIDataReference', [
+        $client->post('NVIDataReference', [
             'headers' => [
                 'Authorization' => "Bearer $token",
             ],
