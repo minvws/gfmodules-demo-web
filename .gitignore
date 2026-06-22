@@ -8,6 +8,7 @@
 /public/build
 /env
 /vendor
+/secrets
 .env
 .env.backup
 .env.testing
