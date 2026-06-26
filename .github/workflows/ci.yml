@@ -24,7 +24,7 @@ jobs:
         php-versions: [ '8.3', '8.4' ]
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -47,7 +47,7 @@ jobs:
           node-version: 24
           cache: 'npm'
       - run: npm ci --ignore-scripts
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: public/build
           key: ${{ runner.os }}-public-${{ hashFiles('package-lock.json') }}
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -108,7 +108,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -180,7 +180,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: xdebug, pgsql
-      - uses: actions/cache/restore@v5
+      - uses: actions/cache/restore@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -210,7 +210,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: vendor/
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
