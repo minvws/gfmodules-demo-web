@@ -61,8 +61,8 @@ class NviService
                 'target_audience' => rtrim($this->nviUrl, '/'),
                 'grant_type' => 'client_credentials',
                 'scope' => $scope,
-                'authorized_role' => $authorizedRole,
-                'source_id' => $this->sourceIdentifierValue,
+//                'authorized_role' => $authorizedRole, // TODO: Check if needed
+//                'source_id' => $this->sourceIdentifierValue, // TODO: Check if needed
                 'org_ura' => $this->custodianIdentifierValue,
             ],
         ]);
@@ -99,7 +99,7 @@ class NviService
     {
         $token = $this->getOauthToken(self::OAUTH_SCOPE_WRITE, self::AUTHORIZED_ROLE_SOURCE);
 
-        $this->nviClient->post('List', [
+        $this->nviClient->post('fhir/List', [
             'headers' => [
                 'Authorization' => "Bearer $token",
                 'Content-Type' => 'application/fhir+json',
