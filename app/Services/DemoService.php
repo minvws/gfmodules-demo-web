@@ -60,8 +60,8 @@ class DemoService
     protected function encodeSubjectIdentifier(string $oprfJwe, string $blindFactor): string
     {
         $payload = json_encode([
-            'evaluated_output' => $oprfJwe,
-            'blind_factor' => $blindFactor,
+            'evaluated_output' => rtrim($oprfJwe, '='), // TODO: Check if trim is needed or not
+            'blind_factor' => rtrim($blindFactor, '='),
         ], JSON_THROW_ON_ERROR);
 
         return rtrim(strtr(base64_encode($payload), '+/', '-_'), '=');

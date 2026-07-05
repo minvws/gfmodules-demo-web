@@ -41,7 +41,9 @@ class PrsService
                 'target_audience' => rtrim($this->prsUrl, '/'),
                 'grant_type' => 'client_credentials',
                 'scope' => $scope,
-                'authorized_role' => $authorizedRole,
+                'authorized_role' => $authorizedRole, // TODO: Check if needed
+//                'source_id' => 'some-source-id', // TODO: Check if needed
+                'org_oin' => '<replace-with-oin>', // TODO: Configure based on config or extract from certificate
             ],
         ]);
 
