@@ -11,7 +11,7 @@
         "concurrently": "^10.0.4",
         "eslint": "^10.7.0",
         "laravel-vite-plugin": "^3.1.3",
-        "sass": "^1.101.0",
+        "sass": "^1.101.7",
         "table": "^6.9.0",
         "vite": "^8.1.5"
     },
