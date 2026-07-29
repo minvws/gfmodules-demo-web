@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use GuzzleHttp\Exception\GuzzleException;
+use JsonException;
 
 class DemoService
 {
@@ -26,13 +27,17 @@ class DemoService
      * Evaluate the blinded input with the PRS and return the result.
      *
      * @throws GuzzleException
+     * @throws JsonException
      */
     public function prsEvaluate(string $input): array
     {
         return $this->prsService->evaluate($input);
     }
 
-    /** @throws GuzzleException */
+    /**
+     * @throws GuzzleException
+     * @throws JsonException
+     */
     public function retrieveFromNVI(string $eval_input, string $blind_factor): array
     {
         $subjectIdentifier = $this->encodeSubjectIdentifier($eval_input, $blind_factor);
@@ -44,6 +49,7 @@ class DemoService
      * Creates an NVI List entry for the given BSN.
      *
      * @throws GuzzleException
+     * @throws JsonException
      */
     public function createNviListEntry(string $bsn): void
     {
@@ -51,17 +57,16 @@ class DemoService
         $blind_factor = $data['blind_factor'];
 
         $result = $this->prsEvaluate($data['blinded_input']);
-        $eval_input = $result['jwe'];
-        $subjectIdentifier = $this->encodeSubjectIdentifier($eval_input, $blind_factor);
 
+        $subjectIdentifier = $this->encodeSubjectIdentifier($result['jwe'], $blind_factor . "==");
         $this->nviService->createListReference($subjectIdentifier);
     }
 
     protected function encodeSubjectIdentifier(string $oprfJwe, string $blindFactor): string
     {
         $payload = json_encode([
-            'evaluated_output' => rtrim($oprfJwe, '='), // TODO: Check if trim is needed or not
-            'blind_factor' => rtrim($blindFactor, '='),
+            'evaluated_output' => $oprfJwe,
+            'blind_factor' => $blindFactor,
         ], JSON_THROW_ON_ERROR);
 
         return rtrim(strtr(base64_encode($payload), '+/', '-_'), '=');
