@@ -22,17 +22,17 @@
 
             <div class="info-row">
                 <span class="info-label">Patient</span>
-                <span class="info-value">BSN {{ $patient ?? '' }}</span>
+                <span class="info-value">BSN {{ $bsn ?? '' }}</span>
             </div>
 
             <div class="info-row">
                 <span class="info-label">Zorgcontext</span>
-                <span class="info-value">{{ $data_domain ?? 'xxx' }}</span>
+                <span class="info-value">{{ $data_domain ?? '' }}</span>
             </div>
 
             <div class="info-row">
                 <span class="info-label">Organisatietype</span>
-                <span class="info-value">{{ $organisation_type ?? 'Org 1' }}</span>
+                <span class="info-value">{{ $organisation_type ?? '' }}</span>
             </div>
         </div>
 
@@ -41,19 +41,21 @@
         <table>
             <thead>
                 <tr>
-                    <td>Resource Type</td>
                     <td>URA</td>
                     <td>Type</td>
                 </tr>
             </thead>
             <tbody>
-                @foreach($organizations as $org)
+                @forelse ($organizations as $org)
                     <tr>
-                        <td>{{ $org['resource']['resourceType'] }}</td>
                         <td>{{ $org['resource']['extension'][0]['valueReference']["identifier"]['value'] }}</td>
                         <td>{{ $org['resource']['type'][0]['coding'][0]['display'] ?? "" }}</td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="2">Geen resultaten</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
 
