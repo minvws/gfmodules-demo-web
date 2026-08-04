@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Services\DemoService;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,24 +12,48 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {
-        $this->app->singleton(DemoService::class, function ($app) {
-            return new DemoService(
-                config('gfmodules.client_cert'),
-                config('gfmodules.client_key'),
-                config('gfmodules.client_verify', true),
-            );
+        $this->app->singleton('gfmodules.prs_oauth_client', function () {
+            return new Client([
+                'base_uri' => config('gfmodules.prs.oauth_url'),
+                'cert' => config('gfmodules.prs.client_cert'),
+                'ssl_key' => config('gfmodules.prs.client_key'),
+                'verify' => config('gfmodules.prs.client_verify', true),
+            ]);
+        });
+
+        $this->app->singleton('gfmodules.nvi_oauth_client', function () {
+            return new Client([
+                'base_uri' => config('gfmodules.nvi.oauth_url'),
+                'cert' => config('gfmodules.nvi.client_cert'),
+                'ssl_key' => config('gfmodules.nvi.client_key'),
+                'verify' => config('gfmodules.nvi.client_verify', true),
+            ]);
+        });
+
+        $this->app->singleton('gfmodules.prs_client', function () {
+            return new Client([
+                'base_uri' => config('gfmodules.prs.url'),
+                'cert' => config('gfmodules.prs.client_cert'),
+                'ssl_key' => config('gfmodules.prs.client_key'),
+                'verify' => config('gfmodules.prs.client_verify', true),
+            ]);
+        });
+
+        $this->app->singleton('gfmodules.nvi_client', function () {
+            return new Client([
+                'base_uri' => config('gfmodules.nvi.url'),
+                'cert' => config('gfmodules.nvi.client_cert'),
+                'ssl_key' => config('gfmodules.nvi.client_key'),
+                'verify' => config('gfmodules.nvi.client_verify', true),
+            ]);
         });
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {

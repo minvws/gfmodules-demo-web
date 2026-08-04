@@ -50,8 +50,8 @@
                 @foreach($organizations as $org)
                     <tr>
                         <td>{{ $org['resource']['resourceType'] }}</td>
-                        <td>{{ $org['resource']['id'] }}</td>
-                        <td>{{ $org['resource']['type'][0]['coding'][0]['display'] }}</td>
+                        <td>{{ $org['resource']['extension'][0]['valueReference']["identifier"]['value'] }}</td>
+                        <td>{{ $org['resource']['type'][0]['coding'][0]['display'] ?? "" }}</td>
                     </tr>
                 @endforeach
             </tbody>
