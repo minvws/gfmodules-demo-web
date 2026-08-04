@@ -84,7 +84,6 @@ class NviService
             ],
             'query' => [
                 'subject:identifier' => $this->subjectIdentifierSystem . '|' . $subjectIdentifier,
-                'code' => 'LaboratoryTestResult',
             ],
         ]);
 
