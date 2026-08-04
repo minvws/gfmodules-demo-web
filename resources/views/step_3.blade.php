@@ -21,17 +21,17 @@
 
             <div class="info-row">
                 <span class="info-label">Patient</span>
-                <span class="info-value">{{ $patient ?? 'BSN 123456788' }}</span>
+                <span class="info-value">BSN {{ $bsn ?? '' }}</span>
             </div>
 
             <div class="info-row">
                 <span class="info-label">Zorgcontext</span>
-                <span class="info-value">{{ $zorgcontext ?? 'xxx' }}</span>
+                <span class="info-value">{{ $data_domain ?? '' }}</span>
             </div>
 
             <div class="info-row">
                 <span class="info-label">Organisatietype</span>
-                <span class="info-value">{{ $organisatietype ?? 'Org 1' }}</span>
+                <span class="info-value">{{ $organisation_type ?? '' }}</span>
             </div>
         </div>
 

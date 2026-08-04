@@ -53,7 +53,7 @@ class IndexController extends Controller
         session([
             'patient' => [
                 // TODO: Rework hashed bsn as it is not hashed, maybe merge step 1 and 2?
-                'hashed_bsn' => $validated['bsn'],
+                'bsn' => $validated['bsn'],
                 'datadomain' => $validated['datadomain'],
                 'organisation_type' => $validated['organisation_type'] ?? null,
             ],
@@ -62,10 +62,10 @@ class IndexController extends Controller
         $patient = session('patient');
 
         return view('step_1', [
-            'hashed_bsn' => $patient['hashed_bsn'],
+            'bsn' => $patient['bsn'],
             'data_domain' => DATA_DOMAINS[$patient['datadomain']],
             'organisation_type' => $patient['organisation_type'],
-            'prs_input' => strtoupper(substr($patient['hashed_bsn'], 0, 10) . '...'),
+            'prs_input' => strtoupper(substr($patient['bsn'], 0, 10) . '...'),
             'scope' => 'NVI', // TOOD: Use PrsService for receiving gfmodules.prs.recipient_scope.
             'organisatie' => 'VWS', // TOOD: Use PrsService for receiving gfmodules.prs.recipient_organization.
         ]);
@@ -75,7 +75,7 @@ class IndexController extends Controller
     {
         $patient = session('patient');
 
-        $prs_input = $demoService->createPrsInput($patient['hashed_bsn']);
+        $prs_input = $demoService->createPrsInput($patient['bsn']);
         $eval_output = $demoService->prsEvaluate($prs_input['blinded_input']);
 
         session([
@@ -84,8 +84,8 @@ class IndexController extends Controller
         ]);
 
         return view('step_2', [
-            'hashed_bsn' => $patient['hashed_bsn'],
-            'data_domain' => $patient['datadomain'],
+            'bsn' => $patient['bsn'],
+            'data_domain' => DATA_DOMAINS[$patient['datadomain']],
             'organisation_type' => $patient['organisation_type'],
             'scope' => 'NVI',
             'organisatie' => 'VWS',
@@ -95,17 +95,28 @@ class IndexController extends Controller
 
     public function step3(): View
     {
-        return view('step_3', []);
+        $patient = session('patient');
+
+        return view('step_3', [
+            'bsn' => $patient['bsn'],
+            'data_domain' => DATA_DOMAINS[$patient['datadomain']],
+            'organisation_type' => $patient['organisation_type'],
+        ]);
     }
 
     public function step4(DemoService $demoService): View
     {
+        $patient = session('patient');
+
         $data = $demoService->retrieveFromNVI(
             (string) session('eval_output')['jwe'],
             (string) session('blind_factor')
         );
 
         return view('step_4', [
+            'bsn' => $patient['bsn'],
+            'data_domain' => DATA_DOMAINS[$patient['datadomain']],
+            'organisation_type' => $patient['organisation_type'],
             'organizations' => $data['entry'],
         ]);
     }
