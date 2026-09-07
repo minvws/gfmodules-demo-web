@@ -13,7 +13,7 @@ use Noxlogic\Oprf\OprfClient;
 
 class PrsService
 {
-    protected const OAUTH_SCOPE_READ = 'prs:read';
+    protected const OAUTH_SCOPE_OPRF = 'prs:oprf';
 
     public function __construct(
         #[Give('gfmodules.prs_client')]
@@ -74,7 +74,7 @@ class PrsService
      */
     public function evaluate(string $input): array
     {
-        $token = $this->getOauthToken(self::OAUTH_SCOPE_READ);
+        $token = $this->getOauthToken(self::OAUTH_SCOPE_OPRF);
 
         $response = $this->prsClient->post('oprf/eval', [
             'headers' => [
