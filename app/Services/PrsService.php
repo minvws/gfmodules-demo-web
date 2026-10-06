@@ -13,7 +13,7 @@ use Noxlogic\Oprf\OprfClient;
 
 class PrsService
 {
-    protected const OAUTH_SCOPE_OPRF = 'prs:oprf';
+    protected const OAUTH_SCOPE_OPRF = 'prs:oprf-pseudonym';
 
     public function __construct(
         #[Give('gfmodules.prs_client')]
