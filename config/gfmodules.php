@@ -40,9 +40,14 @@ return [
         'recipient_scope' => env('GF_PRS_RECIPIENT_SCOPE', 'nationale-verwijsindex'),
 
         /**
-         * Client organization identifier included in PRS OAuth token requests.
+         * Client identifier included in PRS OAuth token requests.
          */
-        'client_organization_id' => env('GF_PRS_CLIENT_ORGANIZATION_ID'),
+        'client_id' => env('GF_PRS_CLIENT_ID'),
+
+        /**
+         * Client organization external identifier included in PRS OAuth token requests.
+         */
+        'client_organization_external_id' => env('GF_PRS_CLIENT_ORGANIZATION_EXTERNAL_ID'),
 
         /**
          * Path to the client certificate (mTLS), if required by the remote API.
@@ -143,9 +148,14 @@ return [
         'list_code_display' => env('GF_NVI_LIST_CODE_DISPLAY', 'Laboratorium Uitslagen'),
 
         /**
-         * Client organization identifier included in NVI OAuth token requests.
+         * Client identifier included in NVI OAuth token requests.
          */
-        'client_organization_id' => env('GF_NVI_CLIENT_ORGANIZATION_ID'),
+        'client_id' => env('GF_NVI_CLIENT_ID'),
+
+        /**
+         * Client organization external identifier included in NVI OAuth token requests.
+         */
+        'client_organization_external_id' => env('GF_NVI_CLIENT_ORGANIZATION_EXTERNAL_ID'),
 
         /**
          * Path to the client certificate (mTLS), if required by the remote API.

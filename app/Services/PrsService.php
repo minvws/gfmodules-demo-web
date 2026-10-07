@@ -24,8 +24,10 @@ class PrsService
         protected OprfClient $oprfClient,
         #[Config('gfmodules.prs.url')]
         protected string $prsUrl,
-        #[Config('gfmodules.prs.client_organization_id')]
-        protected string $clientOrganizationId,
+        #[Config('gfmodules.prs.client_id')]
+        protected string $clientId,
+        #[Config('gfmodules.prs.client_organization_external_id')]
+        protected string $clientOrganizationExternalId,
         #[Config('gfmodules.prs.recipient_organization')]
         protected string $recipientOrganization,
         #[Config('gfmodules.prs.recipient_scope')]
@@ -44,7 +46,8 @@ class PrsService
             $this->prsUrl,
             $scope,
             [
-                'organization_id' => $this->clientOrganizationId,
+                'client_id' => $this->clientId,
+                'organization_external_id' => $this->clientOrganizationExternalId,
             ],
         );
     }
