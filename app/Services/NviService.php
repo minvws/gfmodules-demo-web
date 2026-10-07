@@ -30,8 +30,10 @@ class NviService
         protected OAuthTokenService $oauthTokenService,
         #[Config('gfmodules.nvi.url')]
         protected string $nviUrl,
-        #[Config('gfmodules.nvi.client_organization_id')]
-        protected string $clientOrganizationId,
+        #[Config('gfmodules.nvi.client_id')]
+        protected string $clientId,
+        #[Config('gfmodules.nvi.client_organization_external_id')]
+        protected string $clientOrganizationExternalId,
         #[Config('gfmodules.nvi.subject_identifier_system')]
         protected string $subjectIdentifierSystem,
         #[Config('gfmodules.nvi.custodian_extension_url')]
@@ -64,8 +66,9 @@ class NviService
             $this->nviUrl,
             $scope,
             [
+                'client_id' => $this->clientId,
+                'organization_external_id' => $this->clientOrganizationExternalId,
                 'source_id' => $this->sourceIdentifierValue,
-                'organization_id' => $this->clientOrganizationId,
             ],
         );
     }
