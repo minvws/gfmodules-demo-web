@@ -8,9 +8,9 @@
         "lint": "eslint ."
     },
     "devDependencies": {
-        "eslint": "^10.11.0",
+        "eslint": "^10.13.0",
         "laravel-vite-plugin": "^3.2.0",
-        "sass": "^1.104.1",
+        "sass": "^1.105.2",
         "vite": "^8.3.4"
     },
     "overrides": {
