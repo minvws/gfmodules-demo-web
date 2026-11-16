@@ -58,7 +58,7 @@ class DemoService
 
         $result = $this->prsEvaluate($data['blinded_input']);
 
-        $subjectIdentifier = $this->encodeSubjectIdentifier($result['jwe'], $blind_factor . "==");
+        $subjectIdentifier = $this->encodeSubjectIdentifier($result['jwe'], $blind_factor);
         $this->nviService->createListReference($subjectIdentifier);
     }
 
